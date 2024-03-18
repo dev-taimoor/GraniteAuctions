@@ -1,0 +1,40 @@
+<style>
+  .parent-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding-bottom: 80px;
+  }
+  
+  .menu-bar {
+    width: 15%;
+    background-color: white; /* Just for visualization */
+  }
+
+  .preview {
+    width: 65%;
+    background-color: #F4F7FE;
+    display: flex;
+    justify-content: center;
+  }
+
+  .create-car-form {
+    width: 20%;
+    background-color: white; /* Just for visualization */
+  }
+</style>
+
+<div class="parent-container">
+  <div class="menu-bar">
+    <%= render 'admin-side-bar' %>
+  </div>
+  
+  <div class="preview">
+    <h1>Stock List</h1>
+    <%= render 'cars-table' %>
+  </div>
+
+  <div class="create-car-form">
+    <%= render 'create-car-form' %>
+  </div>
+</div>

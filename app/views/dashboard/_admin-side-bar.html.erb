@@ -1,0 +1,41 @@
+<style>
+	.sidenav {
+    height: 100%;
+    width: inherit;
+    position: fixed;
+    z-index: 1;
+    top: inherit;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: flex;
+    align-items: center;
+    transition: 0.3s;
+  }
+
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
+</style>
+
+<div id="mySidenav" class="sidenav ">
+  <a href="#"><%= image_tag("category.png", alt: "Logo", class: "logo", style: "width: 20px; padding: 2%;") %>Dashboard</a>
+  <a href="#"><%= image_tag("empty-wallet.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Revenue</a>
+  <a href="#"><%= image_tag("car.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Stock</a>
+  <a href="#"><%= image_tag("judge.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Auction</a>
+  <a href="#"><%= image_tag("profile-2user.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Users</a>
+</div>

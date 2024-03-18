@@ -1,0 +1,158 @@
+<style>
+  @media only screen and (max-width: 768px) {
+    .hide-on-mobile {
+      display: none;
+    }
+  }
+
+  .button-style {
+    border-radius: 20px; /* Adjust the value to change the roundness of corners */
+    padding: 10px 20px; /* Adjust padding as needed */
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    background-color: #DBE0EB; /* Background color for buttons */
+    color: black; /* Text color for buttons */
+    display: inline-flex;
+  }
+
+  .selected-button {
+    background-color: #2B4159 !important; /* Background color for selected button */
+    color: white; /* Text color for selected button */
+  }
+
+  .dealer-only-fields {
+    display: none; /* Initially hide dealer-only fields */
+  }
+
+  .file-upload-box {
+    border: 2px dashed #CCCCCC;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    width: 200px;
+    margin: 10px;
+  }
+
+  .file-upload-box:hover {
+    border-color: #2B4159;
+  }
+
+  .file-upload-box input[type="file"] {
+    display: none;
+  }
+</style>
+
+<div style="display: flex; flex-wrap: wrap; background: #F4F7FE;">
+  <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; align-items: center;">
+    <h2>Verification</h2>
+
+
+    <%= form_with(model: @current_user, url: verification_path, method: :post, local: true, multipart: true) do |form| %>
+      <div style="display: flex; flex-direction: column; align-items: center;">
+
+        <div style="margin-top: 20px;">
+    <!-- Use plain HTML buttons for role selection -->
+    <button type="button" id="individual_button" class="role_button button-style selected-button" onclick="setRole('individual')"> Individual</button>
+    <button type="button" id="dealer_button" class="role_button button-style" onclick="setRole('dealer')"> Dealer</button>
+    <!-- Hidden field to store the selected role -->
+    <%= form.hidden_field :role, id: "selected_role_input", value: "individual" %>
+  </div>
+
+
+    <br/>
+    <br/>
+    <br/>
+
+        <div class="dealer-only-fields">
+          <div class="field">
+            <%= form.label :business_name %><br />
+            <%= form.text_field :business_name, autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;" %>
+          </div>
+          <br/>
+
+          <div class="field">
+            <%= form.label :VAT_number %><br />
+            <%= form.text_field :vat_number, autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;" %>
+          </div>
+          <br/>
+
+          <div class="field">
+            <%= form.label :brockers_licensing %><br />
+            <%= form.text_field :brockers_licensing, autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;" %>
+          </div>
+          <br/>
+        </div>
+
+        <div class="file-upload-box">
+    <label for="verification_image1" style="display: flex; align-items: center;">
+      <%= image_tag("profile.png", alt: "identification-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Identification
+      <br>
+      <%= form.file_field :verification_image1, id: "verification_image1", name: "verification_image1" %>
+    </label>
+  </div>
+
+  <div class="file-upload-box">
+    <label for="verification_image2" style="display: flex; align-items: center;">
+      <%= image_tag("profile.png", alt: "address-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Address
+      <br>
+      <%= form.file_field :verification_image2, id: "verification_image2", name: "verification_image2" %>
+    </label>
+  </div>
+        
+
+        <br/>
+        <br/>
+        <div class="actions" style="display: flex; justify-content: center; width: 100%;">
+          <%= form.submit 'Submit', id: 'verification_submit', style: "background: #2B4159; color: white; width: 80%; border: none; border-radius: 25px; height: 40px;" %>
+        </div>
+      </div>
+    <% end %>
+    <br/>
+    <br/>
+  </div>
+
+  <div style="flex: 2;" class="hide-on-mobile">
+    <%= image_tag("car-logo.png", alt: "Logo", class: "logo", style: "width: 100%; height: auto;") %>
+  </div>
+</div>
+
+<script>
+  let selectedRole = 'individual';
+
+  function setRole(role) {
+    selectedRole = role;
+    updateButtonStyles();
+    updateSelectedRoleInput();
+    toggleDealerFields();
+  }
+
+  function updateButtonStyles() {
+    const individualButton = document.getElementById('individual_button');
+    const dealerButton = document.getElementById('dealer_button');
+
+    if (selectedRole === 'individual') {
+      individualButton.classList.add('selected-button');
+      dealerButton.classList.remove('selected-button');
+    } else {
+      dealerButton.classList.add('selected-button');
+      individualButton.classList.remove('selected-button');
+    }
+  }
+
+  function updateSelectedRoleInput() {
+    const selectedRoleInput = document.getElementById('selected_role_input');
+    selectedRoleInput.value = selectedRole;
+  }
+
+  function toggleDealerFields() {
+    const dealerFields = document.querySelector('.dealer-only-fields');
+    if (selectedRole === 'dealer') {
+      dealerFields.style.display = 'block';
+    } else {
+      dealerFields.style.display = 'none';
+    }
+  }
+</script>

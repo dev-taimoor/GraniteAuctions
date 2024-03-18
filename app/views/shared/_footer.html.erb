@@ -1,0 +1,79 @@
+<style>
+  .footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    z-index: 1;
+    height: 75px;
+    background-color: white;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .footer-container {
+      flex-direction: column;
+      height: auto;
+    }
+
+    .footer-icons{
+      margin-top: 25px;
+    }
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+  }
+
+  .text {
+    margin-left: 10px;
+    font-weight: bold;
+  }
+
+  .footer-links {
+    display: flex;
+    align-items: center;
+  }
+
+  .footer-links a {
+    margin: 0 10px;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+  }
+</style>
+
+
+<div class="footer-container">
+  <div class="footer-brand">
+    <%= image_tag("logo.png", alt: "Logo", class: "logo") %>
+    <div class="text">
+      <div class="line1">GRANITE</div>
+      <div class="line2">Auction</div>
+    </div>
+  </div>
+
+  <div>
+    <p class="text">@ 2023 Granite Auctions, Inc. All rights reserved.</p>
+  </div>
+
+  <div class="footer-links">
+    <a href="#terms">Terms</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <div class="footer-icons">
+    <%= image_tag("Vector.png", alt: "Logo", class: "logo") %>
+    <%= image_tag("facebook.png", alt: "Logo", class: "logo") %>
+    <%= image_tag("twitter.png", alt: "Logo", class: "logo") %>
+    <%= image_tag("instagram.png", alt: "Logo", class: "logo") %>
+    <%= image_tag("linkedin.png", alt: "Logo", class: "logo") %>
+  </div>
+</div>
+
