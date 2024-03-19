@@ -5,17 +5,20 @@
     width: 100%;
     padding-bottom: 80px;
   }
-  
   .menu-bar {
     width: 15%;
     background-color: white; /* Just for visualization */
   }
-
   .preview {
-    width: 85%;
+    width: 65%;
     background-color: #F4F7FE;
     display: flex;
     justify-content: center;
+  }
+
+  .create-car-form {
+    width: 20%;
+    background-color: white; /* Just for visualization */
   }
 </style>
 
@@ -25,6 +28,11 @@
   </div>
   
   <div class="preview">
-    <h1>Dashboard will display here</h1>
+    <h1>Stock List</h1>
+    <%= render 'cars-table' %>
+  </div>
+
+  <div class="create-car-form">
+    <%= render 'create-car-form', car: @car %>
   </div>
 </div>
