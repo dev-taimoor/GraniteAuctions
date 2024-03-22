@@ -95,6 +95,26 @@
     <%= form.text_field :make_model, class: "custom-select #{(car.persisted? || myClass )? 'edit-color' : 'new-color'}", required: true %>
   </div>
   <br>
+
+  <div>
+    <%= form.label :year %><br>
+    <%= form.text_field :year, class: "custom-select #{(car.persisted? || myClass )? 'edit-color' : 'new-color'}", required: true %>
+  </div>
+  <br>
+
+  <div>
+    <%= form.label :engine_capacity %><br>
+    <%= form.text_field :engine_capacity, class: "custom-select #{(car.persisted? || myClass )? 'edit-color' : 'new-color'}", required: true %>
+  </div>
+  <br>
+
+  <div>
+    <%= form.label :KMs_driven %><br>
+    <%= form.text_field :kms_driven, class: "custom-select #{(car.persisted? || myClass )? 'edit-color' : 'new-color'}", required: true %>
+  </div>
+  <br>
+
+
   <div>
     <%= form.label :reserve_auction_price %><br>
     <%= form.number_field :reserve_auction_price, class: "custom-select #{(car.persisted? || myClass ) ? 'edit-color' : 'new-color'}", required: true %>
