@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   }
 
   get 'home/index'
+  get '/car_collection', to: 'home#car_collection', as: 'car_collection'
   post '/verification', to: 'users#verification', as: 'verification'
   get '/user_verification', to: 'users#user_verification', as: 'user_verification'
   get '/dashboard', to: 'dashboard#index', as: 'dashboard'

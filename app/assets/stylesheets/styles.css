@@ -12,8 +12,12 @@ body {
 }
 
 .topnav .nav-buttons {
-  margin-left: auto; /* Push buttons to the right */
+  margin-left: auto;
   margin-right: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .topnav .nav-buttons button {
@@ -104,7 +108,9 @@ body {
 }
 
 .topnav .nav-buttons a {
-  display: inline-block; /* Display buttons horizontally */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 14px 16px;
 }
 
@@ -162,7 +168,6 @@ body {
 }
 
 .pagination {
-  display: block;
   justify-content: center;
   margin-top: 20px;
 }

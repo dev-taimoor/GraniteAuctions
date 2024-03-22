@@ -49,64 +49,65 @@
   <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; align-items: center;">
     <h2>Verification</h2>
 
-
-    <%= form_with(model: @current_user, url: verification_path, method: :post, local: true, multipart: true) do |form| %>
+    <%= form_with(model: @current_user, url: verification_path, method: :post, local: true, multipart: true, id: "verification_form") do |form| %>
       <div style="display: flex; flex-direction: column; align-items: center;">
 
         <div style="margin-top: 20px;">
-    <!-- Use plain HTML buttons for role selection -->
-    <button type="button" id="individual_button" class="role_button button-style selected-button" onclick="setRole('individual')"> Individual</button>
-    <button type="button" id="dealer_button" class="role_button button-style" onclick="setRole('dealer')"> Dealer</button>
-    <!-- Hidden field to store the selected role -->
-    <%= form.hidden_field :role, id: "selected_role_input", value: "individual" %>
-  </div>
+          <!-- Use plain HTML buttons for role selection -->
+          <button type="button" id="individual_button" class="role_button button-style selected-button" onclick="setRole('individual')"> Individual</button>
+          <button type="button" id="dealer_button" class="role_button button-style" onclick="setRole('dealer')"> Dealer</button>
+          <!-- Hidden field to store the selected role -->
+          <%= form.hidden_field :role, id: "selected_role_input", value: "individual" %>
+        </div>
 
-
-    <br/>
-    <br/>
-    <br/>
+        <br/>
+        <br/>
+        <br/>
 
         <div class="dealer-only-fields">
           <div class="field">
             <%= form.label :business_name %><br />
-            <%= form.text_field :business_name, autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;" %>
+            <%= form.text_field :business_name, autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
           </div>
           <br/>
 
           <div class="field">
             <%= form.label :VAT_number %><br />
-            <%= form.text_field :vat_number, autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;" %>
+            <%= form.text_field :vat_number, autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
           </div>
           <br/>
 
           <div class="field">
             <%= form.label :brockers_licensing %><br />
-            <%= form.text_field :brockers_licensing, autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;" %>
+            <%= form.text_field :brockers_licensing, autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
           </div>
           <br/>
         </div>
 
         <div class="file-upload-box">
-    <label for="verification_image1" style="display: flex; align-items: center;">
-      <%= image_tag("profile.png", alt: "identification-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Identification
-      <br>
-      <%= form.file_field :verification_image1, id: "verification_image1", name: "verification_image1" %>
-    </label>
-  </div>
+          <label for="verification_image1" style="display: flex; align-items: center;">
+            <%= image_tag("profile.png", alt: "identification-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Identification
+            <br>
+            <%= form.file_field :verification_image1, id: "verification_image1", name: "verification_image1", required: true %>
+          </label>
+        </div>
+        <span id="verification_image1_error" class="error" style="display: none; color: red;">Please select a file</span>
 
-  <div class="file-upload-box">
-    <label for="verification_image2" style="display: flex; align-items: center;">
-      <%= image_tag("profile.png", alt: "address-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Address
-      <br>
-      <%= form.file_field :verification_image2, id: "verification_image2", name: "verification_image2" %>
-    </label>
-  </div>
-        
-
+        <div class="file-upload-box">
+          <label for="verification_image2" style="display: flex; align-items: center;">
+            <%= image_tag("profile.png", alt: "address-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Address
+            <br>
+            <%= form.file_field :verification_image2, id: "verification_image2", name: "verification_image2", required: true %>
+          </label>
+        </div>
+        <span id="verification_image2_error" class="error" style="display: none; color: red;">Please select a file</span>
         <br/>
         <br/>
-        <div class="actions" style="display: flex; justify-content: center; width: 100%;">
+        <!-- <div class="actions" style="display: flex; justify-content: center; width: 100%;">
           <%= form.submit 'Submit', id: 'verification_submit', style: "background: #2B4159; color: white; width: 80%; border: none; border-radius: 25px; height: 40px;" %>
+        </div> -->
+        <div class="actions" style="display: flex; justify-content: center; width: 100%;">
+          <button type="button" onclick="validateForm()" style="background: #2B4159; color: white; width: 80%; border: none; border-radius: 25px; height: 40px;">Submit</button>
         </div>
       </div>
     <% end %>
@@ -153,6 +154,29 @@
       dealerFields.style.display = 'block';
     } else {
       dealerFields.style.display = 'none';
+    }
+  }
+
+  function validateForm() {
+    const file1 = document.getElementById("verification_image1");
+    const file2 = document.getElementById("verification_image2");
+    const file1Error = document.getElementById("verification_image1_error");
+    const file2Error = document.getElementById("verification_image2_error");
+
+    if (!file1.value) {
+      file1Error.style.display = "block";
+    } else {
+      file1Error.style.display = "none";
+    }
+
+    if (!file2.value) {
+      file2Error.style.display = "block";
+    } else {
+      file2Error.style.display = "none";
+    }
+
+    if (file1.value && file2.value) {
+      document.getElementById("verification_form").submit();
     }
   }
 </script>
