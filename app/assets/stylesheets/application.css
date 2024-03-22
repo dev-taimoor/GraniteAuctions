@@ -13,25 +13,27 @@
  *= require_tree .
  *= require_self
  */
+/* Bootstrap*/
+@import "bootstrap";
 
 .flash {
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      font-weight: bold;
-    }
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
 
-    .flash.notice {
-      background-color: #DFF2BF;
-      color: #4F8A10;
-    }
+.flash.notice {
+  background-color: #DFF2BF;
+  color: #4F8A10;
+}
 
-    .flash.alert {
-      background-color: #FEEFB3;
-      color: #9F6000;
-    }
+.flash.alert {
+  background-color: #FEEFB3;
+  color: #9F6000;
+}
 
-    .flash.error {
-      background-color: #FFBABA;
-      color: #D8000C;
-    }
+.flash.error {
+  background-color: #FFBABA;
+  color: #D8000C;
+}

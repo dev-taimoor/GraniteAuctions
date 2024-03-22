@@ -1,30 +1,11 @@
-<style>
-  .parent-container {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    padding-bottom: 80px;
-  }
-  
-  .menu-bar {
-    width: 15%;
-    background-color: white; /* Just for visualization */
-  }
-
-  .preview {
-    width: 85%;
-    background-color: #F4F7FE;
-    display: flex;
-    justify-content: center;
-  }
-</style>
-
 <div class="parent-container">
-  <div class="menu-bar">
-    <%= render 'admin-shared/admin-side-bar' %>
-  </div>
-  
-  <div class="preview">
-    <h1>Dashboard will display here</h1>
+  <div class="content-wrapper">
+    <div class="menu-bar">
+      <%= render 'admin-shared/admin-side-bar' %>
+    </div>
+
+    <div class="preview preview-complete">
+      <h1>Dashboard will display here</h1>
+    </div>
   </div>
 </div>

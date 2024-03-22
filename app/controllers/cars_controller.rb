@@ -2,7 +2,12 @@ class CarsController < ApplicationController
 
   def index
     @car = Car.new
-    @cars = Car.all
+    if params[:search].present?
+      @cars = Car.where("make_model LIKE ?", "%#{params[:search]}%").paginate(page: params[:page], per_page: 10)
+    else
+      @cars = Car.paginate(page: params[:page], per_page: 10)
+    end
+    render :index
   end
 
   def destroy
@@ -41,6 +46,10 @@ class CarsController < ApplicationController
   end
 
   def edit
+    @car = Car.find(params[:id])
+  end
+
+  def show
     @car = Car.find(params[:id])
   end
 

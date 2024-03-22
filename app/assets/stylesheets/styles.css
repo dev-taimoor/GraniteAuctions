@@ -112,6 +112,130 @@ body {
   display: none;
 }
 
+.content-wrapper {
+    display: flex;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+.parent-container{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; 
+}
+  
+.menu-bar {
+  width: 15%;
+  background-color: white; /* Just for visualization */
+}
+
+.preview {
+  
+  background-color: #F4F7FE;
+  display: flex;
+  justify-content: center;
+}
+
+.car-table {
+  background-color: #F4F7FE;
+  display: flex;
+  flex-direction: column; /* Ensure elements stack vertically */
+  align-items: center; /* Center elements horizontally */
+  width: 65%;
+  padding: 20px; /* Add padding for better spacing */
+}
+
+.table-section{
+  width: 100%;
+}
+
+.preview-complete{
+  width: 85%;
+}
+
+.preview-break-1{
+  width: 65%;
+}
+
+.preview-break-2{
+  width: 20%;
+}
+
+.pagination {
+  display: block;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    text-align: center;
+  }
+
+  table td {
+    background: white;
+    width: 16.60%;
+    height: 15%;
+  }
+
+  table td:first-of-type{
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+
+  table td:last-of-type{
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+
+  .edit-item {
+    border-radius: 20px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    background-color: #6f8297;
+    color: white;
+    display: inline-flex;
+    text-decoration: none;
+  }
+  .delete-item {
+    border-radius: 20px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    background-color: #DBE0EB;
+    color: #6f8297;
+    display: inline-flex;
+    text-decoration: none;
+  }
+
+  .car-name{
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+  }
+
+.pagination a,
+.pagination span {
+  margin: 0 5px;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: #2B4159;
+}
+
+.pagination .current {
+  margin: 0 5px;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: #2B4159;
+  font-weight: bold;
+}
+
 @media screen and (max-width: 600px) {
   .topnav a:not(:first-child) {display: none;}
   .topnav a.icon {
@@ -151,3 +275,133 @@ body {
     display: none; /* Hide the search bar on screens smaller than 600px */
   }
 }
+
+.car-display{
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .car-table {
+    display: block;
+    width: 100%;
+  }
+  
+  .menu-bar {
+    display: none; /* Hide the menu-bar section */
+  }
+
+  .create-car-form {
+    display: none;
+  }
+
+  .preview {
+    width: 100%; /* Adjust the width of preview sections */
+  }
+
+  .content-wrapper {
+    overflow-y: auto; /* Enable vertical scrolling for content */
+  }
+
+  .car-table-index{
+    display: none;
+  }
+
+  .car-display{
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.mobile-car{
+  display: flex;
+  flex-direction: column;
+  gap: 10%;
+  background: white;
+  width: 100%;
+  border: none;
+  border-radius: 30px;
+  padding: 10%;
+  margin-top: 10%;
+}
+
+.mobile-car-inner{
+  display: flex;
+  margin-bottom: 10%;
+}
+
+.button-container{
+  justify-content: center;
+  gap: 10%;
+}
+
+.btn-edit-item{
+  border-radius: 20px;
+  padding: 10px 20px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  background-color: #6f8297;
+  color: white;
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.btn-delete-item{
+  border-radius: 20px;
+  padding: 10px 20px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  background-color: #DBE0EB;
+  color: #6f8297;
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.button_to{
+  width: 100%;
+}
+
+.stock-heading-main{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+@media only screen and (max-width: 600px) {
+  .stock-heading {
+    display: none;
+  }
+
+  .stock-heading-main{
+    justify-content: center;
+    padding: 0%;
+  }
+}
+
+.rounded-input {
+  border-radius: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.rounded-button {
+  border-radius: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+.rounded-button:hover,
+.rounded-button:focus {
+  background-color: #e9ecef;
+}
+

@@ -4,6 +4,14 @@
     width: 100%;
     border:none;
     border-radius: 25px;
+    
+  }
+
+  .edit-color{
+    background: white;
+  }
+
+  .new-color{
     background: #F4F7FE;
   }
 
@@ -12,7 +20,6 @@
     width: 100%;
     border:none;
     border-radius: 25px;
-    background: #F4F7FE;
   }
 
   .file-upload-box {
@@ -21,7 +28,7 @@
     padding: 20px;
     text-align: center;
     cursor: pointer;
-    width: 80%;
+    width: 100%;
   }
 
   .file-upload-box:hover {
@@ -60,7 +67,7 @@
   }
 </script>
 
-<div style="padding: 5%;">
+<div style="padding: 5%; width: 100%;">
 <h1>Car Details</h1>
 <%= form_with(model: car, url: car.persisted? ? car_path(car) : cars_path) do |form| %>
 
@@ -76,7 +83,7 @@
   <div id="image-preview">
     <%if car.persisted? %>
       <% if car.image.attached? %>
-        <%= image_tag url_for(car.image), class: "", style: "width: 100%;" %>
+        <%= image_tag url_for(car.image), class: "", style: "max-width: 100%;" %>
       <% end %>
     <%end%>
   </div>
@@ -85,44 +92,44 @@
 
   <div>
     <%= form.label :make_model %><br>
-    <%= form.text_field :make_model, class: "custom-select" %>
+    <%= form.text_field :make_model, class: "custom-select #{(car.persisted? || myClass )? 'edit-color' : 'new-color'}", required: true %>
   </div>
   <br>
   <div>
     <%= form.label :reserve_auction_price %><br>
-    <%= form.number_field :reserve_auction_price, class: "custom-select" %>
+    <%= form.number_field :reserve_auction_price, class: "custom-select #{(car.persisted? || myClass ) ? 'edit-color' : 'new-color'}", required: true %>
   </div>
   <br>
   <div>
     <%= form.label :buy_now_price %><br>
-    <%= form.number_field :buy_now_price, class: "custom-select" %>
+    <%= form.number_field :buy_now_price, class: "custom-select #{(car.persisted? || myClass ) ? 'edit-color' : 'new-color'}", required: true %>
   </div>
   <br>
   <div>
     <%= form.label :description %><br>
-    <%= form.text_field :description , class: "custom-select" %>
+    <%= form.text_field :description , class: "custom-select #{(car.persisted? || myClass ) ? 'edit-color' : 'new-color'}", required: true %>
   </div>
   <br>
   <div>
     <%= form.label :salvage_category_id %>
     <br>
-    <%= form.collection_select(:salvage_category_id, SalvageCategory.all, :id, :name, {}, {class: "custom-select-select"})  %>
+    <%= form.collection_select(:salvage_category_id, SalvageCategory.all, :id, :name, {}, {class: "custom-select-select #{(car.persisted? || myClass ) ? 'edit-color' : 'new-color'}"})  %>
   </div>
   <br>
   <div>
     <%= form.label :category_id %>
     <br>
-    <%= form.collection_select(:category_id, Category.all, :id, :name, {}, {class: "custom-select-select"})  %>
+    <%= form.collection_select(:category_id, Category.all, :id, :name, {}, {class: "custom-select-select #{(car.persisted? || myClass ) ? 'edit-color' : 'new-color'}"})  %>
   </div>
   <br>
   <div>
     <%= form.label :location %><br>
-    <%= form.text_field :location , class: "custom-select" %>
+    <%= form.text_field :location , class: "custom-select #{(car.persisted? || myClass ) ? 'edit-color' : 'new-color'}", required: true %>
   </div>
   <br>
   <div>
     <%= form.label :delivery_cost %><br>
-    <%= form.number_field :delivery_cost, class: "custom-select" %>
+    <%= form.number_field :delivery_cost, class: "custom-select #{(car.persisted? || myClass ) ? 'edit-color' : 'new-color'}" %>
   </div>
   <br>
   <br>
