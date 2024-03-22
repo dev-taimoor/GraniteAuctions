@@ -44,6 +44,10 @@ gem "bootsnap", require: false
 gem 'devise', '~> 4.8'
 gem 'cancancan', '~> 3.0'
 gem 'byebug'
+gem 'will_paginate', '~> 3.3'
+gem 'bootstrap', '~> 5.1.3'
+gem 'sass-rails', '>= 6'
+gem 'cssbundling-rails'
 
 
 # Use Sass to process CSS

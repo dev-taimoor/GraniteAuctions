@@ -1,0 +1,29 @@
+<div class="parent-container">
+  <div class="content-wrapper">
+    <div class="menu-bar">
+      <%= render 'admin-shared/admin-side-bar' %>
+    </div>
+    
+    <div class="car-table">
+
+      <div class="stock-heading-main">
+        <h1 class="stock-heading">Stock List</h1>
+
+       <%= form_tag(cars_path, method: :get, class: "search-form") do %>
+    <%= text_field_tag :search, params[:search], placeholder: "Search by Make or Model", class: "rounded-input" %>
+    <%= submit_tag "Search", class: "btn btn-secondary btn-block rounded-button" %>
+<% end %>
+      </div>
+
+      
+      <div style="display: contents; width: 100%"><%= render 'cars-table' %></div>
+      
+      <div class="pagination-section">
+        <%= will_paginate @cars %>    
+      </div>
+    </div>
+  </div>
+  <div class="create-car-form preview-break-2">
+      <%= render 'create-car-form', car: @car, myClass: nil %>
+    </div>
+</div>

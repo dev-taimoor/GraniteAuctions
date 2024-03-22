@@ -1,0 +1,67 @@
+<style>
+  .car-show-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .show-image-div, .show-description-div {
+    width: 48%;
+    padding: 5%;
+  }
+
+  .show-styling {
+    background: white;
+    padding: 5%;
+    border: none;
+    border-radius: 30px;
+    width: 100%;
+  }
+
+
+@media only screen and (max-width: 768px) {
+  .car-show-div {
+    flex-direction: column; 
+    justify-content: flex-start;
+  }
+
+  .show-image-div, .show-description-div {
+    width: 100%; 
+    margin-bottom: 15%;
+    padding: 0%;
+  }
+}
+</style>
+
+<div class="parent-container">
+  <div class="content-wrapper">
+    <div class="menu-bar">
+      <%= render 'admin-shared/admin-side-bar' %>    
+    </div>
+
+    <div class="preview preview-complete">
+      <div class="car-show-div">
+        <div class="show-image-div">
+          <% if @car&.image.attached? %>
+            <%= image_tag url_for(@car.image), class: "", style: "max-width: 100%;" %>
+          <% end %>    
+        </div>
+
+        <div class="show-description-div">
+          <div class="show-styling">
+            <h2 style="text-align: left; color: #646d81; font-size: larger;"><%= @car.make_model %></h2>
+            <p style="text-align: left; color: #646d81; font-size: larger;">Reserve Auction Price: <%= @car.reserve_auction_price %></p>
+            <p style="text-align: left; color: #646d81; font-size: larger;">Buy Now Price: <%= @car.buy_now_price %></p>
+            <p style="text-align: left; color: #646d81; font-size: larger;" >Category: <%= @car.category.name %></p>
+            <p style="text-align: left; color: #646d81; font-size: larger;">Delivery Cost: <%= @car.delivery_cost ? 'Yes' : 'No' %></p>
+          </div>
+        </div>
+      </div>    
+    </div>
+  </div>
+</div>
+
+
+
+
