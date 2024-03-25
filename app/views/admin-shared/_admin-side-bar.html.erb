@@ -40,6 +40,9 @@
   <%= link_to cars_path do %>
     <%= image_tag("car.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Stock
   <% end %>
-  <a href="#"><%= image_tag("judge.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Auction</a>
+
+  <%= link_to auctions_path do %>
+    <%= image_tag("judge.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Auction
+  <% end %>
   <a href="#"><%= image_tag("profile-2user.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Users</a>
 </div>
