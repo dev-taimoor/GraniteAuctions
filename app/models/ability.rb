@@ -23,6 +23,7 @@ class Ability
     can :read, Car
     can :read, Auction
     can :create, Bid
+    can :read, AuctionCar
   end
 
 end

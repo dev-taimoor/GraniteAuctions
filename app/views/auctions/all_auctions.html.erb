@@ -1,0 +1,175 @@
+<style>
+  .auction-heading-style{
+    color: #2B4159;
+    font-weight: bold;
+  }
+
+  .auctions-heading-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .auction-main{
+    width: 85%;
+    display: flex;
+    background-color: #F4F7FE;
+    flex-direction: column;
+  }
+
+  .inner_box{
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+    background: white;
+    border: none;
+    border-radius: 5%;
+    width: 25%;
+    box-shadow: 0 4px 11px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .pagination {
+    display: inline-block;
+  }
+
+  .pagination li {
+    display: inline;
+  }
+
+  .pagination a {
+    position: relative;
+    padding: 6px 12px;
+    line-height: 1.428571429;
+  }
+
+
+  @media screen and (max-width: 768px) {
+    .inner_box {
+      width: 80%;
+      margin: 5% 0;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    .auction-main {
+      width: 100%;
+    }
+
+    .auctions-heading-container{
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="parent-container">
+  <div class="content-wrapper">
+    <div class="menu-bar">
+      <%= render 'admin-shared/admin-side-bar' %>    
+    </div>
+
+    <div class="auction-main">
+      <div class="auctions-heading-container">
+        <h1 class="auction-heading-style">All Auction</h1>
+
+        <%= form_tag(all_auctions_auctions_path, method: :get, class: "search-form") do %>
+          <%= text_field_tag :search, params[:search], placeholder: "Search by Auction Title", class: "rounded-input" %>
+          <%= submit_tag "Search", class: "btn btn-secondary btn-block rounded-button" %>
+        <% end %>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; padding: 2%; gap: 1%; justify-content: center">
+        <% @auctions.each do |auction| %>
+          <div class="inner_box mt-5">
+            <div style="display: flex;">
+              <div style="flex: 1;">
+                <div style="text-align: left; color: #646d81; font-size: larger;">Auction Title</div>
+                <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%=auction.title%></div>
+              </div>
+
+              <div style="flex: 1;">
+                <div style="text-align: right; color: #646d81; font-size: larger;">Auction Lot No.</div>
+                <div style="text-align: right; color: #2B4159; font-size: x-large; font-weight: bold;"><%= auction.lot_no%></div>
+              </div>
+            </div>
+
+            <div class="mt-3" style="display: flex;">
+              <div style="flex: 1;">
+                <div style="text-align: left; color: #646d81; font-size: larger;">Start Time</div>
+                <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%= auction.start_time.strftime("%Y-%m-%d %H:%M:%S") %></div>
+              </div>
+
+              <div style="flex: 1;">
+                <div style="text-align: right; color: #646d81; font-size: larger;">End Time</div>
+                <div style="text-align: right; color: #2B4159; font-size: x-large; font-weight: bold;"><%= auction.end_time.strftime("%Y-%m-%d %H:%M:%S") %></div>
+              </div>
+            </div>
+
+            <div class="mt-3" style="display: flex;">
+              <div style="flex: 1;">
+                <div style="text-align: left; color: #646d81; font-size: larger;">Status</div>
+                <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%=humanize_status(auction.status)%></div>
+              </div>
+
+              <div style="flex: 1;">
+                <div style="text-align: right; color: #646d81; font-size: larger;">Cars count</div>
+                <div style="text-align: right; color: #2B4159; font-size: x-large; font-weight: bold;"><%= auction.cars.count%></div>
+              </div>
+            </div>
+
+            <div class="mobile-car-inner button-container mt-3" style="display: flex;">
+              <button class="btn btn-primary add-to-auction" style="background: #2B4159; color: white; width: 100%; border: none; border-radius: 25px; height: 40px;" data-toggle="modal" data-target="#auctionDetailsModal" data-auction-id="<%= auction.id %>"> Car Details </button>
+            </div>
+          </div>
+        <% end %>
+      </div> 
+
+
+      <div class="pagination-container">
+        <%= will_paginate @auctions %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="auctionDetailsModal" tabindex="-1" role="dialog" aria-labelledby="auctionDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div style="background: #F4F7FE;" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="auctionDetailsModalLabel">Auction Cars</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="carsList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('.add-to-auction').click(function() {
+      var auctionId = $(this).data('auction-id');
+
+      $.ajax({
+        url: '/auctions/' + auctionId + '/cars',
+        type: 'GET',
+        success: function(data) {
+          $('#carsList').html(data);
+          $('#auctionDetailsModal').modal('show'); // Manually trigger the modal to show
+        },
+        error: function() {
+          alert('Error fetching associated cars.');
+        }
+      });
+    });
+  });
+</script>
+

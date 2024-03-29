@@ -1,0 +1,83 @@
+<style >
+  .auction-cars-modal{
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+<% cars.each do |car| %>
+  <div class="auction-cars-modal">
+    <div class="mobile-car">
+
+      <div class="mobile-car-inner">
+        <% if car.image.attached? %>
+            <%= image_tag url_for(car.image), class: "", style: "max-width: 100%; width: 100%" %>
+          <%else%>
+            <%= image_tag("no-image.jpg", alt: "no-image", class: "", style: "max-width: 100%; width: 100%") %>
+          <% end %> 
+      </div>
+
+      <div class="mobile-car-inner">
+        <div style="flex: 1;">
+          <div style="text-align: left; color: #646d81; font-size: larger;">Make and Model</div>
+          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%=car.make_model%></div>
+        </div>
+
+        <div style="flex: 1;">
+          <div style="text-align: right; color: #646d81; font-size: larger;">Fixed Price</div>
+          <div style="text-align: right; color: #2B4159; font-size: x-large; font-weight: bold;">$<%= car.reserve_auction_price%></div>
+        </div>
+      </div>
+
+      <div class="mobile-car-inner">
+        <div style="flex: 1;">
+          <div style="text-align: left; color: #646d81; font-size: larger;">Buy Now Price</div>
+          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;">$<%=car.buy_now_price%></div>
+        </div>
+
+        <div style="flex: 1;">
+          <div style="text-align: right; color: #646d81; font-size: larger;">Category</div>
+          <div style="text-align: right; color: #2B4159; font-size: x-large; font-weight: bold;"><%= car.category.name%></div>
+        </div>
+      </div>
+
+      <div class="mobile-car-inner button-container">
+        <button class="btn btn-primary remove-from-auction" style="background: #2B4159; color: white; width: 100%;border: none; border-radius: 25px; height: 40px;" data-auction-id="<%= @auction.id %>" data-car-id="<%= car.id %>">Remove From Auction</button>
+
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% if cars.blank? %>
+  <div>
+    <h3>No Car Found</h3>
+  </div>
+<% end %>
+
+<script>
+  $(document).ready(function() {
+    $('.remove-from-auction').click(function() {
+      var auctionId = $(this).data('auction-id');
+      var carId = $(this).data('car-id');
+      var token = $('meta[name=csrf-token]').attr('content');
+
+      $.ajax({
+        url: '/auctions/' + auctionId + '/delete_auction_car',
+        type: 'DELETE',
+        headers: {
+          'X-CSRF-Token': token
+        },
+        data: { car_id: carId },
+        success: function(data) {
+          location.reload();
+        },
+        error: function(xhr, status, error) {
+          alert('Error removing car from auction: ' + xhr.responseText);
+        }
+      });
+    });
+  });
+</script>
+
+
+

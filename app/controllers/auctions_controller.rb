@@ -2,8 +2,52 @@ class AuctionsController < ApplicationController
   before_action :set_auction, only: %i[ show edit update destroy ]
 
   def index
-    @auction = Car.new
-    @auctions = Auction.all
+    @auctions = Auction.current.or(Auction.pending)
+    @live_auctions = Auction.current.includes(:auction_cars)
+    @auction_cars = @live_auctions.map(&:auction_cars).flatten
+    @auction_cars_paginated = Kaminari.paginate_array(@auction_cars).page(params[:live_auction_page]).per(5)
+    @cars = Car.available.paginate(page: params[:page], per_page: 5)
+    @cars_paginated = Car.available.paginate(page: params[:mcars_page], per_page: 1)
+    @sold_cars = Car.sold_cars.paginate(page: params[:sold_page], per_page: 2)
+  end
+  
+  def create
+    @auction = Auction.new(auction_params)
+    authorize! :create, @auction
+
+    respond_to do |format|
+      if @auction.save
+        format.html { redirect_to auctions_path, notice: "Auction was successfully created." }
+        format.json { render :show, status: :created, location: @auction }
+      else
+        format.html { redirect_to auctions_path, notice: "Auction was NOT created." }
+      end
+    end
+  end
+
+  def all_auctions
+    if params[:search].present?
+      @auctions = Auction.where("title LIKE ?", "%#{params[:search]}%").paginate(page: params[:page], per_page: 10)
+    else
+      @auctions = Auction.paginate(page: params[:page], per_page: 10)
+    end
+  end
+
+  def cars
+    @auction = Auction.find(params[:id])
+    @cars = @auction.cars
+    render partial: 'cars_list', locals: { cars: @cars }
+  end
+
+  def delete_auction_car
+    @auction = Auction.find(params[:id])
+    @car = @auction.cars.find(params[:car_id])
+    authorize! :manage, @auction
+    if @auction.remove_car(@car)
+      render json: { success: true, message: 'Car successfully removed from auction.' }
+    else
+      render json: { success: false, message: 'Failed to remove car from auction.' }, status: :unprocessable_entity
+    end
   end
 
   # GET /auctions/1 or /auctions/1.json
@@ -19,20 +63,7 @@ class AuctionsController < ApplicationController
   def edit
   end
 
-  # POST /auctions or /auctions.json
-  def create
-    @auction = Auction.new(auction_params)
-
-    respond_to do |format|
-      if @auction.save
-        format.html { redirect_to auction_url(@auction), notice: "Auction was successfully created." }
-        format.json { render :show, status: :created, location: @auction }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @auction.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+  
 
   # PATCH/PUT /auctions/1 or /auctions/1.json
   def update
@@ -65,6 +96,6 @@ class AuctionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def auction_params
-      params.fetch(:auction, {})
+      params.require(:auction).permit(:title, :lot_no, :start_time, :end_time)
     end
 end

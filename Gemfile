@@ -48,6 +48,11 @@ gem 'will_paginate', '~> 3.3'
 gem 'bootstrap', '~> 5.1.3'
 gem 'sass-rails', '>= 6'
 gem 'cssbundling-rails'
+gem 'kaminari'
+gem 'sidekiq', '~> 5.2.9'
+gem 'sidekiq-cron'
+gem 'redis-client'
+
 
 
 # Use Sass to process CSS
