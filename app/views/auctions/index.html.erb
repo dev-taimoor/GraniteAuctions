@@ -1,0 +1,268 @@
+<style>
+  .table-responsive {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  .table {
+    width: 100%;
+  }
+
+  .table th,
+  .table td {
+    padding: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .custom-input{
+    width: 100%;
+    height: 45px;
+    padding: 10px;
+    border: none;
+    background: #F4F7FE;
+    color: black;
+    border-radius: 10px;
+  }
+
+  input[type="datetime-local"] {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  input[type="submit"] {
+    background-color: #2B4159;
+    color: white;
+    width: 100%;
+    border: none;
+    border-radius: 25px;
+    height: 40px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  input[type="submit"]:hover {
+    background-color: #1E2D3E;
+  }
+
+  .auction-outer-div{
+    width: 100%;
+    display: flex;
+    padding: 2%;
+    gap: 2%
+  }
+
+  .live-auction-inner{
+    width: 60%;
+    padding: 2%;
+    background: white;
+    border-radius: 8%;
+  }
+
+  .sold-cars-inner{
+    width: 40%;
+    padding: 2%;
+    background: white;
+    border-radius: 8%;
+  }
+
+  .create-auction-inner{
+    width: 40%;
+    padding: 2%;
+    background: white;
+    border-radius: 8%;
+  }
+
+  .auction-heading-style{
+    color: #2B4159;
+    font-weight: bold;
+  }
+
+  .add-stock-auction{
+    width: 60%;
+    padding: 2%;
+    background: white;
+    border-radius: 8%;
+  }
+
+  .auction-main{
+    width: 85%;
+    display: flex;
+    background-color: #F4F7FE;
+    flex-direction: column;
+  }
+
+  @media only screen and (max-width: 768px) {
+
+    .auction-outer-div{
+      flex-direction: column;
+    }
+
+    .auction-cars-table{
+      display: none;
+    }
+
+    .sold-cars-inner, .create-auction-inner, .live-auction-inner, .add-stock-auction, .auction-main {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="parent-container">
+  <div class="content-wrapper">
+    <div class="menu-bar">
+      <%= render 'admin-shared/admin-side-bar' %>    
+    </div>
+
+    <div class="auction-main">
+      <div style="display: flex; width: 100%; padding-left: 5%;" class="">
+        <h1 class="auction-heading-style">Auction</h1>
+      </div>  
+
+      <div class="auction-outer-div">
+        <div class="create-auction-inner mt-3">
+          <h3 class="mt-3 auction-heading-style">Create An Auction</h3>
+          <div>
+            <%= form_with(model: Auction, url: auctions_path) do |form| %>
+              <div>
+                <%= form.text_field :title, class: "custom-input", placeholder: "Enter title", required: true %>
+              </div>
+
+              <div class="mt-4">
+                <%= form.text_field :lot_no, class: "custom-input", placeholder: "Enter Lot No.", required: true %>
+              </div>
+
+              <div class="mt-4">
+                <%= form.label :start_time %>
+                <%= form.datetime_field :start_time, class: "start-time custom-input", placeholder: "Select start time", required: true %>
+              </div>
+
+              <div>
+                <%= form.label :end_time %>
+                <%= form.datetime_field :end_time, class: "end-time custom-input", placeholder: "Select end time", required: true %>
+              </div>
+              
+              <div>
+                <%= form.submit 'Create An Auction', style: "background: #2B4159; color: white; width: 100%; border: none; border-radius: 25px; height: 40px;" %>    
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div  class="add-stock-auction mt-3">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <h3 class="mt-3 auction-heading-style">Add Stock To Auction</h3>
+            <%= link_to "View All", cars_path, style: "text-decoration: none; color: #2B4159;" %>
+          </div>
+          <div id="cars-table-container">
+            <%= render partial: 'cars_table', locals: { cars: @cars } %>    
+          </div>
+        </div>
+    </div>
+    
+
+      <div class="auction-outer-div mb-3">
+        <div class="live-auction-inner mt-3">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <h3 class="mt-3 auction-heading-style">Live Auctions</h3>
+            <%= link_to "View All", all_auctions_auctions_path, style: "text-decoration: none; color: #2B4159;" %>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Tracking ID</th>
+                  <th>Product Name</th>
+                  <th>Reserve Price</th>
+                  <th>Lot No.</th>
+                  <th>Highest Bid</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @auction_cars_paginated.each do |auction_car| %>
+                <tr>
+                  <td><%= auction_car.car.id %></td>
+                  <td>
+                    <div style="display: flex; align-items: center;">
+                <% if auction_car.car.image.attached? %>
+                  <%= image_tag url_for(auction_car.car.image), class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;" %>
+                <% else %>
+                  <%= image_tag("no-image.jpg", alt: "no-image", class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;") %>
+                <% end %>
+                <%= auction_car.car.make_model %>      
+              </div>
+                   </td>
+                  <td><%= auction_car.car.reserve_auction_price %></td>
+                  <td><%= auction_car.auction.lot_no %></td>
+                  <td><%= auction_car.car.bids.where(auction_id: auction_car.auction.id).maximum(:amount) %></td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <%= will_paginate @auction_cars_paginated, param_name: 'live_auction_page' %>
+        </div>
+
+        <div class="sold-cars-inner mt-3">
+          <h3 class="mt-3 auction-heading-style">Sold Products</h3>
+          <div>
+            <% @sold_cars&.each do |car| %>
+              <div style="display: flex;">
+                <div style="width: 30%">
+                 <% if car.image.attached? %>
+                  <%= image_tag url_for(car.image), class: "", style: "max-width: 100%; width: 100%" %>
+                <%else%>
+                  <%= image_tag("no-image.jpg", alt: "no-image", class: "", style: "max-width: 100%; width: 100%") %>
+                <% end %> 
+                </div>
+                <div style="width: 70%; display: flex; flex-direction: column; justify-content: center;">
+                  <h4 style="color: #2B4159; font-weight: bold;"><%= car.make_model%></h4>
+                  <h3 style="color: #2B4159; font-weight: bold;">$<%= car.reserve_auction_price%></h3>
+                </div>
+              </div>
+            <% end %>
+            <%= will_paginate @sold_cars, param_name: 'sold_page' %>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+<script>
+  // JavaScript for validating date and time
+  document.addEventListener('DOMContentLoaded', function() {
+    const startInput = document.querySelector('.start-time');
+    const endInput = document.querySelector('.end-time');
+
+    startInput.addEventListener('change', function() {
+      // Prevent selecting past dates
+      const startDate = new Date(startInput.value);
+      const now = new Date();
+      const endDate = new Date(endInput.value);
+      if (startDate < now) {
+        alert("Start date cannot be in the past");
+        startInput.value = ''; // Clear the input
+      }
+
+      if (endDate <= startDate) {
+        alert("End date must be greater than start date");
+        endInput.value = ''; // Clear the input
+      }
+    });
+
+    endInput.addEventListener('change', function() {
+      const startDate = new Date(startInput.value);
+      const endDate = new Date(endInput.value);
+
+      // Check if end date is greater than start date
+      if (endDate <= startDate) {
+        alert("End date must be greater than start date");
+        endInput.value = ''; // Clear the input
+      }
+    });
+  });
+</script>

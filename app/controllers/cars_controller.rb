@@ -70,6 +70,17 @@ class CarsController < ApplicationController
     end
   end
 
+  def add_to_auction
+    @car = Car.find(params[:id])
+    @auction = Auction.find(params[:auction_id])
+    return unless @car || @auction
+    authorize! :update, @car
+    authorize! :create, @auction
+    unless @auction.auction_cars.exists?(auction: @auction, car: @car)
+      AuctionCar.create(auction: @auction, car: @car)
+    end
+  end
+
   private
 
   def car_params

@@ -7,5 +7,7 @@ class Car < ApplicationRecord
   has_many :bids
 
   has_one_attached :image
-  
+
+  scope :available, -> { where(sold: false) }
+  scope :sold_cars, -> { where(sold: true) }
 end

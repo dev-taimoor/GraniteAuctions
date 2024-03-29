@@ -1,0 +1,208 @@
+<input type="hidden" id="selected-car-id" name="selected-car-id">
+<div class="auction-cars-table">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Tracking ID</th>
+          <th>Product Name</th>
+          <th>Reserve Price</th>
+          <th>Buy Now Price</th>
+          <th>Category</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @cars&.each do |car| %>
+          <tr>
+            <td><%= car.id%></td>
+            <td>
+              <div style="display: flex; align-items: center;">
+                <% if car.image.attached? %>
+                  <%= image_tag url_for(car.image), class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;" %>
+                <% else %>
+                  <%= image_tag("no-image.jpg", alt: "no-image", class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;") %>
+                <% end %>
+                <%= link_to car.make_model, car_path(car), class: "car-name" %>      
+              </div>
+            </td>
+            <td>$<%= car.reserve_auction_price%></td>
+            <td>$<%= car.buy_now_price%></td>
+            <td><%= car.salvage_category.name%> </td>
+            <td>
+              <button class="btn btn-primary add-to-auction" style="background: #2B4159; color: white; width: 100%;border: none; border-radius: 25px; height: 40px;" data-car-id="<%= car.id %>">Add To Auction</button>
+            </td>
+          </tr>
+        <% end %>
+
+        <% if @cars.blank? %>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <%= will_paginate @cars %>
+</div>
+
+<div class="car-display">
+  <% @cars_paginated&.each do |car| %>
+    <div class="mobile-car">
+
+      <div class="mobile-car-inner">
+        <% if car.image.attached? %>
+            <%= image_tag url_for(car.image), class: "", style: "max-width: 100%; width: 100%" %>
+          <%else%>
+            <%= image_tag("no-image.jpg", alt: "no-image", class: "", style: "max-width: 100%; width: 100%") %>
+          <% end %> 
+      </div>
+
+      <div class="mobile-car-inner">
+        <div style="flex: 1;">
+          <div style="text-align: left; color: #646d81; font-size: larger;">Make and Model</div>
+          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%=car.make_model%></div>
+        </div>
+
+        <div style="flex: 1;">
+          <div style="text-align: right; color: #646d81; font-size: larger;">Fixed Price</div>
+          <div style="text-align: right; color: #2B4159; font-size: x-large">$<%= car.reserve_auction_price%></div>
+        </div>
+      </div>
+
+      <div class="mobile-car-inner">
+        <div style="flex: 1;">
+          <div style="text-align: left; color: #646d81; font-size: larger;">Buy Now Price</div>
+          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;">$<%=car.buy_now_price%></div>
+        </div>
+
+        <div style="flex: 1;">
+          <div style="text-align: right; color: #646d81; font-size: larger;">Category</div>
+          <div style="text-align: right; color: #2B4159; font-size: x-large"><%= car.category.name%></div>
+        </div>
+      </div>
+
+      <div class="mobile-car-inner button-container">
+        <button class="btn btn-primary add-to-auction" style="background: #2B4159; color: white; width: 100%;border: none; border-radius: 25px; height: 40px;" data-car-id="<%= car.id %>">Add To Auction</button>
+      </div>
+    </div>
+  <% end %>
+  <%= will_paginate @cars_paginated, param_name: 'mcars_page' %>
+</div>
+
+<div class="modal fade" id="auctionModal" tabindex="-1" aria-labelledby="auctionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div style="background: #F4F7FE;" class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="auctionModalLabel">Available Auctions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="auctionForm">
+          <div class="mb-3">
+            <% @auctions.each do |auction| %>
+              <div style="display: flex; flex-direction: column; gap: 10%; background: white; width: 100%; border: none;border-radius: 20px; padding: 10%;" class="mt-3 mb-3">
+                <div class="mobile-car-inner">
+                  <div style="flex: 1;">
+                    <div style="text-align: left; color: #646d81; font-size: larger;">Auction Title</div>
+                    <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%=auction.title%></div>
+                  </div>
+
+                  <div style="flex: 1;">
+                    <div style="text-align: right; color: #646d81; font-size: larger;">Auction Lot No.</div>
+                    <div style="text-align: right; color: #2B4159; font-size: x-large; font-weight: bold;"><%= auction.lot_no%></div>
+                  </div>
+                </div>
+
+                <div class="mobile-car-inner">
+                  <div style="flex: 1;">
+                    <div style="text-align: left; color: #646d81; font-size: larger;">Start Time</div>
+                    <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%=auction.start_time%></div>
+                  </div>
+
+                  <div style="flex: 1;">
+                    <div style="text-align: right; color: #646d81; font-size: larger;">End Time</div>
+                    <div style="text-align: right; color: #2B4159; font-size: x-large; font-weight: bold;"><%= auction.end_time%></div>
+                  </div>
+                </div>
+
+                <div class="mobile-car-inner">
+                  <div style="flex: 1;">
+                    <div style="text-align: left; color: #646d81; font-size: larger;">Status</div>
+                    <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%=humanize_status(auction.status)%></div>
+                  </div>
+
+                  <div style="flex: 1;">
+                    <div style="text-align: right; color: #646d81; font-size: larger;">Cars added</div>
+                    <div style="text-align: right; color: #2B4159; font-size: x-large; font-weight: bold;"><%= auction.cars.count%></div>
+                  </div>
+                </div>
+
+                <div class="mobile-car-inner">
+                  <button class="btn btn-primary confirm-auction" style="background: #2B4159; color: white; border: none; border-radius: 25px; width: 100%;" data-auction-id="<%= auction.id %>">Confirm Auction</button>
+                  
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const addToAuctionButtons = document.querySelectorAll('.add-to-auction');
+    const confirmAuctionButtons = document.querySelectorAll('.confirm-auction');
+
+    addToAuctionButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        const carId = button.getAttribute('data-car-id');
+        document.getElementById('selected-car-id').value = carId; // Set the selected car ID in the hidden input field
+        $('#auctionModal').modal('show');
+      });
+    });
+
+    confirmAuctionButtons.forEach(function(button) {
+      button.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        const carId = document.getElementById('selected-car-id').value; // Retrieve the selected car ID from the hidden input field
+        const auctionId = button.getAttribute('data-auction-id');
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        fetch(`/cars/${carId}/add_to_auction`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': token
+          },
+          body: JSON.stringify({ car_id: carId, auction_id: auctionId })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then(data => {
+          const modalBody = document.querySelector('.modal-body');
+          modalBody.insertAdjacentHTML('beforeend', data);
+          $('#auctionModal').modal('hide');
+          location.reload();
+        })
+        .catch(error => console.error('Error:', error));
+      });
+    });
+  });
+</script>
+
+
+
