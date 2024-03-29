@@ -21,6 +21,8 @@ class Ability
 
   def set_user_abilities(user)
     can :read, Car
+    can :read, Auction
+    can :create, Bid
   end
 
 end

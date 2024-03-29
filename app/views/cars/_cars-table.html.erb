@@ -15,8 +15,8 @@
       <% @cars&.each do |car| %>
         <tr>
           <td><%= link_to car.make_model, car_path(car), class: "car-name" %></td>
-          <td><%= car.reserve_auction_price%></td>
-          <td><%= car.buy_now_price%></td>
+          <td>$<%= car.reserve_auction_price%></td>
+          <td>$<%= car.buy_now_price%></td>
           <td><%= car.category.name%></td>
           <td><%= car.delivery_cost ? 'Yes' : 'No'%></td>
           <td style="display: flex; gap: 2%">
