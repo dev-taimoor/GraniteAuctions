@@ -8,25 +8,27 @@
     </div>
     <div class="banner-title">Find Your Perfect Ride</div>
   </div>
-  <%= form_with(method: "get", class: "search-form") do |form| %>
-      <%= form.text_field :keyword, class: "search-text form-control", placeholder: "Car Make or Model" %>
-      <%= form.select :city, options_for_select(["All Cities", "New York", "Los Angeles", "Chicago", "Houston", "Phoenix"], form.object.nil? ? nil : form.object.city), {}, class: "search-dropdown form-control" %>
-      <% price_range_value = form.object.nil? ? nil : form.object.price_range %>
-      <%= form.select :price_range, options_for_select(["Price Range", "< $100,000", "$100,000 - $200,000", "$200,000 - $300,000", "$300,000 - $400,000", ">$400,000"], form.object.nil? ? nil : form.object.price_range), {}, class: "search-dropdown form-control" %>
-      <button type="submit" class="search-submit-button btn btn-primary">
-        <%= image_tag("search-normal.svg", alt: "Logo", class: "submit-logo") %>
-        <span class="submit-text">Search</span>
-      </button>
+  <%= form_with(url: car_search_path, method: "get", class: "search-form") do |form| %>
+    <%= form.text_field :make, class: "search-text form-control", placeholder: "Car Make or Model" %>
+    <%= form.select :city, options_for_select(["All Cities", "New York", "Los Angeles", "Chicago", "Houston", "Phoenix"], form.object.nil? ? nil : form.object.city), {}, class: "search-dropdown form-control" %>
+    <% price_range_value = form.object.nil? ? nil : form.object.price_range %>
+    <%= form.select :price_range, options_for_select(["Price Range", "< $100,000", "$100,000 - $200,000", "$200,000 - $300,000", "$300,000 - $400,000", ">$400,000"], form.object.nil? ? nil : form.object.price_range), {}, class: "search-dropdown form-control" %>
+    <button type="submit" class="search-submit-button btn btn-primary">
+      <%= image_tag("search-normal.svg", alt: "Logo", class: "submit-logo") %>
+      <span class="submit-text">Search</span>
+    </button>
   <% end %>
   <div>
     <div class="vehicle-type">
       <% @vehicle_types.each do |type| %>
-        <div class="vehicle-type-card">
+        <a href="<%= car_search_path(name: type[:name]) %>" class="vehicle-type-card">
           <%= image_tag(type[:icon], alt: type[:name], class: "vehicle-logo") %> <%= type[:name] %>
-        </div>
+        </a>
       <% end %>
     </div>
-    <button class="btn advance-filter-button">Advance Filters</button>
+    <%= link_to car_search_path, class: "btn advance-filter-button" do %>
+      Advance Filters
+    <% end %>
   </div>
   <div class="banner-container bid-container">
     <div class="banner-title bid-title">Thrilling Bids, Exclusive Wins</div>

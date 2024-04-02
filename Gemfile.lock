@@ -70,6 +70,7 @@ GEM
       public_suffix (>= 2.0.2, < 6.0)
     autoprefixer-rails (10.4.16.0)
       execjs (~> 2)
+    base64 (0.2.0)
     bcrypt (3.1.20)
     bindex (0.8.1)
     bootsnap (1.18.3)
@@ -91,6 +92,7 @@ GEM
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
     concurrent-ruby (1.2.3)
+    connection_pool (2.4.1)
     crass (1.0.6)
     cssbundling-rails (1.4.0)
       railties (>= 6.0.0)
@@ -105,8 +107,13 @@ GEM
       responders
       warden (~> 1.2.3)
     erubi (1.12.0)
+    et-orbi (1.2.11)
+      tzinfo
     execjs (2.9.1)
     ffi (1.16.3)
+    fugit (1.10.1)
+      et-orbi (~> 1, >= 1.2.7)
+      raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.1)
@@ -122,6 +129,18 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     loofah (2.22.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -155,8 +174,12 @@ GEM
     public_suffix (5.0.4)
     puma (5.6.8)
       nio4r (~> 2.0)
+    raabro (1.4.0)
     racc (1.7.3)
     rack (2.2.8)
+    rack-protection (3.2.0)
+      base64 (>= 0.1.0)
+      rack (~> 2.2, >= 2.2.4)
     rack-test (2.1.0)
       rack (>= 1.3)
     rails (7.0.8)
@@ -190,7 +213,9 @@ GEM
     rake (13.1.0)
     rdoc (6.6.2)
       psych (>= 4.0.0)
-    redis (4.8.1)
+    redis (4.5.1)
+    redis-client (0.21.1)
+      connection_pool
     regexp_parser (2.9.0)
     reline (0.4.2)
       io-console (~> 0.5)
@@ -213,6 +238,14 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sidekiq (5.2.10)
+      connection_pool (~> 2.2, >= 2.2.2)
+      rack (~> 2.0)
+      rack-protection (>= 1.5.0)
+      redis (~> 4.5, < 4.6.0)
+    sidekiq-cron (1.9.1)
+      fugit (~> 1.8)
+      sidekiq (>= 4.2.1)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -267,11 +300,15 @@ DEPENDENCIES
   devise (~> 4.8)
   importmap-rails
   jbuilder
+  kaminari
   puma (~> 5.0)
   rails (~> 7.0.4, >= 7.0.4.3)
   redis (~> 4.0)
+  redis-client
   sass-rails (>= 6)
   selenium-webdriver
+  sidekiq (~> 5.2.9)
+  sidekiq-cron
   sprockets-rails
   sqlite3 (~> 1.4)
   stimulus-rails

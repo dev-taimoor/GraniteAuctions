@@ -3,6 +3,8 @@
   flex-direction: column;
   padding: 0 60px 20px;
   background-color: #F4F7FE;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 .banner-container {
   display: flex;
@@ -12,6 +14,12 @@
   max-width: 1220px;
   margin: 50px auto 0;
   width: 100%;
+}
+
+.banner-container-search {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 }
 .banner-text {
   max-width: 365px;
@@ -23,6 +31,7 @@
   flex-basis: auto;
   font: 700 64px/55px Montserrat, sans-serif;
 }
+
 .search-form {
   display: flex;
   margin-top: 50px;
@@ -93,6 +102,10 @@
   gap: 22px;
   color: var(--Primary, #2b4159);
   font-weight: 600;
+  text-decoration: none;
+}
+.vehicle-type-card:hover {
+  color: #2b4159;
 }
 .vehicle-logo {
   aspect-ratio: 3.33;
@@ -109,6 +122,9 @@
   padding: 12px 0;
   font: 600 16px Montserrat, sans-serif;
   border: none;
+}
+.advance-filter-search-cta {
+  display: none;
 }
 .bid-title {
   max-width: 466px;
@@ -161,6 +177,9 @@
   white-space: nowrap;
   padding: 12px 60px;
 }
+.bid-button:hover {
+  background-color: var(--Primary, #2b4159);
+}
 .buy-button {
   border-radius: 44px;
   box-shadow: 0px 8px 40px 0px rgba(0, 0, 0, 0.15);
@@ -170,6 +189,90 @@
   padding: 12px 60px;
   border: none;
   font-weight: 600;
+}
+
+.searh-title {
+  max-width: 100%;
+}
+
+.breadcrumb {
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumb-item-link {
+  text-decoration: none;
+  color: #2b4159;
+}
+
+.breadcrumb-item-link:hover {
+  text-decoration: none;
+  color: #2b4159;
+}
+
+.search-vehicle-wrapper {
+  flex: 4;
+  max-width: 100%;
+}
+
+#search_form {
+  flex: 1;
+  margin: 40px auto 0;
+  display: block;
+}
+
+.search-form-filter{
+  display: block;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(163, 174, 208, 1);
+  background-color: #fff;
+  border-bottom: none;
+  align-self: stretch;
+  width: 100%;
+  color: #2b4159;
+  padding: 21px 40px;
+  font: 600 24px / 133% Montserrat, sans-serif;
+}
+
+.dropdown-toggle-first {
+  border-radius: 40px 40px 0px 0px;
+}
+.dropdown-filter-menu {
+  flex-direction: column;
+  position: relative;
+  background-color: transparent;
+  border: 1px solid rgba(163, 174, 208, 1);
+  border-top: none;
+  color: #2b4159;
+  padding: 20px;
+  max-height: 170px;
+  overflow: auto;
+}
+.form-check-input {
+  border-radius: 40px !important;
+}
+
+.form-check-label {
+  color: #2b4159;
+}
+.search-page-cta {
+  padding: 12px 30px;
+}
+
+.buy-now {
+  background-color: #DBE0EB;
+  color: #2b4159;
+  padding: 12px 40px;
+}
+
+.search-vehicle {
+  margin-top: 0;
 }
 @media (max-width: 991px) {
   .banner-container {
@@ -235,6 +338,27 @@
   }
   .bid-container {
     flex-direction: column;
+  }
+  .search-form-filter {
+    display: none !important;
+  }
+  .search-vehicle {
+    padding: 12px 0;
+  }
+  .search-vehicle .vehicle-card {
+    width: 210px;
+  }
+  .search-vehicle .vehicle-details {
+    padding: 10px;
+  }
+  .search-vehicle .vehicle-text {
+    font-size: 13px
+  }
+  .advance-filter-search-cta {
+    display: block;
+  }
+  .search-page-cta, .buy-now {
+    padding: 12px 23px;
   }
 }
 
