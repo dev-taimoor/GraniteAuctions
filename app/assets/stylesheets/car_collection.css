@@ -1,0 +1,373 @@
+.car-collection-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 60px 20px;
+  background-color: #F4F7FE;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.banner-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--Primary, #2b4159);
+  max-width: 1220px;
+  margin: 50px auto 0;
+  width: 100%;
+}
+
+.banner-container-search {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.banner-text {
+  max-width: 365px;
+  flex-basis: auto;
+  font: 500 16px/24px Montserrat, sans-serif;
+}
+.banner-title {
+  max-width: 374px;
+  flex-basis: auto;
+  font: 700 64px/55px Montserrat, sans-serif;
+}
+
+.search-form {
+  display: flex;
+  margin-top: 50px;
+  justify-content: center;
+  align-items: center;
+}
+.search-text {
+  border-radius: 40px 0px 0px 40px;
+  background-color: #fff;
+  color: #464e60;
+  padding: 0 18px;
+  border: none;
+  width: 360px;
+  height: 53px;
+}
+.search-text:focus-visible {
+  outline: none;
+}
+.search-dropdown {
+  border: 1px solid #EAEDEF;
+  background-color: #fff;
+  color: #555;
+  padding: 0 17px;
+  width: 300px;
+  height: 53px;
+}
+.search-dropdown:focus-visible {
+  outline: none;
+}
+.search-submit-button {
+  background-color: #2B4159;
+  display: flex;
+  height: 53px;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  border-radius: 0 40px 40px 0;
+}
+.submit-text {
+  display: none;
+}
+.submit-logo {
+  display: block;
+}
+.vehicle-type {
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+  display: flex;
+  width: 100%;
+  padding: 12px 22px;
+  gap: 20px;
+  max-width: 1042px;
+  margin: 40px auto 0;
+}
+.vehicle-wrapper {
+  max-width: 1224px !important;
+}
+.vehicle-type-card {
+  border-radius: 19px;
+  box-shadow: 0px 0px 7.294px 0px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 37px 33px;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  color: var(--Primary, #2b4159);
+  font-weight: 600;
+  text-decoration: none;
+}
+.vehicle-type-card:hover {
+  color: #2b4159;
+}
+.vehicle-logo {
+  aspect-ratio: 3.33;
+  object-fit: auto;
+  width: 116px;
+}
+.advance-filter-button {
+  border-radius: 44px;
+  box-shadow: 0px 8px 40px 0px rgba(0, 0, 0, 0.15);
+  background-color: var(--Tertiary, #dbe0eb);
+  margin-top: 40px;
+  width: 100%;
+  color: var(--Primary, #2b4159);
+  padding: 12px 0;
+  font: 600 16px Montserrat, sans-serif;
+  border: none;
+}
+.advance-filter-search-cta {
+  display: none;
+}
+.bid-title {
+  max-width: 466px;
+}
+.buy-title {
+  max-width: 623px;
+}
+.vehicle-card {
+  border-radius: 40px;
+  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  color: #000;
+  font-weight: 600;
+}
+.vehicle-image {
+  aspect-ratio: 1.56;
+  object-fit: auto;
+  object-position: center;
+  width: 100%;
+}
+.vehicle-details {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+.vehicle-text {
+  text-align: center;
+  font-family: Montserrat, sans-serif;
+  color: var(--Primary, #2b4159);
+  font-size: 16px;
+  font-weight: 600;
+}
+.vehicle-label {
+  color: #a3aed0;
+  margin-top: 22px;
+  font: 500 12px / 167% Montserrat, sans-serif;
+}
+.bid-button {
+  font-family: Montserrat, sans-serif;
+  justify-content: center;
+  align-items: center;
+  border-radius: 44px;
+  box-shadow: 0px 8px 40px 0px rgba(0, 0, 0, 0.15);
+  background-color: var(--Primary, #2b4159);
+  margin-top: 28px;
+  color: var(--Tertiary, #f4f7fe);
+  white-space: nowrap;
+  padding: 12px 60px;
+}
+.bid-button:hover {
+  background-color: var(--Primary, #2b4159);
+}
+.buy-button {
+  border-radius: 44px;
+  box-shadow: 0px 8px 40px 0px rgba(0, 0, 0, 0.15);
+  background-color: var(--Tertiary, #dbe0eb);
+  margin-top: 26px;
+  color: var(--Primary, #2b4159);
+  padding: 12px 60px;
+  border: none;
+  font-weight: 600;
+}
+
+.searh-title {
+  max-width: 100%;
+}
+
+.breadcrumb {
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumb-item-link {
+  text-decoration: none;
+  color: #2b4159;
+}
+
+.breadcrumb-item-link:hover {
+  text-decoration: none;
+  color: #2b4159;
+}
+
+.search-vehicle-wrapper {
+  flex: 4;
+  max-width: 100%;
+}
+
+#search_form {
+  flex: 1;
+  margin: 40px auto 0;
+  display: block;
+}
+
+.search-form-filter{
+  display: block;
+}
+
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(163, 174, 208, 1);
+  background-color: #fff;
+  border-bottom: none;
+  align-self: stretch;
+  width: 100%;
+  color: #2b4159;
+  padding: 21px 40px;
+  font: 600 24px / 133% Montserrat, sans-serif;
+}
+
+.dropdown-toggle-first {
+  border-radius: 40px 40px 0px 0px;
+}
+.dropdown-filter-menu {
+  flex-direction: column;
+  position: relative;
+  background-color: transparent;
+  border: 1px solid rgba(163, 174, 208, 1);
+  border-top: none;
+  color: #2b4159;
+  padding: 20px;
+  max-height: 170px;
+  overflow: auto;
+}
+.form-check-input {
+  border-radius: 40px !important;
+}
+
+.form-check-label {
+  color: #2b4159;
+}
+.search-page-cta {
+  padding: 12px 30px;
+}
+
+.buy-now {
+  background-color: #DBE0EB;
+  color: #2b4159;
+  padding: 12px 40px;
+}
+
+.search-vehicle {
+  margin-top: 0;
+}
+@media (max-width: 991px) {
+  .banner-container {
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+  .banner-title {
+    font-size: 40px;
+    line-height: 50px;
+    max-width: 263px;
+  }
+  .bid-title {
+    max-width: 292px;
+  }
+  .buy-title {
+    max-width: 273px;
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .car-collection-container {
+    padding: 0 20px;
+  }
+  .banner-container {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .banner-text {
+    max-width: 500px;
+    font-size: 18px;
+  }
+  .banner-title {
+    max-width: 100%;
+    font-size: 50px;
+  }
+  .search-form {
+    margin-top: 20px;
+    flex-direction: column;
+    gap: 15px
+  }
+  .search-text {
+    width: 100%;
+    border-radius: 40px;
+  }
+  .search-dropdown {
+    width: 100% !important;
+    border-radius: 40px;
+  }
+  .search-submit-button {
+    width: 100% !important;
+    border-radius: 40px !important;
+  }
+  .submit-text {
+    display: block !important;
+    color: white;
+    font-weight: 700;
+    font-size: 17px;
+  }
+  .submit-logo {
+    display: none !important;
+  }
+  .bid-container {
+    flex-direction: column;
+  }
+  .search-form-filter {
+    display: none !important;
+  }
+  .search-vehicle {
+    padding: 12px 0;
+  }
+  .search-vehicle .vehicle-card {
+    width: 210px;
+  }
+  .search-vehicle .vehicle-details {
+    padding: 10px;
+  }
+  .search-vehicle .vehicle-text {
+    font-size: 13px
+  }
+  .advance-filter-search-cta {
+    display: block;
+  }
+  .search-page-cta, .buy-now {
+    padding: 12px 23px;
+  }
+}
+
+@media (max-width: 420px) {
+  .banner-text {
+    font-size: 16px;
+  }
+  .banner-title {
+    max-width: 100%;
+    font-size: 36px;
+  }
+}

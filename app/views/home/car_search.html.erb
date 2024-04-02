@@ -1,0 +1,75 @@
+<div class="car-collection-container">
+  <div class="banner-container banner-container-search">
+    <div class="banner-title searh-title">Find Your Perfect Ride</div>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <% @breadcrumbs.each do |breadcrumb| %>
+            <li class="breadcrumb-item"><a  class="breadcrumb-item-link" href="<%= breadcrumb[:url] %>"><%= breadcrumb[:text] %></a></li>
+        <% end %>
+      </ol>
+    </nav>
+  </div>
+  <button class="btn advance-filter-button advance-filter-search-cta" onclick="openAdvanceFilters()">
+    Advance Filters
+  </button>
+  <div class="d-flex align-items-start mt-4" id="filter-wrapper">
+    <%= form_tag(car_search_path, method: :get, id: "car_search_form", class: "search-form-filter") do %>
+      <%= render partial: 'filter_dropdown', locals: { dropdown_name: 'make', dropdown_label: 'Make', items: @makes, attribute_name: 'makes' } %>
+      <%= render partial: 'filter_dropdown', locals: { dropdown_name: 'model', dropdown_label: 'Model', items: @models, attribute_name: 'models' } %>
+      <%= render partial: 'filter_dropdown', locals: { dropdown_name: 'year', dropdown_label: 'Year', items: @years, attribute_name: 'years' } %>
+      <%= render partial: 'filter_dropdown', locals: { dropdown_name: 'category', dropdown_label: 'Category', items: @categories, attribute_name: 'categories' } %>
+      <%= render partial: 'filter_dropdown', locals: { dropdown_name: 'salvage', dropdown_label: 'Salvage Category', items: @salvage_categories, attribute_name: 'salvage_categories' } %>
+      <%= submit_tag "Search", class: "btn btn-primary bid-button w-100" %>
+  <% end %>
+    <div class="search-vehicle-wrapper">
+      <div class="vehicle-type search-vehicle">
+        <% @filterd_cars.each do |car| %>
+          <div class="vehicle-card">
+            <%= image_tag(car.image, alt: "Logo", class: "vehicle-image") %>
+            <div class="vehicle-details">
+              <div class="vehicle-text"><%= car.make_model %></div>
+              <div>
+                <div class="vehicle-label">SPEC</div>
+                <div class="vehicle-text"><%= car.year %> | <%= car.kms_driven %> KM | <%= car.engine_capacity %>CC</div>
+              </div>
+              <div>
+                <div class="vehicle-label">AUCITON END TIME</div>
+                <div class="vehicle-text"><%= "00 DAYS 00 HOURS 00 MINS" %></div>
+              </div>
+              <div class="d-flex justify-content-between">
+                <div>
+                  <div class="vehicle-label">Buy Now</div>
+                  <div class="vehicle-text">$<%= car.buy_now_price %></div>
+                </div>
+                <div>
+                  <div class="vehicle-label">Highest Bid</div>
+                  <div class="vehicle-text"><%= "$ 100" %></div>
+                </div>
+              </div>
+              <div>
+                <button class="btn bid-button search-page-cta">Bid</button>
+                <button class="btn bid-button search-page-cta buy-now">Buy Now</button>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <%= will_paginate @filterd_cars %>
+    </div>
+  </div>
+</div>
+<script>
+  function toggleDropdown(id) {
+    const dropdownMenu = document.getElementById(`dropdown-menu-${id}`);
+    dropdownMenu.classList.toggle("d-flex");
+  }
+
+  function openAdvanceFilters() {
+    var cars_list = document.querySelector(".search-vehicle-wrapper");
+    cars_list.classList.toggle("d-none");
+    var element = document.getElementById("car_search_form");
+    element.classList.toggle("search-form-filter");
+    var filter = document.getElementById("filter-wrapper");
+    filter.classList.toggle("justify-content-center");
+  }
+</script>

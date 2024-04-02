@@ -1,0 +1,18 @@
+<div class="filter-dropdown">
+  <button type="button" class="dropdown-toggle <%= dropdown_name == 'make' ? 'dropdown-toggle-first' : '' %>" onclick="toggleDropdown('<%= dropdown_name %>')">
+    <%= dropdown_label %> <i class="fas fa-caret-down"></i>
+  </button>
+  <div class="dropdown-menu dropdown-filter-menu d-flex" id="dropdown-menu-<%= dropdown_name %>">
+    <% items.each do |item| %>
+      <div class="form-check">
+        <% if ['category', 'salvage'].include?(dropdown_name) %>
+          <%= check_box_tag "#{dropdown_name}[]", item[0], checked = Array.wrap(params[dropdown_name.to_sym])&.include?(item[0].to_s), class: "form-check-input", id: "#{dropdown_name}_#{item[1]}" %>
+          <%= label_tag "#{dropdown_name}_#{item[1]}", item[1], class: "form-check-label" %>
+        <% else %>
+          <%= check_box_tag "#{dropdown_name}[]", item, checked = Array.wrap(params[dropdown_name.to_sym])&.include?(item.to_s), class: "form-check-input", id: "#{dropdown_name}_#{item}" %>
+          <%= label_tag "#{dropdown_name}_#{item}", item, class: "form-check-label" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
