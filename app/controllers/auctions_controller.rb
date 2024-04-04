@@ -1,5 +1,6 @@
 class AuctionsController < ApplicationController
   before_action :set_auction, only: %i[ show edit update destroy ]
+  before_action :ensure_admin
 
   def index
     @auctions = Auction.current.or(Auction.pending)
@@ -13,7 +14,6 @@ class AuctionsController < ApplicationController
   
   def create
     @auction = Auction.new(auction_params)
-    authorize! :create, @auction
 
     respond_to do |format|
       if @auction.save
@@ -42,7 +42,6 @@ class AuctionsController < ApplicationController
   def delete_auction_car
     @auction = Auction.find(params[:id])
     @car = @auction.cars.find(params[:car_id])
-    authorize! :manage, @auction
     if @auction.remove_car(@car)
       render json: { success: true, message: 'Car successfully removed from auction.' }
     else
@@ -89,13 +88,15 @@ class AuctionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_auction
       @auction = Auction.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def auction_params
       params.require(:auction).permit(:title, :lot_no, :start_time, :end_time)
+    end
+
+    def ensure_admin
+      authorize! :manage, Auction
     end
 end

@@ -23,7 +23,8 @@
   }
 
   .dealer-only-fields {
-    display: none; /* Initially hide dealer-only fields */
+    display: none;
+    width: 80%;
   }
 
   .file-upload-box {
@@ -32,7 +33,7 @@
     padding: 20px;
     text-align: center;
     cursor: pointer;
-    width: 200px;
+    width: 80%;
     margin: 10px;
   }
 
@@ -42,6 +43,10 @@
 
   .file-upload-box input[type="file"] {
     display: none;
+  }
+
+  #verification_form{
+    width: 100%;
   }
 </style>
 
@@ -64,22 +69,51 @@
         <br/>
         <br/>
 
+        <div class="file-upload-box">
+          <label for="image" style="display: flex; align-items: center;">
+            <%= image_tag("profile.png", alt: "identification-icon", class: "logo", style: "width: 50px; height: 50px;") %>Profile pic
+            <br>
+            <%= form.file_field :image, id: "image", name: "image", required: true %>
+          </label>
+        </div>
+        <span id="image_error" class="error" style="display: none; color: red;">Please select a file</span>
+        <br>
+
         <div class="dealer-only-fields">
           <div class="field">
             <%= form.label :business_name %><br />
-            <%= form.text_field :business_name, autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <%= form.text_field :business_name, id: "user_business_name", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
           </div>
+          <span id="business_error" class="error" style="display: none; color: red;">Please Enter A Business Name</span>
           <br/>
 
           <div class="field">
             <%= form.label :VAT_number %><br />
-            <%= form.text_field :vat_number, autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <%= form.text_field :vat_number, id: "user_vat_number", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <span id="vat_error" class="error" style="display: none; color: red;">Please Enter A VAT Number</span>
           </div>
           <br/>
 
           <div class="field">
-            <%= form.label :brockers_licensing %><br />
-            <%= form.text_field :brockers_licensing, autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <%= form.label :breakers_licensing %><br />
+            <%= form.text_field :breakers_licensing, id: "user_brockers_licensing", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <span id="license_error" class="error" style="display: none; color: red;">Please Enter A License Number</span>
+          </div>
+          <br/>
+        </div>
+
+        <div style="width: 80%;">
+          <div class="field">
+            <%= form.label :phone_number %><br />
+            <%= form.text_field :phone_number, id: "user_phone_number", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <span id="number_error" class="error" style="display: none; color: red;">Please Enter A Contact Number</span>
+          </div>
+          <br/>
+
+          <div class="field">
+            <%= form.label :address %><br />
+            <%= form.text_field :address, id: "user_address", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <span id="address_error" class="error" style="display: none; color: red;">Please Enter Address</span>
           </div>
           <br/>
         </div>
@@ -162,6 +196,60 @@
     const file2 = document.getElementById("verification_image2");
     const file1Error = document.getElementById("verification_image1_error");
     const file2Error = document.getElementById("verification_image2_error");
+    const imageFile = document.getElementById("image");
+    const imageFileError = document.getElementById("image_error");
+
+    const phoneField = document.getElementById("user_phone_number");
+    const phoneFieldError = document.getElementById("number_error");
+    const addressField = document.getElementById("user_address");
+    const addressFieldError = document.getElementById("address_error");
+    const vatField = document.getElementById("user_vat_number");
+    const vatFieldError = document.getElementById("vat_error");
+    const businessField = document.getElementById("user_business_name");
+    const businessFieldError = document.getElementById("business_error");
+    const licenseField = document.getElementById("user_brockers_licensing");
+    const licenseFieldError = document.getElementById("license_error");
+    const selectedRole = document.getElementById("selected_role_input").value;
+
+    if (selectedRole === 'dealer') {
+      if (!businessField.value.trim()) {
+        businessFieldError.style.display = "block";
+      } else {
+        businessFieldError.style.display = "none";
+      }
+
+      if (!vatField.value.trim()) {
+        vatFieldError.style.display = "block";
+      } else {
+        vatFieldError.style.display = "none";
+      }
+
+      if (!licenseField.value.trim()) {
+        licenseFieldError.style.display = "block";
+      } else {
+        licenseFieldError.style.display = "none";
+      }
+    }
+
+    if (!phoneField.value.trim()) {
+      phoneFieldError.style.display = "block";
+    } else {
+      phoneFieldError.style.display = "none";
+    }
+
+    if (!addressField.value.trim()) {
+      addressFieldError.style.display = "block";
+    } else {
+      addressFieldError.style.display = "none";
+    }
+
+    if (!imageFile.value) {
+      imageFileError.style.display = "block";
+    } else {
+      imageFileError.style.display = "none";
+    }
+
+
 
     if (!file1.value) {
       file1Error.style.display = "block";

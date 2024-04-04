@@ -7,25 +7,54 @@
     </div>
   </div>
 
-  <a href="#home">Home</a>
-  <a href="#about">About</a>
-  <a href="#contact">Contact</a>
-  <a href="/car_collection">Cars</a>
-
-  <div class="search">
-    <form action="#">
-      <input type="text" placeholder="Search Cars" name="search">
-    </form>
-  </div>
-
-<div class="nav-buttons">
   <% if user_signed_in? %>
-    <%= link_to(image_tag("profile-tick.png", alt: "Logo", class: "logo") + " Logout", destroy_user_session_path, method: :delete, class: "signup-button") %>
+    <%if current_user&.admin? %>
+      <%= link_to dashboard_path, class: "mobile-only-menu" do %>
+        <%= image_tag("category.png", alt: "Logo", class: "logo", style: "width: 20px; padding: 2%;") %>Dashboard
+      <% end %>
+
+      <%= link_to cars_path, class: "mobile-only-menu" do %>
+        <%= image_tag("car.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Stock
+      <% end %>
+
+      <%= link_to auctions_path, class: "mobile-only-menu" do %>
+        <%= image_tag("judge.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Auction
+      <% end %>
+
+      <%= link_to users_path, class: "mobile-only-menu" do %>
+        <%= image_tag("profile-2user.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Users
+      <% end %>
+
+      <%= link_to new_car_path, class: "mobile-only-menu" do %>
+        <%= image_tag("car.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Add Car To Stock
+      <% end %>
+
+    <% else %>
+      <a href="/car_collection">Cars</a>
+      <% unless current_user.verification_completed? %>
+        <a href="<%= user_verification_path %>">Account Verification</a>
+      <% end %>
+    <% end %>
+    
+    <%= link_to(image_tag("profile-tick.png", alt: "Logo", class: "logo") + " Logout", destroy_user_session_path, method: :delete, class: "signup-button mobile-only-menu") %>
+
   <% else %>
-    <a href="/users/sign_up" class="signup-button"> <%= image_tag("profile.png", alt: "Logo", class: "logo") %> Sign Up </a>
-    <a href="/users/sign_in" class="signup-button"> <%= image_tag("profile-tick.png", alt: "Logo", class: "logo") %> Login </a>
+    <a href="<%= root_path %>">Home</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a href="/car_collection">Cars</a>
+    <a href="/users/sign_up" class="signup-button mobile-only-menu"> Sign Up </a>
+    <a href="/users/sign_in" class="signup-button mobile-only-menu"> Login </a>
   <% end %>
-</div>
+
+  <div class="nav-buttons">
+    <% if user_signed_in? %>
+      <%= link_to(image_tag("profile-tick.png", alt: "Logo", class: "logo") + " Logout", destroy_user_session_path, method: :delete, class: "signup-button") %>
+    <% else %>
+      <a href="/users/sign_up" class="signup-button"> <%= image_tag("profile.png", alt: "Logo", class: "logo") %> Sign Up </a>
+      <a href="/users/sign_in" class="signup-button"> <%= image_tag("profile-tick.png", alt: "Logo", class: "logo") %> Login </a>
+    <% end %>
+  </div>
 
 
   <a href="javascript:void(0);" class="icon" onclick="myFunction()">

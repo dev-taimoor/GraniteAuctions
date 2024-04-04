@@ -52,7 +52,7 @@ gem 'kaminari'
 gem 'sidekiq', '~> 5.2.9'
 gem 'sidekiq-cron'
 gem 'redis-client'
-
+gem 'letter_opener'
 
 
 # Use Sass to process CSS

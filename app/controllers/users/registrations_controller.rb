@@ -9,6 +9,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
     devise_parameter_sanitizer.permit(:sign_up, keys: [:full_name, :user_name])
   end
 
+  def after_sign_up_path_for(resource)
+    user_verification_path
+  end
+
   private
 
   def redirect_signed_in_user

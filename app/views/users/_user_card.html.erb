@@ -1,0 +1,156 @@
+<style>
+  .centered-image {
+    width: 100px;
+    height: 100px;
+    margin-right: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+
+  .file-button {
+    border: 2px solid #CCCCCC;
+    border-radius: 10px;
+    padding: 2%;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .file-button:hover {
+    border-color: #2B4159;
+  }
+
+  .file-button input[type="file"] {
+    display: none;
+  }
+
+  .custom-file{
+    text-decoration: none;
+    color: #2b4159;
+  }
+
+
+
+</style>
+
+<script>
+  // Function to render the chart with responsive width
+  function renderChart(canvasId, xValues, yValues, barColor) {
+    var canvas = document.getElementById(canvasId);
+    var ctx = canvas.getContext('2d');
+
+    // Set canvas dimensions based on the parent container's width
+    canvas.width = canvas.parentElement.offsetWidth;
+    canvas.height = canvas.width * 0.6; // Maintain aspect ratio
+
+    var myChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColor,
+          data: yValues
+        }]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: "Performance",
+          fontColor: "#2B4159",
+          fontSize: 18,
+          fontStyle: "bold"
+        },
+        scales: {
+          xAxes: [{
+            ticks: {
+              fontColor: "#2B4159"
+            },
+            gridLines: {
+              display: false
+            }
+          }],
+          yAxes: [{
+            display: false // Hide y-axis labels
+          }]
+        },
+        onHover: function(event, chartElement) {
+          event.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+        }
+      }
+    });
+
+    myChart.data.datasets[0].hoverBackgroundColor = "#2B4159";
+    myChart.update();
+  }
+
+  // Render the chart on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    renderChart("myMobileChart", ["JAN", "FEB", "MAR", "APR", "MAY", "JUN"], [55, 49, 44, 24, 25, 25], "#DBE0EB");
+  });
+</script>
+
+<div style="display: flex; justify-content: center; flex-direction: column; width: 100%; background: white; border-radius: 5%;" class="mt-5 mb-5 preview-details">
+  <div class="mt-3" style="text-align: center;">
+    <% if user.image.attached? %>
+      <%= image_tag url_for(user.image), class: "mr-2 centered-image rounded-circle", alt: "user-image" %>
+    <% else %>
+      <%= image_tag("no-image.jpg", alt: "no-image", class: "mr-2 centered-image rounded-circle") %>
+    <% end %>
+    <h2><%= user.full_name %></h2>
+    <p><%= humanize_status(user.role) %></p>
+  </div>
+  
+  <div class="p-3">
+    <h3 style="color: #2B4159; font-weight: bold;" class="mt-3">Contact Info</h3>
+
+    <div class="mt-3" style="display: flex; align-items: center;">
+      <%= image_tag("sms.png", alt: "no-image", class: "mr-2", style: "width: 35px; height: 25px; margin-right: 5px;") %>
+      <%= user.email %>      
+    </div>
+
+    <div class="mt-3" style="display: flex; align-items: center;">
+      <%= image_tag("call.png", alt: "no-image", class: "mr-2", style: "width: 35px; height: 25px; margin-right: 5px;") %>
+      <%= user.phone_number %>      
+    </div>
+
+    <div class="mt-3" style="display: flex; align-items: center;">
+      <%= image_tag("map.png", alt: "no-image", class: "mr-2", style: "width: 35px; height: 25px; margin-right: 5px;") %>
+      <%= user.address %>      
+    </div>
+
+    <div class="mt-3" style="display: flex; justify-content: center;">
+      <canvas id="myMobileChart"></canvas>
+    </div>
+
+    <div class="file-button mt-3">
+      <label for="verification_image1" style="display: flex; align-items: center;">
+        <%= image_tag("profile.png", alt: "identification-icon", class: "logo", style: "width: 35px; height: 35px;") %>
+        <%if user.verification_image1.attached? %>
+          <%= link_to "Proof Of Identification", url_for(user.verification_image1), target: "_blank", class: "custom-file" %>
+        <% else %>
+          No File Attached
+        <% end %>
+        <br>
+      </label>
+    </div>
+
+    <div class="file-button mt-3">
+      <label for="verification_image1" style="display: flex; align-items: center;">
+        <%= image_tag("house.png", alt: "identification-icon", class: "logo", style: "width: 35px; height: 35px;") %>
+        <%if user.verification_image1.attached? %>
+          <%= link_to "Proof Of Address", url_for(user.verification_image2), target: "_blank", class: "custom-file" %>
+        <% else %>
+          No File Attached
+        <% end %>
+        <br>
+      </label>
+    </div>
+
+
+    <div class="mt-4" style="display: flex; flex-direction: column; gap: 2%;">
+      <%= button_to 'Approve', approve_user_user_path(user), method: :post, class: 'btn btn-primary add-to-auction', style: 'background: #2B4159; color: white; width: 100%; border: none; border-radius: 25px;' %>
+      <%= button_to 'Reject', reject_user_user_path(user), method: :post, class: 'mt-3 btn btn-primary add-to-auction', style: 'background: #DBE0EB; color: #2B4159; width: 100%; border: none; border-radius: 25px;' %>
+    </div>
+  </div>
+</div>

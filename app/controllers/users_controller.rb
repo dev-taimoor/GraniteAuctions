@@ -1,20 +1,48 @@
 class UsersController < ApplicationController
+  before_action :ensure_admin
+  skip_before_action :ensure_admin, only: %i[ verification user_verification ]
 
   def verification
-    if @current_user.dealer?
-      @current_user.update(user_params)
-    end
-    # Remove redundant update here
-    # Ensure that @current_user is updated only if it's not a dealer
-    unless @current_user.dealer?
-      @current_user.update(user_params)
-    end
+    if @current_user.update(user_params)
+      @current_user.verification_image1.attach(params[:verification_image1]) if params[:verification_image1].present?
+      @current_user.verification_image2.attach(params[:verification_image2]) if params[:verification_image2].present?
+      @current_user.image.attach(params[:image]) if params[:image].present?
 
-    # Attach verification images if present in params
-    @current_user.verification_image1.attach(params[:verification_image1]) if params[:verification_image1].present?
-    @current_user.verification_image2.attach(params[:verification_image2]) if params[:verification_image2].present?
-    
-    redirect_to user_dashboard_path, notice: 'Verification successful'
+      redirect_to car_collection_path, notice: 'Verification successful'
+
+    else
+      redirect_to user_verification_path, notice: 'An Error Occured'
+
+    end
+  end
+
+  def index
+    if params[:search].present?
+      @users = User.where("full_name LIKE ?", "%#{params[:search]}%").paginate(page: params[:page], per_page: 10)
+      @mobile_users = User.where("full_name LIKE ?", "%#{params[:search]}%").paginate(page: params[:mobile_page], per_page: 1)
+    else
+      @users = User.paginate(page: params[:page], per_page: 10)
+      @mobile_users = User.paginate(page: params[:mobile_page], per_page: 1)
+    end
+  end
+
+  def preview
+    @user = User.find(params[:id])
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def approve_user
+    @user = User.find(params[:id])
+    @user.update(admin_status: "approved")
+    redirect_to users_path, notice: 'User Approved'
+  end
+
+  def reject_user
+    @user = User.find(params[:id])
+    @user.update(admin_status: "rejected")
+    redirect_to users_path, notice: 'User Rejected'
   end
 
   def user_verification
@@ -23,6 +51,10 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:business_name, :vat_number, :breakers_licensing, :role)
+    params.require(:user).permit(:business_name, :vat_number, :breakers_licensing, :role, :phone_number, :address)
+  end
+
+  def ensure_admin
+    authorize! :manage, User
   end
 end

@@ -1,0 +1,94 @@
+<style>
+  .row-style{
+    border-style: none !important;
+    background: white ;
+    border: transparent;
+  }
+
+  .users-display-table{
+    display: contents;
+    width: 100%;
+  }
+
+  .mobile-user-container{
+    display: none;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .users-display-table{
+      display: none;
+    }
+
+    .mobile-user-container{
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5%;
+    }
+
+  }
+</style>
+<div class="users-display-table">
+  <div class="table-responsive" style="width: 90%;">
+    <table class="table">
+      <thead>
+        <tr style="border: transparent;" >
+          <th>Name</th>
+          <th>Email</th>
+          <th>Contact Number</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody style="border: transparent;">
+        <% @users&.each do |user| %>
+          <tr class="row-style user-row" data-user-id="<%= user.id %>">
+            <td>
+
+              <div style="display: flex; align-items: center;">
+                <% if user.image.attached? %>
+                  <%= image_tag url_for(user.image), class: "mr-2 rounded-circle", style: "width: 50px; height: 35px; margin-right: 5px;" %>
+                <% else %>
+                  <%= image_tag("no-image.jpg", alt: "no-image", class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;") %>
+                <% end %>
+                <a style="text-decoration: none; color: #2b4159; " href="#" class="user-name" data-user-id="<%= user.id %>"><%= user.full_name %></a>     
+              </div>
+
+              
+
+            </td>
+            <td><%= user.email%></td>
+            <td><%= user.phone_number%></td>
+            <td><%= humanize_status(user.admin_status) %></td>
+            <td>
+              <div style="display: flex; gap: 2%;">
+        <%= button_to 'Approve', approve_user_user_path(user), method: :post, class: 'btn btn-primary add-to-auction', style: 'background: #2B4159; color: white; width: 100%; border: none; border-radius: 25px;' %>
+        <%= button_to 'Reject', reject_user_user_path(user), method: :post, class: 'btn btn-primary add-to-auction', style: 'background: #2B4159; color: white; width: 100%; border: none; border-radius: 25px;' %>
+      </div>
+            </td>
+          </tr>
+        <% end %>
+
+        <% if @users.blank? %>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <%= will_paginate @users %>
+</div>
+
+<div class="mobile-user-container">
+  <% @mobile_users&.each do |user| %>
+    <%= render 'user_card', user: user %>
+  <% end %>
+
+  <%= will_paginate @mobile_users, param_name: 'mobile_page' %>
+</div>

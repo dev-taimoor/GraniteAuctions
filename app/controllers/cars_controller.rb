@@ -1,4 +1,5 @@
 class CarsController < ApplicationController
+  before_action :ensure_admin
 
   def index
     @car = Car.new
@@ -13,7 +14,6 @@ class CarsController < ApplicationController
   def destroy
     begin
       @car = Car.find(params[:id])
-      authorize! :destroy, @car
 
       if @car.destroy
         redirect_to cars_path, notice: 'Car was successfully destroyed.'
@@ -28,7 +28,6 @@ class CarsController < ApplicationController
   def create
     begin
       @car = Car.new(car_params)
-      authorize! :create, @car
       @car.image.attach(params[:image]) if params[:image].present?
 
       if @car.save
@@ -56,8 +55,7 @@ class CarsController < ApplicationController
   def update
     begin
       @car = Car.find(params[:id])
-      authorize! :update, @car
-
+      
       @car.image.attach(params[:image]) if params[:image].present?
 
       if @car.update(car_params)
@@ -74,7 +72,6 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     @auction = Auction.find(params[:auction_id])
     return unless @car || @auction
-    authorize! :update, @car
     authorize! :create, @auction
     unless @auction.auction_cars.exists?(auction: @auction, car: @car)
       AuctionCar.create(auction: @auction, car: @car)
@@ -87,4 +84,7 @@ class CarsController < ApplicationController
     params.require(:car).permit(:make_model, :year, :engine_capacity, :kms_driven, :reserve_auction_price, :buy_now_price, :description, :salvage_category_id, :category_id, :location, :delivery_cost, :image)
   end
 
+  def ensure_admin
+    authorize! :manage, Car
+  end
 end
