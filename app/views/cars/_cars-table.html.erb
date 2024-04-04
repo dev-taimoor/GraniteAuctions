@@ -14,7 +14,16 @@
     <tbody>
       <% @cars&.each do |car| %>
         <tr>
-          <td><%= link_to car.make_model, car_path(car), class: "car-name" %></td>
+          <td>
+            <div style="display: flex; align-items: center;">
+              <% if car.image.attached? %>
+                <%= image_tag url_for(car.image), class: "mr-2 rounded-circle", style: "width: 50px; height: 35px; margin-right: 5px;" %>
+              <% else %>
+                <%= image_tag("no-image.jpg", alt: "no-image", class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;") %>
+              <% end %>
+              <%= link_to car.make_model, car_path(car), class: "car-name" %>      
+            </div>
+          </td>
           <td>$<%= car.reserve_auction_price%></td>
           <td>$<%= car.buy_now_price%></td>
           <td><%= car.category.name%></td>
@@ -46,7 +55,7 @@
       <div class="mobile-car-inner">
         <div style="flex: 1;">
           <div style="text-align: left; color: #646d81; font-size: larger;">Make and Model</div>
-          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%=car.make_model%></div>
+          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%= link_to car.make_model, car_path(car), style: "text-decoration: none; color: #2B4159;" %></div>
         </div>
 
         <div style="flex: 1;">

@@ -202,7 +202,7 @@ table {
     cursor: pointer;
     align-items: center;
     justify-content: center;
-    background-color: #6f8297;
+    background-color: #2B4159;
     color: white;
     display: inline-flex;
     text-decoration: none;
@@ -215,7 +215,7 @@ table {
     align-items: center;
     justify-content: center;
     background-color: #DBE0EB;
-    color: #6f8297;
+    color: #2B4159;
     display: inline-flex;
     text-decoration: none;
   }
@@ -242,10 +242,18 @@ table {
   font-weight: bold;
 }
 
+.mobile-only-menu{
+  display: none;
+}
+
 @media screen and (max-width: 600px) {
   .topnav a:not(:first-child) {display: none;}
   .topnav a.icon {
     float: right;
+    display: block;
+  }
+
+  .mobile-only-menu{
     display: block;
   }
 
@@ -278,7 +286,7 @@ table {
 
 @media screen and (max-width: 600px) {
   .nav-buttons {
-    display: none; /* Hide the search bar on screens smaller than 600px */
+    display: none !important;
   }
 }
 
@@ -348,7 +356,7 @@ table {
   cursor: pointer;
   align-items: center;
   justify-content: center;
-  background-color: #6f8297;
+  background-color: #2B4159;
   color: white;
   display: inline-flex;
   text-decoration: none;
@@ -363,7 +371,7 @@ table {
   align-items: center;
   justify-content: center;
   background-color: #DBE0EB;
-  color: #6f8297;
+  color: #2B4159;
   display: inline-flex;
   text-decoration: none;
 }

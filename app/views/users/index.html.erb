@@ -1,0 +1,90 @@
+<style>
+  .admin-user-table{
+    background-color: #F4F7FE;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 65%;
+  }
+
+  .users-heading-style{
+    color: #2B4159;
+    font-weight: bold;
+  }
+
+  .users-heading-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  @media only screen and (max-width: 768px) {
+    .user-preview-class{
+      display: none;
+    }
+
+    .users-heading-container{
+      flex-direction: column;
+    }
+
+    .admin-user-table{
+      width: 100%;
+    }
+
+  }
+</style>
+
+<div class="parent-container">
+  <div class="content-wrapper">
+    <div class="menu-bar">
+      <%= render 'admin-shared/admin-side-bar' %>
+    </div>
+
+    <div class="admin-user-table">
+      <div class="users-heading-container">
+        <h1 class="users-heading-style">Users List</h1>
+        <%= form_tag(users_path, method: :get, class: "search-form") do %>
+          <%= text_field_tag :search, params[:search], placeholder: "Search by User's Name", class: "rounded-input" %>
+          <%= submit_tag "Search", class: "btn btn-secondary btn-block rounded-button" %>
+        <% end %>
+      </div>
+      <%= render 'users-table' %>
+    </div>
+
+    <div style="background: white;" class="preview-break-2 user-preview-class">
+      Preview
+    </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    function previewFirstUser() {
+      var firstUserId = $('.user-row:first').data('user-id'); // Get the ID of the first user
+      if (firstUserId) {
+        $.ajax({
+          url: "/users/" + firstUserId + "/preview",
+          type: "GET",
+          dataType: "script"
+        });
+      }
+    }
+
+    // Call the function to preview the first user when the document is ready
+    previewFirstUser();
+
+    // Function to handle click on user name
+    $(".user-name").click(function(e) {
+      e.preventDefault();
+      var userId = $(this).closest('.user-row').data('user-id');
+      $.ajax({
+        url: "/users/" + userId + "/preview",
+        type: "GET",
+        dataType: "script"
+      });
+    });
+  });
+</script>
+

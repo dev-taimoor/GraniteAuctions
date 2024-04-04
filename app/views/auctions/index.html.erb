@@ -162,8 +162,7 @@
             <%= render partial: 'cars_table', locals: { cars: @cars } %>    
           </div>
         </div>
-    </div>
-    
+      </div>
 
       <div class="auction-outer-div mb-3">
         <div class="live-auction-inner mt-3">
@@ -171,6 +170,7 @@
             <h3 class="mt-3 auction-heading-style">Live Auctions</h3>
             <%= link_to "View All", all_auctions_auctions_path, style: "text-decoration: none; color: #2B4159;" %>
           </div>
+          
           <div class="table-responsive">
             <table class="table">
               <thead>
@@ -182,24 +182,25 @@
                   <th>Highest Bid</th>
                 </tr>
               </thead>
+              
               <tbody>
                 <% @auction_cars_paginated.each do |auction_car| %>
-                <tr>
-                  <td><%= auction_car.car.id %></td>
-                  <td>
-                    <div style="display: flex; align-items: center;">
-                <% if auction_car.car.image.attached? %>
-                  <%= image_tag url_for(auction_car.car.image), class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;" %>
-                <% else %>
-                  <%= image_tag("no-image.jpg", alt: "no-image", class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;") %>
-                <% end %>
-                <%= auction_car.car.make_model %>      
-              </div>
-                   </td>
-                  <td><%= auction_car.car.reserve_auction_price %></td>
-                  <td><%= auction_car.auction.lot_no %></td>
-                  <td><%= auction_car.car.bids.where(auction_id: auction_car.auction.id).maximum(:amount) %></td>
-                </tr>
+                  <tr>
+                    <td><%= auction_car.car.id %></td>
+                    <td>
+                      <div style="display: flex; align-items: center;">
+                        <% if auction_car.car.image.attached? %>
+                          <%= image_tag url_for(auction_car.car.image), class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;" %>
+                        <% else %>
+                          <%= image_tag("no-image.jpg", alt: "no-image", class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;") %>
+                        <% end %>
+                        <%= auction_car.car.make_model %>      
+                      </div>
+                    </td>
+                    <td><%= auction_car.car.reserve_auction_price %></td>
+                    <td><%= auction_car.auction.lot_no %></td>
+                    <td><%= auction_car.car.bids.where(auction_id: auction_car.auction.id).maximum(:amount) %></td>
+                  </tr>
                 <% end %>
               </tbody>
             </table>
@@ -211,7 +212,7 @@
           <h3 class="mt-3 auction-heading-style">Sold Products</h3>
           <div>
             <% @sold_cars&.each do |car| %>
-              <div style="display: flex;">
+              <div class="mt-3" style="display: flex;">
                 <div style="width: 30%">
                  <% if car.image.attached? %>
                   <%= image_tag url_for(car.image), class: "", style: "max-width: 100%; width: 100%" %>

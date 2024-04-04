@@ -7,8 +7,18 @@ module ApplicationHelper
       "Pending"
     when "completed"
       "Completed"
+    when "individual"
+      "Individual"
+    when "dealer"
+      "Dealer"
+    when "approved"
+      "Approved"
+    when "rejected"
+      "Rejected"
+    when "admin"
+      "Super Admin"
     else
-      status
+      status.blank? ? "N/A" : status
     end
   end
 end

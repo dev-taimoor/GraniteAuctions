@@ -6,6 +6,12 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
+  resources :users do
+    post 'approve_user', on: :member
+    post 'reject_user', on: :member
+    get 'preview', on: :member
+  end
+
   get 'home/index'
   get '/car_collection', to: 'home#car_collection', as: 'car_collection'
   get '/car_search', to: 'home#car_search', as: 'car_search'

@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user # Set current user
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, alert: exception.message
+    redirect_to car_collection_path, alert: exception.message
   end
 
   private
