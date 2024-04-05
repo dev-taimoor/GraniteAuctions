@@ -48,9 +48,14 @@
           </div>
           <div>
             <div class="vehicle-label">AUCITON END TIME</div>
-            <div class="vehicle-text"><%= "00 DAYS 00 HOURS 00 MINS" %></div>
+            <% remaining_time = (car.auction_end_time - Time.now).to_i %>
+            <div class="vehicle-text">
+              <%= "%02d" % (remaining_time / 86400) %> DAYS <%= "%02d" % ((remaining_time % 86400) / 3600) %> HOURS <%= "%02d" % ((remaining_time % 3600) / 60) %> MINS
+            </div>
           </div>
-          <button class="btn bid-button">Bid</button>
+          <%= form_with(url: car_bid_path(car), method: :post, class: 'd-flex justify-content-center') do |form| %>
+            <%= form.submit "Bid", class: "btn bid-button" %>
+          <% end %>
         </div>
       </div>
     <% end %>
@@ -74,9 +79,14 @@
           </div>
           <div>
             <div class="vehicle-label">AUCITON END TIME</div>
-            <div class="vehicle-text"><%= "00 DAYS 00 HOURS 00 MINS" %></div>
+            <% remaining_time = (car.auction_end_time - Time.now).to_i %>
+            <div class="vehicle-text">
+              <%= "%02d" % (remaining_time / 86400) %> DAYS <%= "%02d" % ((remaining_time % 86400) / 3600) %> HOURS <%= "%02d" % ((remaining_time % 3600) / 60) %> MINS
+            </div>
           </div>
-          <button class="btn bid-button">Buy Now</button>
+          <%= form_with(url: car_buy_path(car), method: :post, class: 'd-flex justify-content-center') do |form| %>
+            <%= form.submit "Buy Now", class: "btn bid-button" %>
+          <% end %>
         </div>
       </div>
     <% end %>

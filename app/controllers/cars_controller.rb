@@ -1,5 +1,6 @@
 class CarsController < ApplicationController
   before_action :ensure_admin
+  before_action :verify_user_status, only: %i[buy bid]
 
   def index
     @car = Car.new
@@ -78,6 +79,14 @@ class CarsController < ApplicationController
     end
   end
 
+  def buy
+    
+  end
+
+  def bid
+
+  end
+
   private
 
   def car_params
@@ -86,5 +95,9 @@ class CarsController < ApplicationController
 
   def ensure_admin
     authorize! :manage, Car
+  end
+
+  def verify_user_status
+    redirect_to user_verification_path, notice: 'User verification is pending' if !current_user.verification_completed?
   end
 end

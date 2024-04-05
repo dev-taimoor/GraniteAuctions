@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   skip_before_action :authenticate_user!
-  before_action :set_cars, only: %i[car_search]
+  before_action :set_cars, only: %i[car_search car_collection]
   def index
     if user_signed_in?
       if current_user.admin?
@@ -13,9 +13,9 @@ class HomeController < ApplicationController
 
   def car_collection
     @vehicle_types = car_filter_types
-    @make_model = Car.all.pluck(:make_model).uniq
+    @make_model = @available_vehicles.pluck(:make_model).uniq
     per_page_items = request.user_agent =~ /Mobile|webOS/ ? 4 : 8
-    @cars = Car.active.paginate(page: params[:page], per_page: per_page_items)
+    @cars = @available_vehicles.active.paginate(page: params[:page], per_page: per_page_items)
   end
 
   def car_search
@@ -40,7 +40,7 @@ class HomeController < ApplicationController
   end
 
   def set_cars
-    @available_vehicles = Car.active
+    @available_vehicles = Car.active.in_progress_auction_cars
   end
 
   def search_params

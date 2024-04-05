@@ -21,6 +21,13 @@ Rails.application.routes.draw do
   
   resources :cars do
     post 'add_to_auction', on: :member
+    post 'buy'
+    post 'bid'
+  end
+
+  scope module: 'payments' do
+    get 'create_checkout_session'
+    get 'subscription'
   end
 
   resources :auctions do
