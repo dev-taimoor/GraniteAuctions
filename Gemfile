@@ -53,6 +53,7 @@ gem 'sidekiq', '~> 5.2.9'
 gem 'sidekiq-cron'
 gem 'redis-client'
 gem 'letter_opener'
+gem 'actionmailer'
 
 
 # Use Sass to process CSS
