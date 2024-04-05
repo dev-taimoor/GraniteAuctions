@@ -7,5 +7,9 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3"
+  },
+
+  "scripts": {
+    "build:css": "sass app/assets/stylesheets/styles.scss build/styles.css"
   }
 }

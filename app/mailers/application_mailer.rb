@@ -1,6 +1,6 @@
 class ApplicationMailer < ActionMailer::Base
   include Devise::Mailers
 
-  default from: "from@example.com"
+  default from: "graniteauction@gmail.com"
   layout "mailer"
 end
