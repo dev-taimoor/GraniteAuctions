@@ -6,25 +6,25 @@
   }
 
   .button-style {
-    border-radius: 20px; /* Adjust the value to change the roundness of corners */
-    padding: 10px 20px; /* Adjust padding as needed */
+    border-radius: 20px;
+    padding: 10px 20px;
     border: none;
     cursor: pointer;
     align-items: center;
     justify-content: center;
-    background-color: #DBE0EB; /* Background color for buttons */
-    color: black; /* Text color for buttons */
+    background-color: #DBE0EB;
+    color: black;
     display: inline-flex;
+    width: 100%;
   }
 
   .selected-button {
-    background-color: #2B4159 !important; /* Background color for selected button */
-    color: white; /* Text color for selected button */
+    background-color: #2B4159 !important;
+    color: white;
   }
 
   .dealer-only-fields {
     display: none;
-    width: 80%;
   }
 
   .file-upload-box {
@@ -33,8 +33,10 @@
     padding: 20px;
     text-align: center;
     cursor: pointer;
-    width: 80%;
+    width: 100%;
     margin: 10px;
+    display: flex;
+    justify-content: center;
   }
 
   .file-upload-box:hover {
@@ -48,26 +50,72 @@
   #verification_form{
     width: 100%;
   }
+
+  .form-wrapper {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  #verification_form {
+    width: 100%;
+  }
+
+  .form-fields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+    gap: 50px;
+  }
+
+  .tabs-buttons {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+  }
+
+  .submit-button-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .dealer-paid-button {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+  }
+
+  .dealer-submission-button {
+    background: #2B4159;
+    color: white;
+    width: 100%;
+    border: none;
+    border-radius: 25px;
+    height: 40px;
+  }
 </style>
 
 <div style="display: flex; flex-wrap: wrap; background: #F4F7FE;">
-  <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; align-items: center;">
+  <div class="form-wrapper">
     <h2>Verification</h2>
 
     <%= form_with(model: @current_user, url: verification_path, method: :post, local: true, multipart: true, id: "verification_form") do |form| %>
-      <div style="display: flex; flex-direction: column; align-items: center;">
-
-        <div style="margin-top: 20px;">
+      <div class="form-fields">
+        <div class="tabs-buttons">
           <!-- Use plain HTML buttons for role selection -->
           <button type="button" id="individual_button" class="role_button button-style selected-button" onclick="setRole('individual')"> Individual</button>
           <button type="button" id="dealer_button" class="role_button button-style" onclick="setRole('dealer')"> Dealer</button>
           <!-- Hidden field to store the selected role -->
           <%= form.hidden_field :role, id: "selected_role_input", value: "individual" %>
         </div>
-
-        <br/>
-        <br/>
-        <br/>
 
         <div class="file-upload-box">
           <label for="image" style="display: flex; align-items: center;">
@@ -78,15 +126,13 @@
         </div>
         <span id="image_error" class="error" style="display: none; color: red;">Please select a file</span>
         <br>
-
-        <div class="dealer-only-fields">
+        <div class="dealer-only-fields w-100">
           <div class="field">
             <%= form.label :business_name %><br />
             <%= form.text_field :business_name, id: "user_business_name", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
           </div>
           <span id="business_error" class="error" style="display: none; color: red;">Please Enter A Business Name</span>
           <br/>
-
           <div class="field">
             <%= form.label :VAT_number %><br />
             <%= form.text_field :vat_number, id: "user_vat_number", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
@@ -117,31 +163,31 @@
           </div>
           <br/>
         </div>
-
-        <div class="file-upload-box">
-          <label for="verification_image1" style="display: flex; align-items: center;">
-            <%= image_tag("profile.png", alt: "identification-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Identification
-            <br>
-            <%= form.file_field :verification_image1, id: "verification_image1", name: "verification_image1", required: true %>
-          </label>
+        <div class="w-100">
+          <div class="file-upload-box">
+            <label for="verification_image1" style="display: flex; align-items: center;">
+              <%= image_tag("profile.png", alt: "identification-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Identification
+              <%= form.file_field :verification_image1, id: "verification_image1", name: "verification_image1", required: true %>
+            </label>
+          </div>
+          <span id="verification_image1_error" class="error" style="display: none; color: red;">Please select a file</span>
+  
+          <div class="file-upload-box">
+            <label for="verification_image2" style="display: flex; align-items: center;">
+              <%= image_tag("profile.png", alt: "address-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Address
+              <%= form.file_field :verification_image2, id: "verification_image2", name: "verification_image2", required: true %>
+            </label>
+          </div>
+          <span id="verification_image2_error" class="error" style="display: none; color: red;">Please select a file</span>
+          <%= form.hidden_field :payment_status, id: 'payment-field-status' %>
         </div>
-        <span id="verification_image1_error" class="error" style="display: none; color: red;">Please select a file</span>
-
-        <div class="file-upload-box">
-          <label for="verification_image2" style="display: flex; align-items: center;">
-            <%= image_tag("profile.png", alt: "address-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Address
-            <br>
-            <%= form.file_field :verification_image2, id: "verification_image2", name: "verification_image2", required: true %>
-          </label>
-        </div>
-        <span id="verification_image2_error" class="error" style="display: none; color: red;">Please select a file</span>
-        <br/>
-        <br/>
-        <!-- <div class="actions" style="display: flex; justify-content: center; width: 100%;">
-          <%= form.submit 'Submit', id: 'verification_submit', style: "background: #2B4159; color: white; width: 80%; border: none; border-radius: 25px; height: 40px;" %>
-        </div> -->
-        <div class="actions" style="display: flex; justify-content: center; width: 100%;">
-          <button type="button" onclick="validateForm()" style="background: #2B4159; color: white; width: 80%; border: none; border-radius: 25px; height: 40px;">Submit</button>
+        <div class="w-100">
+          <div class="actions individual-only-submission submit-button-wrapper">
+            <button type="button" onclick="validateForm(true)" class="button-style dealer-paid-button">Pay Fee £50 / Yearly - To Bid</button>
+          </div>
+          <div class="actions submit-button-wrapper">
+            <button type="button" onclick="validateForm(false)" class="dealer-submission-button">Submit</button>
+          </div>
         </div>
       </div>
     <% end %>
@@ -184,14 +230,17 @@
 
   function toggleDealerFields() {
     const dealerFields = document.querySelector('.dealer-only-fields');
+    const individualFields = document.querySelector('.individual-only-submission');
     if (selectedRole === 'dealer') {
       dealerFields.style.display = 'block';
+      individualFields.style.display = 'none';
     } else {
       dealerFields.style.display = 'none';
+      individualFields.style.display = 'flex';
     }
   }
 
-  function validateForm() {
+  function validateForm(payment_status) {
     const file1 = document.getElementById("verification_image1");
     const file2 = document.getElementById("verification_image2");
     const file1Error = document.getElementById("verification_image1_error");
@@ -249,8 +298,7 @@
       imageFileError.style.display = "none";
     }
 
-
-
+    const additionalParamField = document.getElementById('payment-field-status');
     if (!file1.value) {
       file1Error.style.display = "block";
     } else {
@@ -262,6 +310,7 @@
     } else {
       file2Error.style.display = "none";
     }
+    additionalParamField.value = payment_status;
 
     if (file1.value && file2.value) {
       document.getElementById("verification_form").submit();

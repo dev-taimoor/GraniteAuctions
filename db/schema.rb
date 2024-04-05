@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_22_150830) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_04_170150) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -85,6 +85,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_22_150830) do
     t.integer "engine_capacity", default: 0, null: false
     t.integer "kms_driven", default: 0, null: false
     t.boolean "sold", default: false, null: false
+    t.string "stripe_product_id"
+    t.string "stripe_price_id"
     t.index ["category_id"], name: "index_cars_on_category_id"
     t.index ["salvage_category_id"], name: "index_cars_on_salvage_category_id"
   end
@@ -95,10 +97,31 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_22_150830) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "receipts", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "invoice_id"
+    t.integer "amount"
+    t.integer "car_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_receipts_on_user_id"
+  end
+
   create_table "salvage_categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "stripe_account_details", force: :cascade do |t|
+    t.string "stripe_customer_id"
+    t.string "subscription_id"
+    t.boolean "payment_status", default: false
+    t.date "expiry_date"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_stripe_account_details_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -143,4 +166,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_22_150830) do
   add_foreign_key "bids", "users"
   add_foreign_key "cars", "categories"
   add_foreign_key "cars", "salvage_categories"
+  add_foreign_key "receipts", "users"
+  add_foreign_key "stripe_account_details", "users"
 end

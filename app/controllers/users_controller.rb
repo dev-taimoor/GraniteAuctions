@@ -7,12 +7,13 @@ class UsersController < ApplicationController
       @current_user.verification_image1.attach(params[:verification_image1]) if params[:verification_image1].present?
       @current_user.verification_image2.attach(params[:verification_image2]) if params[:verification_image2].present?
       @current_user.image.attach(params[:image]) if params[:image].present?
-
-      redirect_to car_collection_path, notice: 'Verification successful'
-
+      if params[:user][:payment_status]
+        redirect_to create_checkout_session_path
+      else
+        redirect_to car_collection_path, notice: 'Verification successful'
+      end
     else
       redirect_to user_verification_path, notice: 'An Error Occured'
-
     end
   end
 

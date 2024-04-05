@@ -8,7 +8,11 @@ class Car < ApplicationRecord
 
   has_one_attached :image
 
+  after_create :create_stripe_product
+  after_update :update_stripe_price
+
   scope :available, -> { where(sold: false) }
+
   scope :sold_cars, -> { where(sold: true) }
   
   scope :active, -> { where(sold: false) }
@@ -52,6 +56,8 @@ class Car < ApplicationRecord
     end
   }
 
+  scope :in_progress_auction_cars, -> { joins(:auctions).where(auctions: { status: 'in_progress' }) }
+
   def self.apply_filters(params)
     cars = active
     cars = cars.car_by_make_model(Array.wrap(params[:make])) if params[:make].present?
@@ -61,6 +67,37 @@ class Car < ApplicationRecord
     cars = cars.car_by_price_range(params[:price_range]) if params[:price_range].present?
     cars = cars.by_category_name(params[:name]) if params[:name].present?
     cars
+  end
+
+  def auction_end_time
+    auctions.current.first.end_time
+  end
+
+  def create_stripe_product
+    stripe_product = Stripe::Product.create({
+      name: make_model,
+      description: description,
+      default_price_data: {
+        currency: "eur",
+        unit_amount: calculate_final_price_in_cents.to_i
+      },
+      metadata: {
+        car_id: id,
+      }
+    })
+    update(stripe_product_id: stripe_product.id, stripe_price_id: stripe_product.default_price)
+  end
+
+  def update_stripe_price
+    if saved_change_to_buy_now_price? || saved_change_to_delivery_cost?
+      Stripe::Price.update(stripe_price_id,{
+        unit_amount: calculate_final_price_in_cents
+      })
+    end
+  end
+
+  def calculate_final_price_in_cents
+    (buy_now_price + (0.2 * buy_now_price) + delivery_cost) * 100
   end
 end
 
