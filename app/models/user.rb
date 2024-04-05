@@ -7,7 +7,6 @@ class User < ApplicationRecord
   validates :full_name, presence: true
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :user_name, presence: true, uniqueness: true
-  validates :password, presence: true, length: { minimum: 6 }, confirmation: true, if: :password_required?
 
   has_one :stripe_account_detail
   has_one_attached :verification_image1
