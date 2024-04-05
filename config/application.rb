@@ -11,6 +11,8 @@ module GraniteAuctions
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
     config.assets.enabled = true
+    config.action_mailer.default_url_options = { host: 'graniteauction@gmail.com' }
+    config.hosts << "granite-auction.jointhefleet.com"
 
     # Configuration for the application, engines, and railties goes here.
     #
