@@ -2,6 +2,13 @@ class HomeController < ApplicationController
   skip_before_action :authenticate_user!
   before_action :set_cars, only: %i[car_search]
   def index
+    if user_signed_in?
+      if current_user.admin?
+        redirect_to dashboard_path
+      else
+        redirect_to car_collection_path
+      end
+    end
   end
 
   def car_collection
