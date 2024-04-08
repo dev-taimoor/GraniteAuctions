@@ -149,7 +149,7 @@
   <br>
   <div>
     <%= form.label :delivery_cost %><br>
-    <%= form.number_field :delivery_cost, class: "custom-select #{(car.persisted? || myClass ) ? 'edit-color' : 'new-color'}" %>
+    <%= form.number_field :delivery_cost, class: "custom-select #{(car.persisted? || myClass ) ? 'edit-color' : 'new-color'}", required: true %>
   </div>
   <br>
   <br>
