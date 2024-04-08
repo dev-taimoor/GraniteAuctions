@@ -125,7 +125,7 @@
           </label>
         </div>
         <span id="image_error" class="error" style="display: none; color: red;">Please select a file</span>
-        <br>
+
         <div class="dealer-only-fields w-100">
           <div class="field">
             <%= form.label :business_name %><br />
@@ -148,7 +148,7 @@
           <br/>
         </div>
 
-        <div style="width: 80%;">
+        <div style="width: 100%;">
           <div class="field">
             <%= form.label :phone_number %><br />
             <%= form.text_field :phone_number, id: "user_phone_number", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
@@ -161,7 +161,7 @@
             <%= form.text_field :address, id: "user_address", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
             <span id="address_error" class="error" style="display: none; color: red;">Please Enter Address</span>
           </div>
-          <br/>
+
         </div>
         <div class="w-100">
           <div class="file-upload-box">
