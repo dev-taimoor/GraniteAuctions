@@ -17,6 +17,26 @@ class UsersController < ApplicationController
     end
   end
 
+  def verification
+    ActiveRecord::Base.transaction do
+      if @current_user.update(user_params)
+        @current_user.verification_image1.attach(params[:verification_image1]) if params[:verification_image1].present?
+        @current_user.verification_image2.attach(params[:verification_image2]) if params[:verification_image2].present?
+        @current_user.image.attach(params[:image]) if params[:image].present?
+        if params[:user][:payment_status]
+          redirect_to create_checkout_session_path
+        else
+          redirect_to car_collection_path, notice: 'Verification successful'
+        end
+      else
+        redirect_to user_verification_path, notice: 'An Error Occurred'
+      end
+    end
+  rescue ActiveRecord::StatementInvalid => e
+    # Handle database lock exception
+    redirect_to user_verification_path, notice: 'Database is busy, please try again later.'
+  end
+
   def index
     if params[:search].present?
       @users = User.where("full_name LIKE ?", "%#{params[:search]}%").paginate(page: params[:page], per_page: 10)
