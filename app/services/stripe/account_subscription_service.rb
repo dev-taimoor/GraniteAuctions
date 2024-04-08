@@ -14,8 +14,8 @@ module Stripe
           quantity: 1,
           price: params[:payment][:priceId]
         }],
-        success_url: ENV['DOMAIN'] + '/subscription?success=true&session_id={CHECKOUT_SESSION_ID}',
-        cancel_url: ENV['DOMAIN'] + '/subscription?canceled=true',
+        success_url: Rails.application.credentials.domain + '/subscription?success=true&session_id={CHECKOUT_SESSION_ID}',
+        cancel_url: Rails.application.credentials.domain + '/subscription?canceled=true',
       })
 
       redirect_to session.url
