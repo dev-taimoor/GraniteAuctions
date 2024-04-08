@@ -23,7 +23,7 @@ class User < ApplicationRecord
   def verification_completed?
     role == 'admin' ||
     (role == "individual" && verification_image1.attached? && verification_image2.attached? && stripe_account_detail.payment_status) ||
-    (role == "dealer" && verification_image1.attached? && verification_image2.attached? && business_name.present? && vat_number.present? && breakers_licencing.present?)
+    (role == "dealer" && verification_image1.attached? && verification_image2.attached? && business_name.present? && vat_number.present? && breakers_licensing.present?)
   end
 
   private
