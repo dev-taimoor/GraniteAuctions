@@ -18,17 +18,23 @@ Rails.application.routes.draw do
   post '/verification', to: 'users#verification', as: 'verification'
   get '/user_verification', to: 'users#user_verification', as: 'user_verification'
   get '/dashboard', to: 'dashboard#index', as: 'dashboard'
-  
+  get '/car_purchase', to: 'cars#car_purchase', as: 'car_purchase'
   resources :cars do
     post 'add_to_auction', on: :member
     post 'buy'
     post 'bid'
+    get 'highest_bid'
   end
 
   scope module: 'payments' do
     get 'create_checkout_session'
     get 'subscription'
   end
+
+  # scope module: 'bids' do
+  #   get 'highest_bid'
+  #   get 'subscription'
+  # end
 
   resources :auctions do
     get 'cars', on: :member

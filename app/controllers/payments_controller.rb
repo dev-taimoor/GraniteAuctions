@@ -8,8 +8,8 @@ class PaymentsController < ApplicationController
         quantity: 1,
         price: Rails.application.credentials.stripe_subscription_price_id
       }],
-      success_url: Rails.application.credentials.domain + '/subscription?success=true&session_id={CHECKOUT_SESSION_ID}',
-      cancel_url: Rails.application.credentials.domain + '/subscription?canceled=true',
+      success_url: ENV['DOMAIN'] + '/subscription?success=true&session_id={CHECKOUT_SESSION_ID}',
+      cancel_url: ENV['DOMAIN'] + '/subscription?canceled=true',
     })
     redirect_to session.url, allow_other_host: true
   end
@@ -43,7 +43,7 @@ class PaymentsController < ApplicationController
     receipt = Receipt.new(
       user_id: current_user.id,
       invoice_id: session_data.invoice,
-      amount: session_data.amount_total
+      amount: session_data.amount_total * 100
     )
     receipt.save!
   end

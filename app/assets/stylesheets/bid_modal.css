@@ -1,0 +1,41 @@
+.bid-modal-wrapper {
+  border-radius: 20px;
+}
+
+.bid-modal-header {
+  padding: 1rem 2rem;
+}
+
+.bid-modal-title {
+  color: #2B4159;
+}
+
+.bid-modal-close {
+  border-radius: 20px;
+  background: transparent;
+  border-color: #2B4159;
+}
+
+.bid-modal-body {
+  padding: 2rem;
+}
+
+.last-highest-bid-label {
+  color: #2B4159;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+#lastHighestBid {
+  color: #2b4159;
+  font-size: 16px;
+}
+
+.bid-submit-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.bid-label {
+  color: #2B4159;
+}

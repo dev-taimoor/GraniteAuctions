@@ -1,5 +1,7 @@
 class CarsController < ApplicationController
-  before_action :ensure_admin
+  include CarPaymentConcern
+
+  before_action :ensure_admin, except: %i[buy bid car_purchase]
   before_action :verify_user_status, only: %i[buy bid]
 
   def index
@@ -80,11 +82,21 @@ class CarsController < ApplicationController
   end
 
   def buy
-    
+    car = Car.find(params[:car_id])
+    session = payment_session(car)
+    redirect_to session.url, allow_other_host: true
   end
 
   def bid
 
+  end
+
+  def car_purchase
+    if params[:success] == 'true' && handle_transaction_success
+      redirect_to car_collection_path , notice: "Payment successful"
+    else
+      redirect_to car_collection_path, notice: 'Payment failed, please try again'
+    end
   end
 
   private
@@ -98,6 +110,10 @@ class CarsController < ApplicationController
   end
 
   def verify_user_status
-    redirect_to user_verification_path, notice: 'User verification is pending' if !current_user.verification_completed?
+    if !current_user.verification_completed?
+      redirect_to user_verification_path, notice: 'User verification is pending'
+    elsif current_user.admin_status == 'pending'
+      redirect_to car_collection_path, notice: 'User needs to be verified from admin.'
+    end
   end
 end

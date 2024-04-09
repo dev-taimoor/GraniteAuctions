@@ -3,6 +3,7 @@ class UsersController < ApplicationController
   skip_before_action :ensure_admin, only: %i[ verification user_verification ]
 
   def verification
+<<<<<<< HEAD
     ActiveRecord::Base.transaction do
       if @current_user.update(user_params)
         @current_user.verification_image1.attach(params[:verification_image1]) if params[:verification_image1].present?
@@ -13,14 +14,11 @@ class UsersController < ApplicationController
         else
           redirect_to car_collection_path, notice: 'Verification submitted successfully, Our team will review your account details shortly and you will be able to buy or bid on our platform. Thanks!'
         end
-      else
-        redirect_to user_verification_path, notice: 'An Error Occurred'
       end
+    rescue ActiveRecord::StatementInvalid => e
+      # Handle database lock exception
+      redirect_to user_verification_path, notice: 'Database is busy, please try again later.'
     end
-  rescue ActiveRecord::StatementInvalid => e
-    # Handle database lock exception
-    redirect_to user_verification_path, notice: 'Database is busy, please try again later.'
-  end
 
   def index
     if params[:search].present?
