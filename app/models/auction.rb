@@ -5,7 +5,7 @@ class Auction < ApplicationRecord
 
   scope :current, -> { where(status: "in_progress") }
   scope :pending, -> { where(status: "pending") }
-  scope :completed, -> { where(sold: "completed") }
+  scope :completed, -> { where(status: "completed") }
 
   def remove_car(car)
     self.cars.delete(car)

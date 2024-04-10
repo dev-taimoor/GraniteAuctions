@@ -19,10 +19,11 @@ Rails.application.routes.draw do
   get '/user_verification', to: 'users#user_verification', as: 'user_verification'
   get '/dashboard', to: 'dashboard#index', as: 'dashboard'
   get '/car_purchase', to: 'cars#car_purchase', as: 'car_purchase'
+  get '/successful_bid', to: 'cars#successful_bid', as: 'successful_bid'
   resources :cars do
     post 'add_to_auction', on: :member
     post 'buy'
-    post 'bid'
+    post 'submit_bid'
     get 'highest_bid'
   end
 

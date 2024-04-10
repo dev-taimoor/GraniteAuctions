@@ -12,10 +12,11 @@
       </div>
       <div class="modal-body bid-modal-body">
         <p class="last-highest-bid-label">Last Highest Bid: <span id="lastHighestBid"></span></p>
-        <%= form_with(model: @bid, url: '/submit_bid', remote: true, class: 'bid-submit-form') do |form| %>
+        <%= form_with(method: :post, remote: true, class: 'bid-submit-form') do |form| %>
           <div class="form-group">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" autocomplete="off">
             <%= form.label :bid_amount, 'Bid Amount', class: 'bid-label'%>
-            <%= form.number_field :bid_amount, class: 'form-control', required: true %>
+            <%= form.number_field :bid_amount, class: 'form-control', required: true, id: 'bid_amount_field', min: '0.01' %>
           </div>
           <%= form.submit 'Submit Bid', class: 'btn btn-primary bid-button mt-2' %>
         <% end %>
@@ -27,23 +28,27 @@
 
   $(document).on("click", ".bid-button", function() {
     var carId = $(this).data("car-id");
+    $('#bidModal').data('car-id', carId);
     $('#bidModal').modal('show');
-    debugger
   });
-
-  $('#bidModal').on('show.bs.modal', function(event) {
-    debugger
+  
+  $('#bidModal').on('shown.bs.modal', function(event) {
     var carId = $(this).data("car-id");
     $.ajax({
       url: 'cars/' + carId + '/highest_bid',
-      data: { id: carId },
       method: 'GET',
       success: function(response) {
-        debugger
-        $('#lastHighestBid').text(response.bid_amount);
-      },
-      error: function() {
-        // Handle error
+        if (response.error) {
+          $('#bidModal').modal('hide');
+          alert(response.error);
+        } else {
+          var bid_amount = response.highest_bid_amount
+          $('#lastHighestBid').text('£' + bid_amount);
+          $('#bid_amount_field').val(bid_amount + 1);
+          $('#bid_amount_field').attr('min', bid_amount + 1);
+          $('.bid-submit-form').attr('action', 'cars/' + carId + '/submit_bid');
+          $('#bidModal').modal('show');
+        }
       }
     });
   });

@@ -115,5 +115,14 @@ class Car < ApplicationRecord
   def calculate_final_price_in_cents
     (buy_now_price + (0.2 * buy_now_price) + delivery_cost) * 100
   end
+
+  def bids_for_active_auction
+    active_auction = auctions.current.first
+    active_auction.present? ? active_auction.bids.where(car_id: id) : []
+  end
+
+  def highest_bid_amount
+    bids_for_active_auction.map(&:amount).max || reserve_auction_price
+  end
 end
 
