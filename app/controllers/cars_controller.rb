@@ -81,7 +81,7 @@ class CarsController < ApplicationController
   end
 
   def buy
-    session = payment_session(car)
+    session = payment_session(@car)
     redirect_to session.url, allow_other_host: true
   end
 
@@ -93,7 +93,8 @@ class CarsController < ApplicationController
   def submit_bid
     auction = @car.auctions.current.first
     bid = Bid.find_or_initialize_by(car_id: @car.id, auction_id: auction.id, user_id: current_user.id)
-    create_hold_amount = bid.id.present?
+    binding.break
+    create_hold_amount = bid.id.blank?
     bid.update(amount: params[:bid_amount])
     if create_hold_amount
       if current_user.payment_method_id.present?

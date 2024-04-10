@@ -63,7 +63,7 @@
               <%= "%02d" % (remaining_time / 86400) %> DAYS <%= "%02d" % ((remaining_time % 86400) / 3600) %> HOURS <%= "%02d" % ((remaining_time % 3600) / 60) %> MINS
             </div>
           </div>
-          <button type="button" class="btn bid-button d-flex justify-content-center" data-toggle="modal" data-target="#bidModal" data-car-id="<%= car.id %>">
+          <button id="bidButton" type="button" class="btn bid-button d-flex justify-content-center" data-toggle="modal" data-target="#bidModal" data-car-id="<%= car.id %>">
             Bid
           </button>
         </div>

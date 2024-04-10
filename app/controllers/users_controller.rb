@@ -3,7 +3,6 @@ class UsersController < ApplicationController
   skip_before_action :ensure_admin, only: %i[ verification user_verification ]
 
   def verification
-<<<<<<< HEAD
     ActiveRecord::Base.transaction do
       if @current_user.update(user_params)
         @current_user.verification_image1.attach(params[:verification_image1]) if params[:verification_image1].present?
