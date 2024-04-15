@@ -91,8 +91,14 @@
   <br>
 
   <div>
-    <%= form.label :make_model %><br>
-    <%= form.text_field :make_model, class: "custom-select #{(car.persisted? || myClass )? 'edit-color' : 'new-color'}", required: true %>
+    <%= form.label :make %><br>
+    <%= form.text_field :make, class: "custom-select #{(car.persisted? || myClass )? 'edit-color' : 'new-color'}", required: true %>
+  </div>
+  <br>
+
+  <div>
+    <%= form.label :model %><br>
+    <%= form.text_field :model, class: "custom-select #{(car.persisted? || myClass )? 'edit-color' : 'new-color'}", required: true %>
   </div>
   <br>
 

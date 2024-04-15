@@ -117,13 +117,20 @@
           <%= form.hidden_field :role, id: "selected_role_input", value: "individual" %>
         </div>
 
-        <div class="file-upload-box">
-          <label for="image" style="display: flex; align-items: center;">
-            <%= image_tag("profile.png", alt: "identification-icon", class: "logo", style: "width: 50px; height: 50px;") %>Profile pic
-            <br>
-            <%= form.file_field :image, id: "image", name: "image", required: true %>
-          </label>
+        <div style="width: 100%; display: flex;">
+          <div style="width: 80%;" class="file-upload-box">
+            <label for="image" style="display: flex; align-items: center;">
+              <%= image_tag("profile.png", alt: "identification-icon", class: "logo", style: "width: 50px; height: 50px;") %>Profile pic
+              <br>
+              <%= form.file_field :image, id: "image", name: "image", required: true, onchange: "previewImage(this, 'preview_profile_pic')"%>
+            </label>
+          </div>
+          
+          <div style="display: flex; justify-content: center; width: 20%">
+            <%= image_tag (@current_user.image.attached? ? @current_user.image : "no-image.jpg"  ), id: "preview_profile_pic", class: "preview-image", style: "width: 100px; height: 100px; margin-top: 10px;" %>
+            </div>
         </div>
+        
         <span id="image_error" class="error" style="display: none; color: red;">Please select a file</span>
 
         <div class="dealer-only-fields w-100">
@@ -164,20 +171,32 @@
 
         </div>
         <div class="w-100">
-          <div class="file-upload-box">
-            <label for="verification_image1" style="display: flex; align-items: center;">
-              <%= image_tag("profile.png", alt: "identification-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Identification
-              <%= form.file_field :verification_image1, id: "verification_image1", name: "verification_image1", required: true %>
-            </label>
+          <div style="width: 100%; display: flex;">
+            <div style="width: 80%;" class="file-upload-box">
+              <label for="verification_image1" style="display: flex; align-items: center;">
+                <%= image_tag("profile.png", alt: "identification-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Identification
+                <%= form.file_field :verification_image1, id: "verification_image1", name: "verification_image1", required: true, onchange: "previewImage(this, 'preview_poi')" %>
+              </label>
+            </div>
+            <div style="width: 20%; display: flex; justify-content: center;">
+              <%= image_tag (@current_user.verification_image1.attached? ? @current_user.verification_image1 : "no-image.jpg"  ), id: "preview_poi", class: "preview-image", style: "width: 100px; height: 100px; margin-top: 10px;" %>
+            </div>
+            
           </div>
           <span id="verification_image1_error" class="error" style="display: none; color: red;">Please select a file</span>
-  
-          <div class="file-upload-box">
-            <label for="verification_image2" style="display: flex; align-items: center;">
-              <%= image_tag("profile.png", alt: "address-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Address
-              <%= form.file_field :verification_image2, id: "verification_image2", name: "verification_image2", required: true %>
-            </label>
+
+          <div style="width: 100%; display: flex;">
+            <div style="width: 80%" class="file-upload-box">
+              <label for="verification_image2" style="display: flex; align-items: center;">
+                <%= image_tag("profile.png", alt: "address-icon", class: "logo", style: "width: 50px; height: 50px;") %>Proof of Address
+                <%= form.file_field :verification_image2, id: "verification_image2", name: "verification_image2", required: true, onchange: "previewImage(this, 'preview_poa')" %>
+              </label>
+            </div>
+            <div style="display: flex; justify-content: center; width: 20%">
+              <%= image_tag (@current_user.verification_image2.attached? ? @current_user.verification_image2 : "no-image.jpg"  ), id: "preview_poa", class: "preview-image", style: "width: 100px; height: 100px; margin-top: 10px;" %>
+            </div>
           </div>
+          
           <span id="verification_image2_error" class="error" style="display: none; color: red;">Please select a file</span>
           <%= form.hidden_field :payment_status, id: 'payment-field-status' %>
         </div>
@@ -240,6 +259,24 @@
     }
   }
 
+  function previewImage(input, previewId) {
+    const preview = document.getElementById(previewId);
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = function() {
+      preview.src = reader.result;
+      preview.style.display = 'block';
+    }
+
+    if (file) {
+      reader.readAsDataURL(file);
+    } else {
+      preview.src = '';
+      preview.style.display = 'none';
+    }
+  }
+
   function validateForm(payment_status) {
     const file1 = document.getElementById("verification_image1");
     const file2 = document.getElementById("verification_image2");
@@ -292,27 +329,27 @@
       addressFieldError.style.display = "none";
     }
 
-    if (!imageFile.value) {
+    if (!imageFile.value && !<%= @current_user.image.attached? %> ) {
       imageFileError.style.display = "block";
     } else {
       imageFileError.style.display = "none";
     }
 
     const additionalParamField = document.getElementById('payment-field-status');
-    if (!file1.value) {
+    if (!file1.value && !<%= @current_user.verification_image1.attached? %> ) {
       file1Error.style.display = "block";
     } else {
       file1Error.style.display = "none";
     }
 
-    if (!file2.value) {
+    if (!file2.value && !<%= @current_user.verification_image2.attached? %>) {
       file2Error.style.display = "block";
     } else {
       file2Error.style.display = "none";
     }
     additionalParamField.value = payment_status;
 
-    if (file1.value && file2.value) {
+    if (file1.value && file2.value || (<%= @current_user.verification_image1.attached? %> && <%= @current_user.verification_image2.attached? %>) ) {
       document.getElementById("verification_form").submit();
     }
   }

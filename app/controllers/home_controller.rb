@@ -16,6 +16,7 @@ class HomeController < ApplicationController
     @make_model = @available_vehicles.pluck(:make_model).uniq
     per_page_items = request.user_agent =~ /Mobile|webOS/ ? 4 : 8
     @cars = @available_vehicles.active.paginate(page: params[:page], per_page: per_page_items)
+    @locations = @cars.pluck(:location).uniq
   end
 
   def car_search
@@ -33,10 +34,10 @@ class HomeController < ApplicationController
 
   def set_filters
     @years = @available_vehicles.all.pluck(:year).uniq
-    @makes = @available_vehicles.all.pluck(:make_model).uniq
+    @makes = @available_vehicles.all.pluck(:make).uniq
     @categories = Category.all.pluck(:id, :name)
     @salvage_categories = SalvageCategory.all.pluck(:id, :name)
-    @models = ['Toyota']
+    @models = @available_vehicles.all.pluck(:model).uniq
   end
 
   def set_cars

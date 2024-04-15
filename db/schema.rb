@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_04_170150) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_15_080357) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -71,7 +71,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_04_170150) do
   end
 
   create_table "cars", force: :cascade do |t|
-    t.string "make_model", null: false
+    t.string "make_model"
     t.integer "reserve_auction_price", null: false
     t.integer "buy_now_price", null: false
     t.string "description", null: false
@@ -87,6 +87,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_04_170150) do
     t.boolean "sold", default: false, null: false
     t.string "stripe_product_id"
     t.string "stripe_price_id"
+    t.string "make"
+    t.string "model"
     t.index ["category_id"], name: "index_cars_on_category_id"
     t.index ["salvage_category_id"], name: "index_cars_on_salvage_category_id"
   end
