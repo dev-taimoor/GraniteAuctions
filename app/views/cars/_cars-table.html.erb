@@ -21,11 +21,11 @@
               <% else %>
                 <%= image_tag("no-image.jpg", alt: "no-image", class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;") %>
               <% end %>
-              <%= link_to car.make_model, car_path(car), class: "car-name" %>      
+              <%= link_to "#{car.make}, #{car.model}", car_path(car), class: "car-name" %>      
             </div>
           </td>
-          <td>$<%= car.reserve_auction_price%></td>
-          <td>$<%= car.buy_now_price%></td>
+          <td>£<%= car.reserve_auction_price%></td>
+          <td>£<%= car.buy_now_price%></td>
           <td><%= car.category.name%></td>
           <td><%= car.delivery_cost ? 'Yes' : 'No'%></td>
           <td style="display: flex; gap: 2%">
@@ -55,19 +55,19 @@
       <div class="mobile-car-inner">
         <div style="flex: 1;">
           <div style="text-align: left; color: #646d81; font-size: larger;">Make and Model</div>
-          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%= link_to car.make_model, car_path(car), style: "text-decoration: none; color: #2B4159;" %></div>
+          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%= link_to "#{car.make}, #{car.model}", car_path(car), style: "text-decoration: none; color: #2B4159;" %></div>
         </div>
 
         <div style="flex: 1;">
           <div style="text-align: right; color: #646d81; font-size: larger;">Fixed Price</div>
-          <div style="text-align: right; color: #2B4159; font-size: x-large">$<%= car.reserve_auction_price%></div>
+          <div style="text-align: right; color: #2B4159; font-size: x-large">£<%= car.reserve_auction_price%></div>
         </div>
       </div>
 
       <div class="mobile-car-inner">
         <div style="flex: 1;">
           <div style="text-align: left; color: #646d81; font-size: larger;">Highest Bid</div>
-          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;">$TBD</div>
+          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;">£ <%= car.bids.maximum(:amount) rescue "N/A"%></div>
         </div>
 
         <div style="flex: 1;">

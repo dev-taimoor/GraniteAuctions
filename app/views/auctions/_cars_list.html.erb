@@ -19,19 +19,19 @@
       <div class="mobile-car-inner">
         <div style="flex: 1;">
           <div style="text-align: left; color: #646d81; font-size: larger;">Make and Model</div>
-          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%=car.make_model%></div>
+          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%="#{car.make}, #{car.model}"%></div>
         </div>
 
         <div style="flex: 1;">
           <div style="text-align: right; color: #646d81; font-size: larger;">Fixed Price</div>
-          <div style="text-align: right; color: #2B4159; font-size: x-large; font-weight: bold;">$<%= car.reserve_auction_price%></div>
+          <div style="text-align: right; color: #2B4159; font-size: x-large; font-weight: bold;">£<%= car.reserve_auction_price%></div>
         </div>
       </div>
 
       <div class="mobile-car-inner">
         <div style="flex: 1;">
           <div style="text-align: left; color: #646d81; font-size: larger;">Buy Now Price</div>
-          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;">$<%=car.buy_now_price%></div>
+          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;">£<%=car.buy_now_price%></div>
         </div>
 
         <div style="flex: 1;">

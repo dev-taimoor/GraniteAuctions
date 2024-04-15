@@ -8,6 +8,9 @@ class Car < ApplicationRecord
 
   has_one_attached :image
 
+  validates :make, presence: true
+  validates :model, presence: true
+
   after_create :create_stripe_product
   after_update :update_stripe_price
 
@@ -19,6 +22,10 @@ class Car < ApplicationRecord
 
   scope :car_by_year, lambda { |years|
     where('year IN (?)', years)
+  }
+
+  scope :car_by_location, lambda { |location|
+    where('location LIKE ?', location)
   }
 
   scope :car_by_category, lambda { |category_ids|
@@ -35,21 +42,29 @@ class Car < ApplicationRecord
     where('salvage_category_id IN (?)', salvage_ids)
   }
 
-  scope :car_by_make_model, lambda { |makes|
-    where(makes.map { |make| "make_model LIKE ?" }.join(" OR "), *makes.map { |make| "%#{make}%" })
+  scope :car_by_make_model, ->(makes) {
+    where(
+      makes.map { |_make| "make LIKE ?" }.join(' OR '), *makes.map { |make| "%#{make}%" }
+      )
+  }
+
+  scope :car_by_model, ->(models) {
+    where(
+      models.map { |_model| "model LIKE ?" }.join(' OR '), *models.map { |model| "%#{model}%" }
+      )
   }
 
   scope :car_by_price_range, ->(price_range) {
     case price_range
-    when "< $100,000"
+    when "< £100,000"
       where("buy_now_price < ?", 100000)
-    when "$100,000 - $200,000"
+    when "£100,000 - £200,000"
       where(buy_now_price: 100000..200000)
-    when "$200,000 - $300,000"
+    when "£200,000 - £300,000"
       where(buy_now_price: 200000..300000)
-    when "$300,000 - $400,000"
+    when "£300,000 - £400,000"
       where(buy_now_price: 300000..400000)
-    when ">$400,000"
+    when ">£400,000"
       where("buy_now_price > ?", 400000)
     else
       all
@@ -61,10 +76,12 @@ class Car < ApplicationRecord
   def self.apply_filters(params)
     cars = active
     cars = cars.car_by_make_model(Array.wrap(params[:make])) if params[:make].present?
+    cars = cars.car_by_model(Array.wrap(params[:model])) if params[:model].present?
     cars = cars.car_by_year(params[:year]) if params[:year].present?
     cars = cars.car_by_category(params[:category]) if params[:category].present?
     cars = cars.car_by_salvage_category(params[:salvage]) if params[:salvage].present?
     cars = cars.car_by_price_range(params[:price_range]) if params[:price_range].present?
+    cars = cars.car_by_location(params[:city]) if params[:city].present?
     cars = cars.by_category_name(params[:name]) if params[:name].present?
     cars
   end
@@ -75,7 +92,7 @@ class Car < ApplicationRecord
 
   def create_stripe_product
     stripe_product = Stripe::Product.create({
-      name: make_model,
+      name: "#{make}, #{model}",
       description: description,
       default_price_data: {
         currency: "eur",

@@ -50,7 +50,7 @@
 
         <div class="show-description-div">
           <div class="show-styling">
-            <h2 style="text-align: left; color: #646d81; font-size: larger;"><%= @car.make_model %></h2>
+            <h2 style="text-align: left; color: #646d81; font-size: larger;"><%="#{@car.make}, #{@car.model}"%></h2>
             <p style="text-align: left; color: #646d81; font-size: larger;">Year: <%= @car.year %></p>
             <p style="text-align: left; color: #646d81; font-size: larger;">Engine Capacity: <%= @car.engine_capacity %></p>
             <p style="text-align: left; color: #646d81; font-size: larger;">KMs Driven: <%= @car.kms_driven %></p>

@@ -5,7 +5,7 @@ class CarsController < ApplicationController
   def index
     @car = Car.new
     if params[:search].present?
-      @cars = Car.where("make_model LIKE ?", "%#{params[:search]}%").paginate(page: params[:page], per_page: 10)
+      @cars = Car.where("make LIKE ? OR model LIKE ?", "%#{params[:search]}%").paginate(page: params[:page], per_page: 10)
     else
       @cars = Car.paginate(page: params[:page], per_page: 10)
     end
@@ -90,7 +90,7 @@ class CarsController < ApplicationController
   private
 
   def car_params
-    params.require(:car).permit(:make_model, :year, :engine_capacity, :kms_driven, :reserve_auction_price, :buy_now_price, :description, :salvage_category_id, :category_id, :location, :delivery_cost, :image)
+    params.require(:car).permit(:make_model, :year, :engine_capacity, :kms_driven, :reserve_auction_price, :buy_now_price, :description, :salvage_category_id, :category_id, :location, :delivery_cost, :image, :make, :model)
   end
 
   def ensure_admin
