@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_15_080357) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_15_130004) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -153,8 +153,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_080357) do
     t.string "breakers_licensing"
     t.string "role"
     t.string "phone_number"
-    t.string "address"
+    t.string "address_line_1"
     t.string "admin_status", default: "pending"
+    t.string "address_line_2"
+    t.string "city"
+    t.string "state"
+    t.string "postcode"
+    t.string "country"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

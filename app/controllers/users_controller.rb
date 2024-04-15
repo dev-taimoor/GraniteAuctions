@@ -57,7 +57,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:business_name, :vat_number, :breakers_licensing, :role, :phone_number, :address)
+    params.require(:user).permit(:business_name, :vat_number, :breakers_licensing, :role, :phone_number, :address_line_1, :address_line_2, :city, :state, :country, :postcode)
   end
 
   def ensure_admin

@@ -164,9 +164,39 @@
           <br/>
 
           <div class="field">
-            <%= form.label :address %><br />
-            <%= form.text_field :address, id: "user_address", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <%= form.label :address_line_1 %><br />
+            <%= form.text_field :address_line_1, id: "user_address", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
             <span id="address_error" class="error" style="display: none; color: red;">Please Enter Address</span>
+          </div>
+
+          <div class="field">
+            <%= form.label :address_line_2 %><br />
+            <%= form.text_field :address_line_2, id: "user_address_line_2", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <span id="address_line_2_error" class="error" style="display: none; color: red;">Please Enter Address</span>
+          </div>
+
+          <div class="field">
+            <%= form.label :city %><br />
+            <%= form.text_field :city, id: "user_city", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <span id="address_city_error" class="error" style="display: none; color: red;">Please Enter Address</span>
+          </div>
+
+          <div class="field">
+            <%= form.label :state %><br />
+            <%= form.text_field :state, id: "user_state", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <span id="address_state_error" class="error" style="display: none; color: red;">Please Enter Address</span>
+          </div>
+
+          <div class="field">
+            <%= form.label :postal_code %><br />
+            <%= form.text_field :postcode, id: "user_postalcode", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <span id="address_postalcode_error" class="error" style="display: none; color: red;">Please Enter Address</span>
+          </div>
+
+          <div class="field">
+            <%= form.label :country %><br />
+            <%= form.text_field :country, id: "user_country", autofocus: true, style: "height: 25px; width: 100%; border: none; border-radius: 25px;", required: true %>
+            <span id="address_country_error" class="error" style="display: none; color: red;">Please Enter Address</span>
           </div>
 
         </div>
@@ -289,6 +319,16 @@
     const phoneFieldError = document.getElementById("number_error");
     const addressField = document.getElementById("user_address");
     const addressFieldError = document.getElementById("address_error");
+    const addressLine2 = document.getElementById("user_address_line_2");
+    const addressLine2Error = document.getElementById("address_line_2_error");
+    const addressCity = document.getElementById("user_city");
+    const addressCityError = document.getElementById("address_city_error");
+    const addressState = document.getElementById("user_state");
+    const addressStateError = document.getElementById("address_state_error");
+    const addressPostalcode = document.getElementById("user_postalcode");
+    const addressPostalcodeError = document.getElementById("address_postalcode_error");
+    const addressCountry = document.getElementById("user_country");
+    const addressCountryError = document.getElementById("address_country_error");
     const vatField = document.getElementById("user_vat_number");
     const vatFieldError = document.getElementById("vat_error");
     const businessField = document.getElementById("user_business_name");
@@ -327,6 +367,36 @@
       addressFieldError.style.display = "block";
     } else {
       addressFieldError.style.display = "none";
+    }
+
+    if (!addressLine2.value.trim()) {
+      addressLine2Error.style.display = "block";
+    } else {
+      addressLine2Error.style.display = "none";
+    }
+
+    if (!addressCity.value.trim()) {
+      addressCityError.style.display = "block";
+    } else {
+      addressCityError.style.display = "none";
+    }
+
+    if (!addressState.value.trim()) {
+      addressStateError.style.display = "block";
+    } else {
+      addressStateError.style.display = "none";
+    }
+
+    if (!addressPostalcode.value.trim()) {
+      addressPostalcodeError.style.display = "block";
+    } else {
+      addressPostalcodeError.style.display = "none";
+    }
+
+    if (!addressCountry.value.trim()) {
+      addressCountryError.style.display = "block";
+    } else {
+      addressCountryError.style.display = "none";
     }
 
     if (!imageFile.value && !<%= @current_user.image.attached? %> ) {
