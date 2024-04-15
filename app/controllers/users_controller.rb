@@ -11,7 +11,7 @@ class UsersController < ApplicationController
         if params[:user][:payment_status] == "true"
           redirect_to create_checkout_session_path
         else
-          redirect_to car_collection_path, notice: 'Verification successful'
+          redirect_to car_collection_path, notice: 'Verification submitted successfully, Our team will review your account details shortly and you will be able to buy or bid on our platform. Thanks!'
         end
       else
         redirect_to user_verification_path, notice: 'An Error Occurred'
