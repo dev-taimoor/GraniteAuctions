@@ -20,6 +20,10 @@ class User < ApplicationRecord
   enum role: { dealer: 'dealer', individual: 'individual', admin: 'admin' }
   enum admin_status: { pending: 'pending', rejected: 'rejected', approved: 'approved' }
 
+  def address
+    "#{address_line_1} #{address_line_2}, #{city}, #{state}, #{country}"
+  end
+
   def verification_completed?
     role == 'admin' ||
     (role == "individual" && verification_image1.attached? && verification_image2.attached? && stripe_account_detail.payment_status) ||
