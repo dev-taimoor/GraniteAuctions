@@ -65,6 +65,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_130004) do
     t.integer "amount", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "hold_payment_intent"
+    t.boolean "active"
     t.index ["auction_id"], name: "index_bids_on_auction_id"
     t.index ["car_id"], name: "index_bids_on_car_id"
     t.index ["user_id"], name: "index_bids_on_user_id"
@@ -86,7 +88,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_130004) do
     t.integer "kms_driven", default: 0, null: false
     t.boolean "sold", default: false, null: false
     t.string "stripe_product_id"
-    t.string "stripe_price_id"
     t.string "make"
     t.string "model"
     t.index ["category_id"], name: "index_cars_on_category_id"
@@ -106,6 +107,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_130004) do
     t.integer "car_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "vat_amount"
+    t.integer "delivery_cost"
     t.index ["user_id"], name: "index_receipts_on_user_id"
   end
 
@@ -155,6 +158,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_15_130004) do
     t.string "phone_number"
     t.string "address_line_1"
     t.string "admin_status", default: "pending"
+    t.string "payment_method_id"
     t.string "address_line_2"
     t.string "city"
     t.string "state"

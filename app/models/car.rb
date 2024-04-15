@@ -56,16 +56,16 @@ class Car < ApplicationRecord
 
   scope :car_by_price_range, ->(price_range) {
     case price_range
-    when "< £100,000"
-      where("buy_now_price < ?", 100000)
-    when "£100,000 - £200,000"
-      where(buy_now_price: 100000..200000)
-    when "£200,000 - £300,000"
-      where(buy_now_price: 200000..300000)
-    when "£300,000 - £400,000"
-      where(buy_now_price: 300000..400000)
-    when ">£400,000"
-      where("buy_now_price > ?", 400000)
+    when "< £2500"
+      where("buy_now_price < ?", 2500)
+    when "£2501 - £5000"
+      where(buy_now_price: 2501..5000)
+    when "£5001 - £10,000"
+      where(buy_now_price: 5001..10000)
+    when "£10,001 - £20,000"
+      where(buy_now_price: 10001..20000)
+    when ">£20,001"
+      where("buy_now_price > ?", 20001)
     else
       all
     end
@@ -95,7 +95,7 @@ class Car < ApplicationRecord
       name: "#{make}, #{model}",
       description: description,
       default_price_data: {
-        currency: "eur",
+        currency: "gbp",
         unit_amount: calculate_final_price_in_cents.to_i
       },
       metadata: {
