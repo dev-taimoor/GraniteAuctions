@@ -10,11 +10,10 @@ body {
   align-items: center;
   display: inline-flex;
   width: 100%;
+  padding: 1rem 5rem;
 }
 
 .topnav .nav-buttons {
-  margin-left: auto;
-  margin-right: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,8 +45,6 @@ body {
 .topnav .nav-brand {
   color: black;
   text-align: center;
-  padding: 14px 16px;
-  padding-left: 30px;
   font-size: 17px;
   display: inline-flex; /* Change display property to inline-flex */
   align-items: center;

@@ -17,7 +17,7 @@
 
 
     <% price_range_value = form.object.nil? ? nil : form.object.price_range %>
-    <%= form.select :price_range, options_for_select(["Price Range", "< £100,000", "£100,000 - £200,000", "£200,000 - £300,000", "£300,000 - £400,000", ">£400,000"], form.object.nil? ? nil : form.object.price_range), {}, class: "search-dropdown form-control" %>
+    <%= form.select :price_range, options_for_select(["Price Range", "< £2500", "£2501 - £5000", "£5001 - £10,000", "£10,001 - £20,000", ">£20,001"], form.object.nil? ? nil : form.object.price_range), {}, class: "search-dropdown form-control" %>
     <button type="submit" class="search-submit-button btn btn-primary">
       <%= image_tag("search-normal.svg", alt: "Logo", class: "submit-logo") %>
       <span class="submit-text">Search</span>
