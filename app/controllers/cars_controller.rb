@@ -81,8 +81,7 @@ class CarsController < ApplicationController
   end
 
   def buy
-    session = payment_session(@car)
-    redirect_to session.url, allow_other_host: true
+    redirect_to payment_session.url, allow_other_host: true
   end
 
   def highest_bid
@@ -92,31 +91,25 @@ class CarsController < ApplicationController
 
   def submit_bid
     auction = @car.auctions.current.first
-    bid = Bid.find_or_initialize_by(car_id: @car.id, auction_id: auction.id, user_id: current_user.id)
-    binding.break
-    create_hold_amount = bid.id.blank?
+    bid = Bid.find_or_initialize_by(car_id: @car.id, auction_id: auction.id, user_id: current)
+    create_hold_amount = bid.id.blank? # only create hold amount for new bids
     bid.update(amount: params[:bid_amount])
     if create_hold_amount
+      # handles the use case if we are already have the payment method Id of current user
+      # directly holding the security amount against the bidding
       if current_user.payment_method_id.present?
         hold_bidding_security(current_user.payment_method_id, bid.id)
       else
-        session = Stripe::Checkout::Session.create({
-          mode: 'setup',
-          currency: 'eur',
-          customer: current_user.stripe_account_detail.stripe_customer_id,
-          success_url: ENV['DOMAIN'] + '/successful_bid?success=true&session_id={CHECKOUT_SESSION_ID}',
-          cancel_url: ENV['DOMAIN'] + '/successful_bid?success=true',
-          metadata: {
-            bid_id: bid.id
-          }
-        })
+        # in case of payment method not present, create a session for getting payment method
+        # upon sucess, hold the security amount
+        session = bidding_payment_session(bid)
         redirect_to session.url , allow_other_host: true
       end
     end
   end
 
   def successful_bid
-    session = Stripe::Checkout::Session.retrieve({ id: params[:session_id],expand: ['setup_intent']})
+    session = fetch_session_data(params[:session_id])
     payment_method = session.setup_intent.payment_method
     current_user.update(payment_method_id: payment_method)
     hold_bidding_security(payment_method, session.metadata.bid_id)
@@ -132,21 +125,6 @@ class CarsController < ApplicationController
   end
 
   private
-
-  def hold_bidding_security(payment_method, bid_id)
-    payment_intent = Stripe::PaymentIntent.create({
-      customer: current_user.stripe_account_detail.stripe_customer_id,
-      payment_method: payment_method,
-      confirm: true,
-      amount: 25000,
-      currency: 'eur',
-      payment_method_types: ['card'],
-      expand: ['latest_charge'],
-      capture_method: 'manual',
-    })
-    bid = Bid.find(bid_id)
-    bid.update(hold_payment_intent: payment_intent.id)
-  end
 
   def car_params
     params.require(:car).permit(:make_model, :year, :engine_capacity, :kms_driven, :reserve_auction_price, :buy_now_price, :description, :salvage_category_id, :category_id, :location, :delivery_cost, :image, :make, :model)

@@ -32,11 +32,6 @@ Rails.application.routes.draw do
     get 'subscription'
   end
 
-  # scope module: 'bids' do
-  #   get 'highest_bid'
-  #   get 'subscription'
-  # end
-
   resources :auctions do
     get 'cars', on: :member
     delete 'delete_auction_car', on: :member

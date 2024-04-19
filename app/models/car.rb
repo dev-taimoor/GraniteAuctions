@@ -106,7 +106,7 @@ class Car < ApplicationRecord
 
   def create_stripe_car_price
     Stripe::Price.create({
-      currency: 'eur',
+      currency: 'gbp',
       unit_amount: calculate_final_price_in_cents.to_i,
       product: stripe_product_id
     })
