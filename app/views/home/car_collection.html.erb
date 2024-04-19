@@ -63,9 +63,9 @@
               <%= "%02d" % (remaining_time / 86400) %> DAYS <%= "%02d" % ((remaining_time % 86400) / 3600) %> HOURS <%= "%02d" % ((remaining_time % 3600) / 60) %> MINS
             </div>
           </div>
-          <%= form_with(url: car_bid_path(car), method: :post, class: 'd-flex justify-content-center') do |form| %>
-            <%= form.submit "Bid", class: "btn bid-button" %>
-          <% end %>
+          <button id="bidButton" type="button" class="btn bid-button d-flex justify-content-center" data-toggle="modal" data-target="#bidModal" data-car-id="<%= car.id %>">
+            Bid
+          </button>
         </div>
       </div>
     <% end %>
@@ -107,3 +107,5 @@
   </div>
   <%= will_paginate @cars %>
 </div>
+<!-- render bid modal -->
+<%= render 'shared/bid_modal' %>

@@ -12,7 +12,6 @@ class Car < ApplicationRecord
   validates :model, presence: true
 
   after_create :create_stripe_product
-  after_update :update_stripe_price
 
   scope :available, -> { where(sold: false) }
 
@@ -102,19 +101,28 @@ class Car < ApplicationRecord
         car_id: id,
       }
     })
-    update(stripe_product_id: stripe_product.id, stripe_price_id: stripe_product.default_price)
+    update(stripe_product_id: stripe_product.id)
   end
 
-  def update_stripe_price
-    if saved_change_to_buy_now_price? || saved_change_to_delivery_cost?
-      Stripe::Price.update(stripe_price_id,{
-        unit_amount: calculate_final_price_in_cents
-      })
-    end
+  def create_stripe_car_price
+    Stripe::Price.create({
+      currency: 'gbp',
+      unit_amount: calculate_final_price_in_cents.to_i,
+      product: stripe_product_id
+    })
   end
 
   def calculate_final_price_in_cents
     (buy_now_price + (0.2 * buy_now_price) + delivery_cost) * 100
+  end
+
+  def bids_for_active_auction
+    active_auction = auctions.current.first
+    active_auction.present? ? active_auction.bids.where(car_id: id) : []
+  end
+
+  def highest_bid_amount
+    bids_for_active_auction.map(&:amount).max || reserve_auction_price
   end
 end
 

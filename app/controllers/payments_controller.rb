@@ -43,7 +43,7 @@ class PaymentsController < ApplicationController
     receipt = Receipt.new(
       user_id: current_user.id,
       invoice_id: session_data.invoice,
-      amount: session_data.amount_total
+      amount: session_data.amount_total / 100
     )
     receipt.save!
   end

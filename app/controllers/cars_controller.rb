@@ -1,6 +1,8 @@
 class CarsController < ApplicationController
-  before_action :ensure_admin
-  before_action :verify_user_status, only: %i[buy bid]
+  include CarPaymentConcern
+  before_action :ensure_admin, except: %i[buy highest_bid car_purchase submit_bid successful_bid]
+  before_action :verify_user_status, only: %i[buy car_purchase]
+  before_action :set_car, only: %i[edit update destroy show add_to_auction highest_bid submit_bid buy]
 
   def index
     @car = Car.new
@@ -14,8 +16,6 @@ class CarsController < ApplicationController
 
   def destroy
     begin
-      @car = Car.find(params[:id])
-
       if @car.destroy
         redirect_to cars_path, notice: 'Car was successfully destroyed.'
       else
@@ -46,19 +46,14 @@ class CarsController < ApplicationController
   end
 
   def edit
-    @car = Car.find(params[:id])
   end
 
   def show
-    @car = Car.find(params[:id])
   end
 
   def update
     begin
-      @car = Car.find(params[:id])
-      
       @car.image.attach(params[:image]) if params[:image].present?
-
       if @car.update(car_params)
         redirect_to cars_path, notice: 'Car was successfully updated.'
       else
@@ -69,22 +64,64 @@ class CarsController < ApplicationController
     end
   end
 
+  # need to discuss this further
   def add_to_auction
-    @car = Car.find(params[:id])
-    @auction = Auction.find(params[:auction_id])
-    return unless @car || @auction
-    authorize! :create, @auction
-    unless @auction.auction_cars.exists?(auction: @auction, car: @car)
-      AuctionCar.create(auction: @auction, car: @car)
+    begin
+      @auction = Auction.find(params[:auction_id])
+      return unless @car || @auction
+      authorize! :create, @auction
+      unless @auction.auction_cars.exists?(auction: @auction, car: @car)
+        AuctionCar.create!(auction: @auction, car: @car)
+      end
+      flash[:success] = "Car successfully added to auction."
+    rescue ActiveRecord::RecordInvalid => e
+      flash[:error] = e.message
     end
-  end
-
-  def buy
     
   end
 
-  def bid
+  def buy
+    redirect_to payment_session.url, allow_other_host: true
+  end
 
+  def highest_bid
+    verification_error = verify_user_status(true)
+    render json: verification_error.present? ? verification_error : { highest_bid_amount: @car.highest_bid_amount }
+  end
+
+  def submit_bid
+    auction = @car.auctions.current.first
+    bid = Bid.find_or_initialize_by(car_id: @car.id, auction_id: auction.id, user_id: current)
+    create_hold_amount = bid.id.blank? # only create hold amount for new bids
+    bid.update(amount: params[:bid_amount])
+    if create_hold_amount
+      # handles the use case if we are already have the payment method Id of current user
+      # directly holding the security amount against the bidding
+      if current_user.payment_method_id.present?
+        hold_bidding_security(current_user.payment_method_id, bid.id)
+      else
+        # in case of payment method not present, create a session for getting payment method
+        # upon sucess, hold the security amount
+        session = bidding_payment_session(bid)
+        redirect_to session.url , allow_other_host: true
+      end
+    end
+  end
+
+  def successful_bid
+    session = fetch_session_data(params[:session_id])
+    payment_method = session.setup_intent.payment_method
+    current_user.update(payment_method_id: payment_method)
+    hold_bidding_security(payment_method, session.metadata.bid_id)
+    redirect_to car_collection_path, notice: "Bid successful"
+  end
+
+  def car_purchase
+    if params[:success] == 'true' && handle_transaction_success
+      redirect_to car_collection_path , notice: "Payment successful"
+    else
+      redirect_to car_collection_path, notice: 'Payment failed, please try again'
+    end
   end
 
   private
@@ -97,7 +134,24 @@ class CarsController < ApplicationController
     authorize! :manage, Car
   end
 
-  def verify_user_status
-    redirect_to user_verification_path, notice: 'User verification is pending' if !current_user.verification_completed?
+  def verify_user_status(json_response = false)
+    if !current_user.verification_completed?
+      if json_response
+        flash[:error] = 'User verification is pending'
+        return { error: 'User verification is pending'}
+      end
+      # return { error: 'User verification is pending'} if json_response
+      redirect_to user_verification_path, notice: 'User verification is pending'
+    elsif current_user.admin_status == 'pending'
+      if json_response
+        flash[:error] = 'User needs to be verified from admin.'
+        return { error: 'User needs to be verified from admin.'}
+      end
+      redirect_to car_collection_path, notice: 'User needs to be verified from admin.'
+    end
+  end
+
+  def set_car
+    @car = Car.find(params[:id] || params[:car_id])
   end
 end

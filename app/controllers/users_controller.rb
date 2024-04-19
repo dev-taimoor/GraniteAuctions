@@ -16,11 +16,10 @@ class UsersController < ApplicationController
       else
         redirect_to user_verification_path, notice: 'An Error Occurred'
       end
+    rescue ActiveRecord::StatementInvalid => e
+      # Handle database lock exception
+      redirect_to user_verification_path, notice: 'Database is busy, please try again later.'
     end
-  rescue ActiveRecord::StatementInvalid => e
-    # Handle database lock exception
-    redirect_to user_verification_path, notice: 'Database is busy, please try again later.'
-  end
 
   def index
     if params[:search].present?

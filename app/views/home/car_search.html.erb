@@ -38,7 +38,7 @@
               </div>
               <div>
                 <div class="vehicle-label">AUCITON END TIME</div>
-                <div class="vehicle-text"><%= "00 DAYS 00 HOURS 00 MINS" %></div>
+                <div class="vehicle-text"><% remaining_time = (car.auction_end_time - Time.now).to_i %></div>
               </div>
               <div class="d-flex justify-content-between">
                 <div>
@@ -47,12 +47,16 @@
                 </div>
                 <div>
                   <div class="vehicle-label">Highest Bid</div>
-                  <div class="vehicle-text">£<%= "100" %></div>
+                  <div class="vehicle-text"><%= car.highest_bid_amount %></div>
                 </div>
               </div>
-              <div>
-                <button class="btn bid-button search-page-cta">Bid</button>
-                <button class="btn bid-button search-page-cta buy-now">Buy Now</button>
+              <div class="d-flex gap-1">
+                <button id="bidButton" type="button" class="btn bid-button search-page-cta" data-toggle="modal" data-target="#bidModal" data-car-id="<%= car.id %>">
+                  Bid
+                </button>
+                <%= form_with(url: car_buy_path(car), method: :post, class: 'd-flex justify-content-center') do |form| %>
+                  <%= form.submit "Buy Now", class: "btn bid-button search-page-cta buy-now" %>
+                <% end %>
               </div>
             </div>
           </div>
@@ -62,6 +66,8 @@
     </div>
   </div>
 </div>
+<!-- render bid modal -->
+<%= render 'shared/bid_modal' %>
 <script>
   function toggleDropdown(id) {
     const dropdownMenu = document.getElementById(`dropdown-menu-${id}`);

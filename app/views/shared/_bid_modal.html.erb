@@ -1,0 +1,55 @@
+<!-- app/views/shared/_bid_modal.html.erb -->
+
+<!-- Modal -->
+<div class="modal fade" id="bidModal" tabindex="-1" role="dialog" aria-labelledby="bidModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content bid-modal-wrapper">
+      <div class="modal-header bid-modal-header">
+        <h5 class="modal-title bid-modal-title" id="bidModalLabel">Place Bid</h5>
+        <button type="button" class="close bid-modal-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body bid-modal-body">
+        <p class="last-highest-bid-label">Last Highest Bid: <span id="lastHighestBid"></span></p>
+        <%= form_with(method: :post, remote: true, class: 'bid-submit-form') do |form| %>
+          <div class="form-group">
+            <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>" autocomplete="off">
+            <%= form.label :bid_amount, 'Bid Amount', class: 'bid-label'%>
+            <%= form.number_field :bid_amount, class: 'form-control', required: true, id: 'bid_amount_field', min: '0.01' %>
+          </div>
+          <%= form.submit 'Submit Bid', class: 'btn btn-primary bid-button mt-2' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+
+  $(document).on("click", "#bidButton", function() {
+    var carId = $(this).data("car-id");
+    $('#bidModal').data('car-id', carId);
+    $('#bidModal').modal('show');
+  });
+  
+  $('#bidModal').on('shown.bs.modal', function(event) {
+    var carId = $(this).data("car-id");
+    $.ajax({
+      url: 'cars/' + carId + '/highest_bid',
+      method: 'GET',
+      success: function(response) {
+        if (response.error) {
+          $('#bidModal').modal('hide');
+          alert(response.error);
+        } else {
+          var bid_amount = response.highest_bid_amount
+          $('#lastHighestBid').text('£' + bid_amount);
+          $('#bid_amount_field').val(bid_amount + 1);
+          $('#bid_amount_field').attr('min', bid_amount + 1);
+          $('.bid-submit-form').attr('action', 'cars/' + carId + '/submit_bid');
+          $('#bidModal').modal('show');
+        }
+      }
+    });
+  });
+</script>
