@@ -20,6 +20,7 @@ class UsersController < ApplicationController
       # Handle database lock exception
       redirect_to user_verification_path, notice: 'Database is busy, please try again later.'
     end
+  end
 
   def index
     if params[:search].present?

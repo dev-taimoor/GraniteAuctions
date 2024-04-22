@@ -1,11 +1,591 @@
+<style>
+  .dashboard-heading-style{
+    color: #2B4159;
+    font-weight: bold;
+  }
+
+  .dashboard-conatiner{
+    width: 85%;
+    display: flex;
+    background-color: #F4F7FE;
+    flex-direction: column;
+  }
+
+  .dashboard-analytics-div{
+    width: 100%;
+    display: flex;
+    padding: 2%;
+    gap: 2%;
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+  }
+
+  .analytic-card{
+    width: 23%;
+    background: white;
+    display: flex;
+    align-items: center;
+    border-radius: 50px;
+  }
+
+  .analytic-text{
+    display: inline-block;
+    color: #2B4159;
+  }
+
+  .card-heading{
+    font-weight: bold;
+  }
+
+  .report-analytic-div{
+    width: 100%;
+    display: flex;
+    padding: 2%;
+    gap: 2%;
+    flex-wrap: wrap;
+  }
+
+  .roc-div, .auc-user-stat-div {
+    width: 100%;
+    display: flex;
+    padding: 2%;
+    gap: 2%;
+    flex-wrap: wrap;
+  }
+
+  .sales-report-div, .user-stat {
+    width: 64%;
+    background: white;
+    border-radius: 25px;
+  }
+
+  .roc-bar-div{
+    width: 64%;
+    background: white;
+    border-radius: 25px;
+  }
+
+  .rounded-date {
+    border-radius: 20px;
+  }
+
+
+  .sales-analytic-div{
+    width: 34%;
+    background: white;
+    border-radius: 25px;
+  }
+
+  .roc-overall-div, .avg-auc{
+    width: 34%;
+    background: white;
+    border-radius: 25px;
+  }
+
+  .auction-outer-div{
+    width: 100%;
+    display: flex;
+    padding: 2%;
+    gap: 2%
+  }
+
+  .live-auction-inner{
+    width: 60%;
+    padding: 2%;
+    background: white;
+    border-radius: 8%;
+  }
+
+  .sold-cars-inner{
+    width: 40%;
+    padding: 2%;
+    background: white;
+    border-radius: 8%;
+  }
+
+  .heading-container{
+    display: flex;
+    width: 100%;
+    padding-left: 2%;
+    padding-right: 2%;
+    justify-content: space-between;
+  }
+
+  #revenue-graph {
+    width: 100%; /* Make sure the canvas fills its container */
+    height: 80px; /* Default height */
+  }
+
+
+  @media only screen and (max-width: 768px) {
+    .dashboard-conatiner, .sales-report-div, .sales-analytic-div, .roc-bar-div, .roc-overall-div, .user-stat, .avg-auc {
+      width: 100%; /* Make each card take up full width on smaller screens */
+    }
+
+    .sales-analytic-div, .sales-report-div , .roc-overall-div, .user-stat, .avg-auc{
+      margin-top: 10%;
+    }
+
+    .analytic-card{
+      width: 48%;
+      justify-content: center;
+      padding: 5%;
+      margin-top: 5%;
+    }
+    .not-mobile{
+      display: none;
+    }
+    .analytic-text{
+      text-align: center;
+    }
+    .report-analytic-div, .roc-div, .auc-user-stat-div{
+      flex-direction: column;
+    }
+
+    .auction-outer-div, .heading-container{
+      flex-direction: column;
+    }
+
+    .sold-cars-inner, .live-auction-inner {
+      width: 100%;
+    }
+  }
+</style>
+
 <div class="parent-container">
   <div class="content-wrapper">
     <div class="menu-bar">
       <%= render 'admin-shared/admin-side-bar' %>
     </div>
 
-    <div class="preview preview-complete">
-      <h1>In Progress, please Test Stock, Auction and User Tabs for now</h1>
+    <div class="dashboard-conatiner">
+      <div class="heading-container">
+        <h1 class="dashboard-heading-style">Dashbaord</h1>
+
+        <%= form_tag(dashboard_index_path, method: "get") do %>
+          <div style="display: flex; width: 100%">
+            <div class="form-group">
+              <%= date_field_tag "start_date", params[:start_date], class: "form-control rounded-date" %>
+            </div>
+
+            <div class="form-group">
+              <%= date_field_tag "end_date", params[:end_date], class: "form-control rounded-date" %>
+            </div>
+            <%= submit_tag "Submit", class: "btn btn-secondary btn-block rounded-button" %>
+          </div>
+        <% end %>
+      </div> 
+
+      <div class="dashboard-analytics-div">
+        <div class="analytic-card">
+          <%= image_tag("product_listed.png", alt: "Logo", class: "logo m-3 not-mobile") %>
+          <div class="analytic-text">
+            <div class="card-heading"><%= @cars_listed %>+</div>
+            <div>Products Listed</div>
+          </div>
+        </div>
+
+        <div class="analytic-card">
+          <%= image_tag("auction_end.png", alt: "Logo", class: "logo m-3 not-mobile") %>
+          <div class="analytic-text">
+            <div class="card-heading"><%= @auction_end%></div>
+            <div>Auction End</div>
+          </div>
+        </div>
+  
+        <div class="analytic-card">
+          <%= image_tag("sales.png", alt: "Logo", class: "logo m-3 not-mobile") %>
+          <div class="analytic-text">
+            <div class="card-heading"><%= @cars_sold %></div>
+            <div>sales</div>
+          </div>
+        </div>
+  
+        <div class="analytic-card">
+          <%= image_tag("revenue.png", alt: "Logo", class: "logo m-3 not-mobile") %>
+          <div class="analytic-text">
+            <div class="card-heading">£<%= @revenue %></div>
+            <div>Revenue</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="report-analytic-div">
+        <div class="sales-report-div p-3">
+          <h5 class="dashboard-heading-style">Report</h5>
+          <canvas id="revenue-graph" width="200" height="100" data-revenue="<%= @all_months_data.to_json %>"></canvas>
+        </div>
+
+          
+        <div class="sales-analytic-div p-3">
+          <h5 class="dashboard-heading-style">Car Analytics</h5>
+          <div class="mt-5">
+            <canvas id="analytic-graph" width="200" height="100" data-cars="<%= @cars_analytics.to_json %>"></canvas>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="auction-outer-div mb-3">
+        <div class="live-auction-inner mt-3">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <h3 class="mt-3 dashboard-heading-style">Recent Orders</h3>
+          </div>
+          
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Tracking ID</th>
+                  <th>Product Name</th>
+                  <th>Reserve Price</th>
+                  <th>Status</th>
+                  <th>Highest Bid</th>
+                </tr>
+              </thead>
+              
+              <tbody>
+                <% @recent_orders.each do |auction_car| %>
+                  <tr>
+                    <td><%= auction_car.id %></td>
+                    <td>
+                      <div style="display: flex; align-items: center;">
+                        <% if auction_car.image.attached? %>
+                          <%= image_tag url_for(auction_car.image), class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;" %>
+                        <% else %>
+                          <%= image_tag("no-image.jpg", alt: "no-image", class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;") %>
+                        <% end %>
+                        <%="#{auction_car.make}, #{auction_car.model}"%>   
+                      </div>
+                    </td>
+                    <td><%= auction_car.reserve_auction_price %></td>
+                    <td><%= auction_car.sold? ? "Sold" : "Awaiting Payment" %></td>
+                    <td><%= auction_car.bids.maximum(:amount) %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="sold-cars-inner mt-3">
+          <h3 class="mt-3 dashboard-heading-style">Top Selling Products</h3>
+          <div>
+            <% @top_sold_cars&.each do |car| %>
+              <div class="mt-3" style="display: flex;">
+                <div style="width: 30%">
+                 <% if car.image.attached? %>
+                  <%= image_tag url_for(car.image), class: "", style: "max-width: 100%; width: 100%" %>
+                <%else%>
+                  <%= image_tag("no-image.jpg", alt: "no-image", class: "", style: "max-width: 100%; width: 100%") %>
+                <% end %> 
+                </div>
+                <div class="m-3" style="width: 70%; display: flex; flex-direction: column; justify-content: center;">
+                  <h4 style="color: #2B4159; font-weight: bold;"><%="#{car.make}, #{car.model}"%></h4>
+                  <h3 style="color: #2B4159; font-weight: bold;">£<%= car.reserve_auction_price%></h3>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <div class="roc-div">
+        <div class="roc-bar-div p-3">
+          <h5 class="dashboard-heading-style">Avg Price with Category</h5>
+          <br>
+          <canvas id="roc-bar" style="width:100%; height: 80" data-categories="<%= @category_avg_prices_hash.to_json %>"></canvas>
+        </div>
+
+          
+        <div class="roc-overall-div p-3">
+          <h5 class="dashboard-heading-style">Salvage Category Analytics</h5>
+          <div class="mt-5">
+            <canvas id="roc-analytics" width="200" height= "100" data-category_stat="<%= @category_stat.to_json %>" ></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="auc-user-stat-div">
+
+        <div class="avg-auc p-3">
+          <h5 class="dashboard-heading-style">Avg Price by Salvage Category</h5>
+          <canvas id="auction-time-chart" width="200" height="150" data-salvage_categories="<%= @salvage_category_avg_prices_hash.to_json %>"></canvas>
+        </div>
+
+
+        <div class="user-stat p-3">
+          <h5 class="dashboard-heading-style">User Stats</h5>
+          
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>SN</th>
+                  <th>Name</th>
+                  <th>Heighest Bid</th>
+                  <th>Bid</th>
+                </tr>
+              </thead>
+              
+              <tbody>
+                <% @users&.each do |user| %>
+                  <tr class="row-style user-row" >
+                  <td><%= user.id%></td>
+                  <td>
+                    <div style="display: flex; align-items: center;">
+                      <% if user.image.attached? %>
+                        <%= image_tag url_for(user.image), class: "mr-2 rounded-circle", style: "width: 50px; height: 35px; margin-right: 5px;" %>
+                      <% else %>
+                        <%= image_tag("no-image.jpg", alt: "no-image", class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;") %>
+                      <% end %>
+                      <%= user.full_name %>     
+                    </div>
+                  </td>
+                  <td><%= user.bids.maximum(:amount) rescue "N/A"%></td>
+                  <td><%= user.bids.count%></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <%= will_paginate @users, param_name: "user" %>
+        </div>
+      </div>
+
+
+
+
     </div>
   </div>
 </div>
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
+
+    startDateInput.setAttribute('max', new Date().toISOString().split("T")[0]);
+    endDateInput.setAttribute('max', new Date().toISOString().split("T")[0]);
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+      if (!startDateInput.value || !endDateInput.value) {
+        event.preventDefault();
+        alert('Please select both start date and end date.');
+      }
+
+      const startDateValue = new Date(startDateInput.value);
+      const endDateValue = new Date(endDateInput.value);
+
+      if (endDateValue < startDateValue) {
+        alert('End date cannot be before start date.');
+        endDateInput.value = ''; // Clear end date input value
+      }
+
+    });
+  });
+
+  var ctx = document.getElementById('revenue-graph').getContext('2d');
+  var canvas = document.getElementById('revenue-graph');
+  var data = JSON.parse(canvas.getAttribute('data-revenue'));
+  var months = Object.keys(data);
+  var amounts = Object.values(data);
+  var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Revenue',
+        data: amounts,
+        backgroundColor: "#DBE0EB",
+        borderColor: "#2B4159",
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+
+
+  var carGraph = document.getElementById('analytic-graph');
+  var data = JSON.parse(carGraph.getAttribute('data-cars'));
+  var types = Object.keys(data);
+  var stats = Object.values(data);
+
+  const barColors = [
+    "#A3AED0",
+    "#DBE0EB",
+    "#2B4159"
+  ];
+
+  new Chart("analytic-graph", {
+    type: "doughnut",
+    data: {
+      labels: types,
+      datasets: [{
+        backgroundColor: barColors,
+        data: stats
+      }]
+    },
+    options: {
+      plugins: {
+        doughnutlabel: {
+          labels: [
+            {
+              text: 'Cars',
+              font: {
+                size: '20'
+              }
+            }
+          ]
+        }
+      }
+    }
+  });
+
+  var carCount = document.getElementById('roc-analytics');
+  var data = JSON.parse(carCount.getAttribute('data-category_stat'));
+  var carCat = Object.keys(data);
+  var carCatVal = Object.values(data);
+  var barCol = carCat.map((_, index) => index % 2 === 0 ? "#DBE0EB" : "#2B4159");
+
+  new Chart("roc-analytics", {
+    type: "doughnut",
+    data: {
+      labels: carCat,
+      datasets: [{
+        backgroundColor: barCol,
+        data: carCatVal
+      }]
+    },
+    options: {
+      plugins: {
+        doughnutlabel: {
+          labels: [
+            {
+              text: 'Salvage',
+              font: {
+                size: '20'
+              }
+            }
+          ]
+        }
+      }
+    }
+  });
+
+
+function renderChart(xValues, yValues, barColors) {
+  var canvas = document.getElementById("roc-bar");
+
+  var ctx = canvas.getContext('2d');
+  var myChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues,
+        borderWidth: 1,
+        borderRadius: 200,
+        datalabels: {
+          anchor: 'end', // Align datalabels to the end of the bar
+          align: 'end', // Align datalabels to the end of the bar
+          color: '#2B4159' // Color of the datalabels
+        }
+      }]
+    },
+    options: {
+      legend: { display: false },
+      scales: {
+        xAxes: [{
+          ticks: {
+            fontColor: "#2B4159"
+          },
+          gridLines: {
+            display: false
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            fontColor: "#2B4159",
+            callback: function(value, index, values) {
+              return "£" + value.toLocaleString();
+            }
+          },
+          gridLines: {
+            display: false
+          }
+        }]
+      },
+      plugins: {
+        datalabels: {
+          display: true // Enable datalabels plugin
+        }
+      },
+      onHover: function(event, chartElement) {
+        event.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+      }
+    }
+  });
+}
+
+  var rocCategory = document.getElementById("roc-bar");
+  var categories = JSON.parse(rocCategory.getAttribute('data-categories'));
+  var carCategories = Object.keys(categories);
+  var categoriesValues = Object.values(categories);
+
+var barColorss = carCategories.map((_, index) => index % 2 === 0 ? "#DBE0EB" : "#2B4159");
+
+renderChart(carCategories, categoriesValues, barColorss);
+
+
+
+  var salvage = document.getElementById('auction-time-chart');
+  var data = JSON.parse(salvage.getAttribute('data-salvage_categories'));
+  var sc = Object.keys(data);
+  var scval = Object.values(data);
+
+
+// Define the colors you want to alternate between
+const colors = ["#DBE0EB", "#2B4159"]; // Add or modify colors as needed
+
+// Chart setup
+const element = document.getElementById('auction-time-chart').getContext('2d');
+const auctionChart = new Chart(element, {
+  type: 'horizontalBar',
+  data: {
+    labels: sc,
+    datasets: [{
+      label: 'Avg price',
+      data: scval,
+      backgroundColor: sc.map((_, index) => colors[index % colors.length])
+    }]
+  },
+  options: {
+    scales: {
+      xAxes: [{
+        display: false,
+        gridLines: {
+          display: false
+        }
+      }],
+      yAxes: [{
+        display: true,
+        gridLines: {
+          display: false
+        }
+      }]
+    }
+  }
+});
+
+</script>
