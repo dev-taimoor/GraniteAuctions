@@ -5,6 +5,7 @@ class Car < ApplicationRecord
   has_many :auction_cars
   has_many :auctions, through: :auction_cars
   has_many :bids
+  has_one :receipt
 
   has_one_attached :image
 

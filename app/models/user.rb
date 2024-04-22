@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_one_attached :image
 
   has_many :receipts
+  has_many :bids
 
   after_create :create_stripe_account
 
