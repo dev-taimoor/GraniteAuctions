@@ -82,7 +82,14 @@
     myChart.update();
   }
 
-  renderChart(["JAN", "FEB", "MAR", "APR", "MAY", "JUN"], [55, 49, 44, 24, 25, 25], "#DBE0EB");
+  var graph = document.getElementById('myChart');
+  var data = JSON.parse(graph.getAttribute('data-user-stat'));
+  var months = Object.keys(data);
+  var amounts = Object.values(data);
+
+
+
+  renderChart(months, amounts, "#DBE0EB");
 </script>
 
 <div style="display: flex; justify-content: center; flex-direction: column; width: 100%;" class="mt-5 preview-details">
@@ -115,7 +122,7 @@
     </div>
 
     <div class="mt-3" style="display: flex; justify-content: center;">
-      <canvas id="myChart"></canvas>
+      <canvas id="myChart" data-user-stat="<%= @user_stat_data.to_json %>"></canvas>
     </div>
 
     <div class="file-button mt-3">

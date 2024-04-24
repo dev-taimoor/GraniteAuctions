@@ -46,15 +46,13 @@
 
   .pagination a {
     position: relative;
-    padding: 6px 12px;
     line-height: 1.428571429;
   }
 
 
   @media screen and (max-width: 768px) {
     .inner_box {
-      width: 80%;
-      margin: 5% 0;
+      width: 90%;
     }
   }
 
@@ -85,7 +83,7 @@
         <% end %>
       </div>
 
-      <div style="display: flex; flex-wrap: wrap; padding: 2%; gap: 1%; justify-content: center">
+      <div class="mb-5" style="display: flex; flex-wrap: wrap; gap: 1%; justify-content: center">
         <% @auctions.each do |auction| %>
           <div class="inner_box mt-5">
             <div style="display: flex;">

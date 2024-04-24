@@ -1,0 +1,336 @@
+<style>
+  .inner_box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 23%;
+    padding: 5%;
+    text-align: center;
+    background: white;
+    border: none;
+    border-radius: 13%;
+    box-shadow: 0 4px 11px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .header-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    background: #F4F7FE;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .text-headings {
+    font-size: 64px;
+    font-weight: bold;
+    text-align: left;
+    line-height: 1.3;
+    color: #2B4159;
+  }
+
+  .heading-styling{
+    width: 50%;
+  }
+
+  .card-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    background: #F4F7FE;
+    justify-content: center;
+    gap: 2%;
+  }
+
+  .header-description {
+    display: flex;
+    width: 50%;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .description-text {
+    text-align: left;
+    line-height: 1.3;
+    font-size: 18px; 
+    color: #2B4159;
+  }
+
+  .button-style {
+    border-radius: 20px;
+    padding: 10px 30px;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    background-color: #2B4159;
+    color: white;
+    display: inline-flex;
+    align-self: baseline;
+    margin-top: 10px;
+    text-decoration: none;
+    gap: 6px;
+  }
+
+  .button-style:hover {
+    color: white;
+  }
+
+  .answer {
+    display: none; /* Initially hide the answer */
+  }
+
+  .toggle {
+    cursor: pointer;
+    width: 50px;
+    text-align: center;
+  }
+
+  .faq-item{
+    width: 100%;
+  }
+
+  .question{
+    width: 100%;
+    padding: 1%;
+    background: white;
+    border-radius: 20px;
+  }
+
+  .question-style{
+    font-weight: bold;
+    color: #2B4159;
+  }
+
+  .hero-image{
+    width: 100%;
+    height: auto;
+  }
+
+  .inner-style{
+    margin: 0;
+  }
+
+  .description-styling{
+    width: 65%;
+  }
+
+  @media screen and (max-width: 768px) { /* Adjust the breakpoint as needed */
+    .inner_box {
+      width: 100%;
+    }
+
+    .toggle{
+      height: 50px;
+    }
+
+    .header-wrapper{
+      padding: 0;
+    }
+
+    .heading-styling{
+      width: 100%;
+    }
+
+    .text-headings {
+      font-size: 25px;
+      font-weight: bold;
+      text-align: left;
+      line-height: 1.3;
+      color: #2B4159;
+    }
+
+    .header-description{
+      width: 100%;
+    }
+
+    .inner-style{
+      margin-top: 20%;
+    }
+
+    .logo{
+      display: none;
+    }
+
+    .description-styling{
+      width: 100%;
+    }
+
+    .reversing{
+      flex-direction: column-reverse;
+    }
+  }
+</style>
+
+<div class="header-wrapper p-5">
+  <div class="heading-styling" style="display: flex; flex-direction: column; align-items: center;">
+    <h1 class="text-headings">Empowering Your Automotive Dreams</h1>  
+  </div>
+  
+  <div class="header-description">
+    <h7 class="description-text">At Granite Auction, we are driven by a passion for connecting enthusiasts with their dream vehicles. Our platform is designed to make the process of buying and selling automobiles seamless and enjoyable. With a commitment to excellence, we strive to create a community where automotive dreams come true. Join us on this exciting journey, and let the road to your dream car unfold.</h7>
+  </div>
+</div>
+
+<div>
+	<%= image_tag("hero-image.png", alt: "Logo", class: "hero-image") %>
+</div>
+
+<div class="header-wrapper pe-5 mt-3">
+  <div style="display: flex; flex: 1; justify-content: end;">
+    <h1 class="text-headings">Seamless Journey to <br>Your Perfect Vehicle</h1>
+  </div>
+</div>
+
+<div class="card-wrapper p-5">
+  <div class="inner_box">
+    <%= image_tag("profile-2user.png", alt: "Logo", class: "") %>
+    <br>
+    <h1>Rigister</h1>
+    <p>Create your MotorAuction account effortlessly.</p>
+  </div> 
+
+  <div class="inner_box inner-style" >
+    <%= image_tag("search-status.png", alt: "Logo", class: "") %>
+    <br>
+    <h1>Browse</h1>
+    <p>Create your MotorAuction account effortlessly.</p>
+  </div> 
+
+  <div class="inner_box inner-style">
+    <%= image_tag("judge.png", alt: "Logo", class: "") %>
+    <br>
+    <h1>Bid</h1>
+    <p>Create your MotorAuction account effortlessly.</p>
+  </div> 
+
+  <div class="inner_box inner-style">
+    <%= image_tag("wallet-minus.png", alt: "Logo", class: "") %>
+    <br>
+    <h1>Pay</h1>
+    <p>Create your MotorAuction account effortlessly.</p>
+  </div> 
+</div>
+
+<div class="header-wrapper ps-5">
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <h1 class="text-headings">Frequently Asked<br> Questions (FAQS)</h1>  
+  </div>  
+</div>
+
+<div class="header-wrapper p-5 pt-2">
+	<div class="faq-item">
+    <div class="question">
+        <div class="pt-2" style="display: flex; justify-content: space-between">
+          <h1 class="question-style">How do I register on MotorAuction?</h1>
+          <h1 class="p-2 rounded-circle toggle" style="background: #d3d3d3;"> +</h1>
+        </div>
+        <div class="answer">
+          <p>This is the answer to Question 1.</p>
+        </div>
+    </div>
+
+    <div class="question mt-2">
+        <div class="pt-2" style="display: flex; justify-content: space-between">
+          <h1 class="question-style">How does the bidding process work?</h1>
+          <h1 class="p-2 rounded-circle toggle" style="background: #d3d3d3;"> +</h1>
+        </div>
+        <div class="answer">
+          <p>This is the answer to Question 2.</p>
+        </div>
+    </div>
+
+    <div class="question mt-2">
+        <div class="pt-2" style="display: flex; justify-content: space-between">
+          <h1 class="question-style">How does the bidding process work?</h1>
+          <h1 class="p-2 rounded-circle toggle" style="background: #d3d3d3;"> +</h1>
+        </div>
+        <div class="answer">
+          <p>This is the answer to Question 3.</p>
+        </div>
+    </div>
+    
+  </div>
+</div>
+
+
+<div class="header-wrapper p-5">
+  <div class="heading-styling" style="display: flex; flex-direction: column; align-items: center;">
+    <h1 class="text-headings">Find Your Perfect Ride at Granite Auctions</h1>  
+  </div>
+  
+  <div class="header-description">
+    <h7 class="description-text">Ready to embark on a thrilling journey to your dream vehicle? Join Granite Auctions today and gain access to exclusive auctions, a diverse range of vehicles, and a seamless bidding experience. Your next adventure begins with just a click.</h7>
+
+    <div style="display: flex; align-self: baseline; gap: 10px">
+      <a href="/users/sign_up" class="button-style"> <%= image_tag("profile.svg", alt: "Logo", class: "logo") %> Sign up </a>
+      <a href="/users/sign_up" class="button-style"> <%= image_tag("profile-tick.png", alt: "Logo", class: "logo") %> Login </a>
+    </div>
+  </div>
+</div>
+
+<div>
+  <%= image_tag("banner2.png", alt: "Logo", class: "", style: "width: 100%; height: auto") %>
+</div>
+
+<div class="reversing header-wrapper p-5">
+  <div class="header-description">
+    <h7 class="description-text description-styling">Whether you're a garage looking to partner with us or a user seeking support, our team is here to help. Reach out to us for any inquiries, feedback, or assistance. Your satisfaction is our priority.</h7>
+  </div>
+
+  <div class="heading-styling" style="display: flex; flex-direction: column; align-items: center;">
+    <h1 class="text-headings">Have Questions or Need Assistance?</h1>  
+  </div>
+</div>
+
+<div class="header-wrapper p-5 pt-0">
+  <div class="p-3" style="background: #DBE0EB; width: 100%; border-radius: 20px;">
+    <h1>Granite Auction Headquarters:</h1>
+    <p>123 Drive Lane,<br>Auto City, AC 56789</p>
+
+    <h1>Customer Support</h1>
+    <p>Email: support@graniteauction.com<br>Phone: (555) 123-4567</p>
+
+    <h1>Business Inquiries:</h1>
+    <p>Email: partnerships@graniteauction.com<br>Phone: (555) 987-6543</p>
+  </div>
+
+  
+  
+</div>
+
+<script>
+$(document).ready(function() {
+    // Initially set the signs based on the initial state of the answers
+    $('.question').each(function() {
+        var $question = $(this);
+        var $answer = $question.find('.answer');
+        var $toggle = $question.find('.toggle');
+        
+        if ($answer.is(':visible')) {
+            $toggle.text('-'); // Change to minus sign when answer is visible
+        } else {
+            $toggle.text('+'); // Change to plus sign when answer is hidden
+        }
+    });
+
+    // Toggle answers and signs when toggle button is clicked
+    $('.toggle').click(function() {
+        var $toggle = $(this);
+        var $question = $toggle.closest('.question');
+        var $answer = $question.find('.answer');
+
+        $answer.slideToggle(); // Toggle the answer visibility
+
+        // Toggle the sign based on current state
+        if ($toggle.text() === '+') {
+            $toggle.text('-'); // Change to minus sign when answer is visible
+        } else {
+            $toggle.text('+'); // Change to plus sign when answer is hidden
+        }
+    });
+});
+</script>
+
+
+

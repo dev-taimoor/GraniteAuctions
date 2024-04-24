@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   get '/dashboard', to: 'dashboard#index', as: 'dashboard'
   get '/car_purchase', to: 'cars#car_purchase', as: 'car_purchase'
   get '/successful_bid', to: 'cars#successful_bid', as: 'successful_bid'
+  get '/about', to: 'home#about', as: 'about'
   resources :cars do
     post 'add_to_auction', on: :member
     post 'buy'

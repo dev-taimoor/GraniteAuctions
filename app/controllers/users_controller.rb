@@ -34,6 +34,8 @@ class UsersController < ApplicationController
 
   def preview
     @user = User.find(params[:id])
+    @user_stat_data = @user.get_revenue
+
     respond_to do |format|
       format.js
     end
