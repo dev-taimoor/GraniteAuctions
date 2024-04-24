@@ -55,6 +55,10 @@ gem 'redis-client'
 gem 'letter_opener'
 gem 'actionmailer'
 
+# graphs
+gem "chartkick"
+gem "groupdate"
+
 # Payment
 gem 'stripe'
 

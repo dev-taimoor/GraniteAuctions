@@ -13,6 +13,7 @@
  *= require_tree .
  *= require_self
  *= require car_collection
+ *= require revenue
  */
 /* Bootstrap*/
 @import "bootstrap";

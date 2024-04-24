@@ -5,3 +5,5 @@ import "controllers"
 import 'bootstrap'
 import * as bootstrap from "bootstrap"
 import "./bids"
+import "chartkick"
+import "Chart.bundle"

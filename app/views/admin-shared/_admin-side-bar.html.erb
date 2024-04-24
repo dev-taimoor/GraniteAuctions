@@ -36,7 +36,11 @@
   <%= link_to dashboard_path do %>
     <%= image_tag("category.png", alt: "Logo", class: "logo", style: "width: 20px; padding: 2%;") %>Dashboard
   <% end %>
-  <a href="#"><%= image_tag("empty-wallet.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Revenue</a>
+
+  <%= link_to revenue_path do %>
+    <%= image_tag("empty-wallet.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Revenue</a>
+  <% end %>
+
   <%= link_to cars_path do %>
     <%= image_tag("car.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Stock
   <% end %>
