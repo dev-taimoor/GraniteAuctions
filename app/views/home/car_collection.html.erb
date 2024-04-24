@@ -26,7 +26,7 @@
   <div>
     <div class="vehicle-type">
       <% @vehicle_types.each do |type| %>
-        <a href="<%= car_search_path(name: type[:name]) %>" class="vehicle-type-card">
+        <a href="<%= car_search_path(category: Category.where(name: type[:name]).pluck(:id) ) %>" class="vehicle-type-card">
           <%= image_tag(type[:icon], alt: type[:name], class: "vehicle-logo") %> <%= type[:name] %>
         </a>
       <% end %>

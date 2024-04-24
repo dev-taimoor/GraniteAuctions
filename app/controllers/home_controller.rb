@@ -26,6 +26,9 @@ class HomeController < ApplicationController
     @filterd_cars = @available_vehicles.apply_filters(params)&.paginate(page: params[:page], per_page: per_page_items)
   end
 
+  def about
+  end
+
   private
 
   def set_breadcrumbs

@@ -89,6 +89,7 @@
   <% @mobile_users&.each do |user| %>
     <%= render 'user_card', user: user %>
   <% end %>
-
-  <%= will_paginate @mobile_users, param_name: 'mobile_page' %>
+  <div>
+    <%= will_paginate @mobile_users, param_name: 'mobile_page' %>
+  </div>
 </div>

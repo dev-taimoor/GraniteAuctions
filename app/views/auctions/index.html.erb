@@ -60,21 +60,21 @@
     width: 60%;
     padding: 2%;
     background: white;
-    border-radius: 8%;
+    border-radius: 20px;
   }
 
   .sold-cars-inner{
     width: 40%;
     padding: 2%;
     background: white;
-    border-radius: 8%;
+    border-radius: 20px;
   }
 
   .create-auction-inner{
     width: 40%;
     padding: 2%;
     background: white;
-    border-radius: 8%;
+    border-radius: 20px;
   }
 
   .auction-heading-style{
@@ -86,7 +86,7 @@
     width: 60%;
     padding: 2%;
     background: white;
-    border-radius: 8%;
+    border-radius: 20px;
   }
 
   .auction-main{
@@ -213,7 +213,7 @@
           <div>
             <% @sold_cars&.each do |car| %>
               <div class="mt-3" style="display: flex;">
-                <div style="width: 30%">
+                <div class="me-2" style="width: 30%">
                  <% if car.image.attached? %>
                   <%= image_tag url_for(car.image), class: "", style: "max-width: 100%; width: 100%" %>
                 <%else%>

@@ -25,6 +25,20 @@ class User < ApplicationRecord
     "#{address_line_1} #{address_line_2}, #{city}, #{state}, #{country}"
   end
 
+  def get_revenue
+    user_revenue = Receipt.where(user_id: id, created_at: 6.months.ago.beginning_of_month..Time.current.end_of_month)
+                        .group("strftime('%m %Y', created_at)")
+                        .sum(:amount)
+    user_stat_data = {}
+
+    (0..5).reverse_each do |i|
+      month_year_key = (Time.current - i.month).strftime('%B')
+      month_year_value = (Time.current - i.month).strftime('%m %Y')
+      user_stat_data[month_year_key] = user_revenue[month_year_value] || 0
+    end
+    user_stat_data
+  end
+
   def verification_completed?
     role == 'admin' ||
     (role == "individual" && verification_image1.attached? && verification_image2.attached? && stripe_account_detail.payment_status) ||

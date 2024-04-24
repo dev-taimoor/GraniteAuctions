@@ -321,6 +321,13 @@ table {
     display: flex;
     flex-direction: column;
   }
+
+  .pagination a,
+  .pagination span,
+  .pagination .current {
+    margin: 0 3px;
+    padding: 0;
+  }
 }
 
 .mobile-car{
