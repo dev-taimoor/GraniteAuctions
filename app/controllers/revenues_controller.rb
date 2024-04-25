@@ -1,4 +1,6 @@
 class RevenuesController < ApplicationController
+  before_action :ensure_admin
+
   def index
     @dashboard_presenter = RevenuePresenter.new(current_user, params[:graph_type])
     @reports_presenter = ReportsGraphPresenter.new(params)
@@ -9,5 +11,9 @@ class RevenuesController < ApplicationController
   def download_reports
     csv_file = Reports::RevenueReportService.new.generate_csv(params)
     send_data csv_file, filename: 'report.csv', type: 'text/csv'
+  end
+
+  def ensure_admin
+    authorize! :manage, Auction
   end
 end
