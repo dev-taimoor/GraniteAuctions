@@ -6,10 +6,10 @@ class DashboardController < ApplicationController
     end_date = params[:end_date]
 
     if start_date.present? && end_date.present?
-      @cars_listed = Car.where(created_at: start_date..end_date).count
-      @cars_sold = Car.where(sold: true, updated_at: start_date..end_date).count
-      @revenue = Receipt.where(created_at: start_date..end_date).sum(:amount)
-      @auction_end = Auction.where(end_time: start_date..end_date).minimum(:end_time)&.strftime("%H:%M:%S") || "00:00:00"
+      @cars_listed = Car.where(created_at: start_date...end_date).count
+      @cars_sold = Car.where(sold: true, updated_at: start_date...end_date).count
+      @revenue = Receipt.where(created_at: start_date...end_date).sum(:amount)
+      @auction_end = Auction.where(end_time: start_date...end_date).minimum(:end_time)&.strftime("%H:%M:%S") || "00:00:00"
     else
       @cars_listed = Car.all.count
       @auction_end = Auction.current.minimum(:end_time).strftime("%H:%M:%S") rescue "00:00:00"
