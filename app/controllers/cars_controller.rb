@@ -7,8 +7,9 @@ class CarsController < ApplicationController
   def index
     @car = Car.new
     if params[:search].present?
-      @cars = Car.where("make LIKE ? OR model LIKE ?", "%#{params[:search]}%").paginate(page: params[:page], per_page: 10)
-    else
+      search_term = "%#{params[:search]}%"
+      @cars = Car.where("make LIKE ? OR model LIKE ?", search_term, search_term).paginate(page: params[:page], per_page: 10)
+      else
       @cars = Car.paginate(page: params[:page], per_page: 10)
     end
     render :index
