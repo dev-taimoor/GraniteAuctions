@@ -53,7 +53,7 @@ module CarPaymentConcern
   private
 
   def fetch_session_data(session_id)
-    Stripe::Checkout::Session.retrieve(session_id, expand: ['setup_intent'])
+    Stripe::Checkout::Session.retrieve(id: session_id, expand: ['setup_intent'])
   end
 
   def create_receipt(session_data, car)

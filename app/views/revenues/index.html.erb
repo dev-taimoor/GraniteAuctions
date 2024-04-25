@@ -77,42 +77,85 @@
               <div class="graph-heading-text">Gross volume</div>
               <div class="d-flex justify-content-between">
                 <div class="graph-amount-text">£<%= @reports_data[:gross_total] %></div>
-                <div class="graph-amount-text secondary-color">£<%= @reports_data[:previous_total] %></div>
               </div>
               <div>
-                <%= line_chart @reports_data[:gross_volume_graph].map{ |graph| {data: graph}}, colors: ["#000", "#A3AED0"], id: "gross_volume" %>
+                <%= line_chart @reports_data[:gross_volume_graph][0], colors: ["#000"], id: "gross_volume" %>
               </div>
             </div>
+            <% if @reports_data[:gross_volume_graph][1].present? %>
+              <div class="graph-sections right-side-graphs">
+                <div class="graph-heading-text">Previous Gross volume</div>
+                <div class="d-flex justify-content-between">
+                  <div class="graph-amount-text">£<%= @reports_data[:previous_total] %></div>
+                </div>
+                <div>
+                  <%= line_chart @reports_data[:gross_volume_graph][1], colors: ["#A3AED0"], id: "gross_volume_previous" %>
+                </div>
+              </div>
+            <% end %>
+
             <div class="graph-sections left-side-graphs">
               <div class="graph-heading-text">Net volume for sales</div>
               <div class="d-flex justify-content-between">
                 <div class="graph-amount-text">£<%= @reports_data[:gross_total] %></div>
-                <div class="graph-amount-text secondary-color">£<%= @reports_data[:previous_total] %></div>
               </div>
               <div>
-                <%= line_chart @reports_data[:gross_volume_graph].map{ |graph| {data: graph}}, colors: ["#000", "#A3AED0"], id: "net_volume" %>
+                <%= line_chart @reports_data[:gross_volume_graph][0], colors: ["#000"], id: "net_volume" %>
               </div>
             </div>
+            <% if @reports_data[:gross_volume_graph][1].present? %>
+              <div class="graph-sections right-side-graphs">
+                <div class="graph-heading-text">Previous Gross volume</div>
+                <div class="d-flex justify-content-between">
+                  <div class="graph-amount-text">£<%= @reports_data[:previous_total] %></div>
+                </div>
+                <div>
+                  <%= line_chart @reports_data[:gross_volume_graph][1], colors: ["#A3AED0"], id: "net_volume_previous" %>
+                </div>
+              </div>
+            <% end %>
+
             <div class="graph-sections left-side-graphs">
               <div class="graph-heading-text">New customer</div>
               <div class="d-flex justify-content-between">
                 <div class="graph-amount-text"><%= @reports_data[:customer_count] %></div>
-                <div class="graph-amount-text secondary-color"><%= @reports_data[:previous_customer_count] %></div>
               </div>
               <div>
-                <%= line_chart @reports_data[:new_customer_graph].map{ |graph| {data: graph}}, colors: ["#000", "#A3AED0"], id: "new_customers" %>
+                <%= line_chart @reports_data[:new_customer_graph][0], colors: ["#000"], id: "new_customer" %>
               </div>
-            </div> 
-            <div class="graph-sections right-side-graphs">
+            </div>
+            <% if @reports_data[:new_customer_graph][1].present? %>
+              <div class="graph-sections right-side-graphs">
+                <div class="graph-heading-text">Previous New customer</div>
+                <div class="d-flex justify-content-between">
+                  <div class="graph-amount-text"><%= @reports_data[:previous_customer_count] %></div>
+                </div>
+                <div>
+                  <%= line_chart @reports_data[:new_customer_graph][1], colors: ["#A3AED0"], id: "new_customer_previous" %>
+                </div>
+              </div>
+            <% end %>
+
+            <div class="graph-sections left-side-graphs">
               <div class="graph-heading-text">Successful payments</div>
               <div class="d-flex justify-content-between">
                 <div class="graph-amount-text"><%= @reports_data[:payment_count] %></div>
-                <div class="graph-amount-text secondary-color"><%= @reports_data[:previous_payment_count] %></div>
               </div>
               <div>
-                <%= line_chart @reports_data[:payment_graph].map{ |graph| {data: graph}}, colors: ["#000", "#A3AED0"], id: "successful_payments" %>
+                <%= line_chart @reports_data[:payment_graph][0], colors: ["#000"], id: "successful_payments" %>
               </div>
             </div>
+            <% if @reports_data[:new_customer_graph][1].present? %>
+              <div class="graph-sections right-side-graphs">
+                <div class="graph-heading-text">Previous Successful payments</div>
+                <div class="d-flex justify-content-between">
+                  <div class="graph-amount-text"><%= @reports_data[:previous_payment_count] %></div>
+                </div>
+                <div>
+                  <%= line_chart @reports_data[:payment_graph][1], colors: ["#A3AED0"], id: "successful_payments_previous" %>
+                </div>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
