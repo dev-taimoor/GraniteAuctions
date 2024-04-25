@@ -13,6 +13,10 @@
         <%= image_tag("category.png", alt: "Logo", class: "logo", style: "width: 20px; padding: 2%;") %>Dashboard
       <% end %>
 
+      <%= link_to revenue_path, class: "mobile-only-menu" do %>
+        <%= image_tag("empty-wallet.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Revenue</a>
+      <% end %>
+
       <%= link_to cars_path, class: "mobile-only-menu" do %>
         <%= image_tag("car.png", alt: "Logo", class: "logo", style: "width: 25px; padding: 2%;") %>Stock
       <% end %>
