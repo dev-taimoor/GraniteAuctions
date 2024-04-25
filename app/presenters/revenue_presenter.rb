@@ -1,8 +1,8 @@
 class RevenuePresenter
   def initialize(user, graph_type = 'gross_volume')
     @user = user
-    @start_of_day = Date.yesterday.beginning_of_day
-    @end_of_day = Date.yesterday.end_of_day
+    @start_of_day = Date.today.beginning_of_day
+    @end_of_day = Date.today.end_of_day
     @graph_type = graph_type
     @graph_data = { "00" => 0 }
     @yesterday_total_count = 0
@@ -37,13 +37,13 @@ class RevenuePresenter
   end
 
   def gross_volume
-    receipts = Receipt.where(created_at: @start_of_day..@end_of_day)
+    receipts = Receipt.where(created_at: @start_of_day...@end_of_day)
 
     # Graph data formatting
-    amounts_per_hour =  receipts.group_by_hour(:created_at, format: "%H", range: @start_of_day..@end_of_day).sum(:amount)
+    amounts_per_hour =  receipts.group_by_hour(:created_at, format: "%H", range: @start_of_day...@end_of_day).sum(:amount)
     graph_data_formatter(amounts_per_hour)
 
-    @yesterday_total_count = Receipt.where(created_at: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day).sum(:amount)
+    @yesterday_total_count = Receipt.where(created_at: Date.yesterday.beginning_of_day...Date.yesterday.end_of_day).sum(:amount)
     @total_count = receipts.sum(:amount)
     future_prediction_value
     # final data to return
@@ -52,10 +52,10 @@ class RevenuePresenter
 
   def new_customers_data
     users = User.where(created_at: @start_of_day..@end_of_day)
-    count_per_hour =  users.group_by_hour(:created_at, format: "%H", range: @start_of_day..@end_of_day).count
+    count_per_hour =  users.group_by_hour(:created_at, format: "%H", range: @start_of_day...@end_of_day).count
     graph_data_formatter(count_per_hour)
 
-    @yesterday_total_count = User.where(created_at: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day).count
+    @yesterday_total_count = User.where(created_at: Date.yesterday.beginning_of_day...Date.yesterday.end_of_day).count
     @total_count = users.count
     @currency_sign = ""
     future_prediction_value
@@ -70,7 +70,7 @@ class RevenuePresenter
     amounts_per_hour =  receipts.group_by_hour(:created_at, format: "%H", range: @start_of_day..@end_of_day).count
     graph_data_formatter(amounts_per_hour)
 
-    @yesterday_total_count = Receipt.where(created_at: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day).count
+    @yesterday_total_count = Receipt.where(created_at: Date.yesterday.beginning_of_day...Date.yesterday.end_of_day).count
     @total_count = receipts.count
     @currency_sign = ""
     future_prediction_value
