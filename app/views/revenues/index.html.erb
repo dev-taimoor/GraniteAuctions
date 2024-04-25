@@ -1,0 +1,170 @@
+<div class="parent-container" id="revenue-page">
+  <div class="content-wrapper">
+    <div class="menu-bar">
+      <%= render 'admin-shared/admin-side-bar' %>
+    </div>
+    <div class="revenue-wrapper">
+      <div class="revenue-header">
+        <div class="revenue-heading">Today</div>
+        <%= link_to "#", id: "download-reports", class: "secondary-button" do %>
+          <%= image_tag("receive-square.svg", alt: "Logo", class: "logo", style: "width: 24px; padding: 2%;") %>Download Report
+        <% end %>
+      </div>
+      <div class="daily-revenue-section">
+        <div class="daily-graph">
+          <div class="d-flex gap-4">
+            <div>
+              <select id="graph-type-dropdown">
+                <option value="gross_volume" <%= params[:graph_type] == "gross_volume" ? "selected" : "" %>>Gross volume</option>
+                <option value="net_volume" <%= params[:graph_type] == "net_volume" ? "selected" : "" %>>Net volume for sales</option>
+                <option value="new_customers" <%= params[:graph_type] == "new_customers" ? "selected" : "" %>>New customers</option>
+                <option value="successful_payments" <%= params[:graph_type] == "successful_payments" ? "selected" : "" %>>Successful payments</option>
+              </select>
+
+              <div class="graph-amount-text" id="daily-total-amount"><%= @data[:currency_sign] %><%= @data[:total_count] %></div>
+            </div>
+            <div>
+              <div class="graph-heading-text">Yesterday</div>
+              <div class="graph-amount-text secondary-color" id="yesterday-total-amount"><%= @data[:currency_sign] %> <%=@data[:yesterday_total_count] %></div>
+            </div>
+          </div>
+          <div>
+            <!-- <canvas id="myChart" style="width:100%;max-width:700px"></canvas> -->
+            <%= line_chart @data[:graph_data], min: '0', colors: ["#000"], id: "users-chart" %>
+          </div>
+        </div>
+        <div class="daily-revenue">
+          <div class="daily-revenue-wrapper">
+            <div class="graph-heading-text">EUR Balance</div>
+            <div class="graph-amount-text" id="tomorrows-total-amount"><%= @data[:currency_sign] %><%= @data[:tomorrows_value] %></div>
+            <div class="graph-sub-title" >Estimated future payouts</div>
+          </div>
+          <div class="daily-revenue-wrapper">
+            <div class="graph-heading-text">EUR Balance</div>
+            <div class="graph-amount-text" id="tomorrows-total-amount-payouts"><%= @data[:currency_sign] %><%= @data[:tomorrows_value] %></div>
+            <div class="graph-sub-title">Estimated future payouts</div>
+          </div>
+        </div>
+      </div>
+      <div class="reports-section">
+        <div class="reports-heading">Reports overview</div>
+        <div>
+          <form id="graph-filter-form">
+            <div class="report-filters">
+              <select id="reports-month-dropdown" name="report_period" class="reports-dropdown">
+                <option value="last_12_months" <%= params[:report_period] == "last_12_months" ? "selected" : "" %>>Last 12 months</option>
+                <option value="last_6_months" <%= params[:report_period] == "last_6_months" ? "selected" : "" %>>Last 6 months</option>
+                <option value="last_month" <%= params[:report_period] == "last_month" ? "selected" : "" %>>Last month</option>
+              </select>
+              <div>
+                <input id="startDate" type="date" name="start_date" class="calender-field start-calender-field">
+                <input id="endDate" type="date" name="end_date" class="calender-field end-calender-field">
+              </div>
+              <span>compared to</span>
+              <select id="" class="reports-dropdown">
+                <option value="gross_volume">Previous period</option>
+              </select>
+            </div>
+            <select id="group_by" class="reports-dropdown" name="group_by">
+              <option value="month" <%= params[:group_by] == "month" ? "selected" : "" %>>Month</option>
+              <option value="week" <%= params[:group_by] == "week" ? "selected" : "" %>>Week</option>
+              <option value="day" <%= params[:group_by] == "day" ? "selected" : "" %>>Day</option>
+            </select>
+            <button type="submit" class="secondary-button">Apply Filters</button>
+          </form>
+          <div class="graph-container">
+            <div class="graph-sections left-side-graphs">
+              <div class="graph-heading-text">Gross volume</div>
+              <div class="d-flex justify-content-between">
+                <div class="graph-amount-text">£<%= @reports_data[:gross_total] %></div>
+                <div class="graph-amount-text secondary-color">£<%= @reports_data[:previous_total] %></div>
+              </div>
+              <div>
+                <%= line_chart @reports_data[:gross_volume_graph].map{ |graph| {data: graph}}, colors: ["#000", "#A3AED0"], id: "gross_volume" %>
+              </div>
+            </div>
+            <div class="graph-sections left-side-graphs">
+              <div class="graph-heading-text">Net volume for sales</div>
+              <div class="d-flex justify-content-between">
+                <div class="graph-amount-text">£<%= @reports_data[:gross_total] %></div>
+                <div class="graph-amount-text secondary-color">£<%= @reports_data[:previous_total] %></div>
+              </div>
+              <div>
+                <%= line_chart @reports_data[:gross_volume_graph].map{ |graph| {data: graph}}, colors: ["#000", "#A3AED0"], id: "net_volume" %>
+              </div>
+            </div>
+            <div class="graph-sections left-side-graphs">
+              <div class="graph-heading-text">New customer</div>
+              <div class="d-flex justify-content-between">
+                <div class="graph-amount-text"><%= @reports_data[:customer_count] %></div>
+                <div class="graph-amount-text secondary-color"><%= @reports_data[:previous_customer_count] %></div>
+              </div>
+              <div>
+                <%= line_chart @reports_data[:new_customer_graph].map{ |graph| {data: graph}}, colors: ["#000", "#A3AED0"], id: "new_customers" %>
+              </div>
+            </div> 
+            <div class="graph-sections right-side-graphs">
+              <div class="graph-heading-text">Successful payments</div>
+              <div class="d-flex justify-content-between">
+                <div class="graph-amount-text"><%= @reports_data[:payment_count] %></div>
+                <div class="graph-amount-text secondary-color"><%= @reports_data[:previous_payment_count] %></div>
+              </div>
+              <div>
+                <%= line_chart @reports_data[:payment_graph].map{ |graph| {data: graph}}, colors: ["#000", "#A3AED0"], id: "successful_payments" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+      $("#startDate").on("change", function (e) {
+        $("#endDate").attr("min", $(this).val());
+      });
+      $("#endDate").on("change", function() {
+        $("#startDate").attr("max", $(this).val());
+      });
+  });
+
+  $(function() {
+    $('#graph-type-dropdown').on('change', function() {
+      var graphType = $(this).val();
+      var newUrl = window.location.href.split('?')[0] + '?graph_type=' + graphType;
+      window.location.href = newUrl;
+    });
+  });
+
+  $(function() {
+    $('#graph-type-dropdown').on('change', function() {
+      var graphType = $(this).val();
+      var newUrl = window.location.href.split('?')[0] + '?graph_type=' + graphType;
+      window.location.href = newUrl;
+    });
+  });
+
+  $(function() {
+    $('#download-reports').on('click', function() {
+      var formObject = {};
+      formObject['report_period'] = $('#reports-month-dropdown').val();;
+      formObject['start_date'] = $('#startDate').val();
+      formObject['end_date'] = $('#endDate').val();
+      formObject['group_by'] = $("#group_by").val();
+      var queryString = Object.keys(formObject).map(key => key + '=' + formObject[key]).join('&');
+      window.location.href = window.location.href.split('/revenue')[0] + '/download_reports?' + queryString;
+    })
+  })
+
+  $(function() {
+    $('#graph-filter-form').submit(function(event) {
+      var startDate = $('#startDate').val();
+      var endDate = $('#endDate').val();
+      if ((!startDate && endDate) || (startDate && !endDate)) {
+        alert('Please select both start date and end date');
+        event.preventDefault();
+      }
+    });
+  });
+</script>

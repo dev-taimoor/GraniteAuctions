@@ -21,6 +21,9 @@ Rails.application.routes.draw do
   get '/car_purchase', to: 'cars#car_purchase', as: 'car_purchase'
   get '/successful_bid', to: 'cars#successful_bid', as: 'successful_bid'
   get '/about', to: 'home#about', as: 'about'
+  get '/revenue', to: 'revenues#index', as: 'revenue'
+  get '/download_reports', to: 'revenues#download_reports', as: 'download_reports'
+  
   resources :cars do
     post 'add_to_auction', on: :member
     post 'buy'

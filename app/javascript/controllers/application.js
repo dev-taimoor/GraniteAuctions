@@ -1,4 +1,7 @@
-import { Application } from "@hotwired/stimulus"
+import { Application } from "@hotwired/stimulus";
+import Chartkick from "chartkick";
+window.Chartkick = Chartkick;
+
 
 const application = Application.start()
 
