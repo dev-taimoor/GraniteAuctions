@@ -3,7 +3,7 @@ class EndAuctionJob < ApplicationJob
     Auction.completed_not_updated.each do |auction|
       auction.cars.each do |car|
         if car.bids.present?
-          highest_bid = car.bids.maximum(:amount)
+          highest_bid = car.bids.order(amount: :desc).first
           finalize_car_purchase(highest_bid)
         end
       end
@@ -51,7 +51,10 @@ class EndAuctionJob < ApplicationJob
   end
 
   def release_hold_amount(bid)
-    Stripe::PaymentIntent.cancel(bid.hold_payment_intent)
+    payment_intent = Stripe::PaymentIntent.retrieve(bid.hold_payment_intent)
+    if payment_intent && payment_intent.status != 'canceled'
+      Stripe::PaymentIntent.cancel(bid.hold_payment_intent)
+    end
   end
 
 

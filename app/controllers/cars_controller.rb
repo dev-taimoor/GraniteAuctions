@@ -100,7 +100,7 @@ class CarsController < ApplicationController
       # directly holding the security amount against the bidding
       if current_user.payment_method_id.present?
         hold_bidding_security(current_user.payment_method_id, bid.id)
-        redirect_to car_collection_path, notice: "Bid successful"
+        redirect_back fallback_location: car_collection_path, notice: "Bid successful"
       else
         # in case of payment method not present, create a session for getting payment method
         # upon sucess, hold the security amount
