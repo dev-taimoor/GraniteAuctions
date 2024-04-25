@@ -197,9 +197,9 @@
                         <%="#{auction_car.car.make}, #{auction_car.car.model}"%>   
                       </div>
                     </td>
-                    <td><%= auction_car.car.reserve_auction_price %></td>
+                    <td>£<%= auction_car.car.reserve_auction_price %></td>
                     <td><%= auction_car.auction.lot_no %></td>
-                    <td><%= auction_car.car.bids.where(auction_id: auction_car.auction.id).maximum(:amount) %></td>
+                    <td>£<%= auction_car.car.bids.any? ? auction_car.car.bids.where(auction_id: auction_car.auction.id).maximum(:amount) : 0 %></td>
                   </tr>
                 <% end %>
               </tbody>
