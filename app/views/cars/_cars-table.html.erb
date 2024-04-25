@@ -67,7 +67,7 @@
       <div class="mobile-car-inner">
         <div style="flex: 1;">
           <div style="text-align: left; color: #646d81; font-size: larger;">Highest Bid</div>
-          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;">£ <%= car.bids.maximum(:amount) rescue "N/A"%></div>
+          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;">£ <%= car.highest_bid_amount%></div>
         </div>
 
         <div style="flex: 1;">

@@ -257,9 +257,9 @@
                         <%="#{auction_car.make}, #{auction_car.model}"%>   
                       </div>
                     </td>
-                    <td><%= auction_car.reserve_auction_price %></td>
+                    <td>£<%= auction_car.reserve_auction_price %></td>
                     <td><%= auction_car.sold? ? "Sold" : "Awaiting Payment" %></td>
-                    <td><%= auction_car.bids.maximum(:amount) %></td>
+                    <td>£<%= auction_car.highest_bid_amount %></td>
                   </tr>
                 <% end %>
               </tbody>
@@ -341,7 +341,7 @@
                       <%= user.full_name %>     
                     </div>
                   </td>
-                  <td><%= user.bids.maximum(:amount) rescue "N/A"%></td>
+                  <td>£<%= user.bids.any? ? user.bids.maximum(:amount) : 0 %></td>
                   <td><%= user.bids.count%></td>
                   </tr>
                 <% end %>
