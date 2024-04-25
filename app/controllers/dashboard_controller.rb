@@ -6,6 +6,7 @@ class DashboardController < ApplicationController
     end_date = params[:end_date]
 
     if start_date.present? && end_date.present?
+      end_date = end_date.to_date.end_of_day
       @cars_listed = Car.where(created_at: start_date...end_date).count
       @cars_sold = Car.where(sold: true, updated_at: start_date...end_date).count
       @revenue = Receipt.where(created_at: start_date...end_date).sum(:amount)
@@ -29,7 +30,7 @@ class DashboardController < ApplicationController
       @all_months_data[month_year_key] = revenue_data[month_year_value] || 0
     end
 
-    @cars_analytics = { "Sold"=> @cars_sold , "In stock"=> @cars_available  }
+    @cars_analytics = { "Sold"=> Car.sold_cars.count , "In stock"=> @cars_available  }
     @top_sold_cars = Car.joins(:receipt).where(sold: true).order("receipts.amount DESC").limit(2)
 
     @recent_orders = Car.sold_cars.order("updated_at DESC").limit(4)
