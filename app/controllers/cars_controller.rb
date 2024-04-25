@@ -92,7 +92,7 @@ class CarsController < ApplicationController
 
   def submit_bid
     auction = @car.auctions.current.first
-    bid = Bid.find_or_initialize_by(car_id: @car.id, auction_id: auction.id, user_id: current_user)
+    bid = Bid.find_or_initialize_by(car_id: @car.id, auction_id: auction.id, user_id: current_user.id)
     create_hold_amount = bid.id.blank? # only create hold amount for new bids
     bid.update(amount: params[:bid_amount])
     if create_hold_amount
