@@ -5,6 +5,7 @@ class EndAuctionJob < ApplicationJob
         if car.bids.present?
           highest_bid = car.bids.order(amount: :desc).first
           finalize_car_purchase(highest_bid)
+          update_bids(bids)
         end
       end
       auction.update(status: "completed")
@@ -19,7 +20,16 @@ class EndAuctionJob < ApplicationJob
       release_hold_amount(bid)
       bid.car.update(sold: true)
     else
-      # need update from  Maurice
+      payment_intent = Stripe::PaymentIntent.capture(bid.hold_payment_intent)
+      create_receipt(payment_intent, user, bid.car, true)
+      UserMailer.payment_failed(user).deliver_now
+    end
+  end
+
+  def update_bids(bids)
+    bids.each do |bid|
+      release_hold_amount(bid)
+      bid.update(active: false)
     end
   end
 
@@ -37,16 +47,19 @@ class EndAuctionJob < ApplicationJob
     })
   end
 
-
-  def create_receipt(payment_intent, user, car)
-    receipt = Receipt.new(
+  def create_receipt(payment_intent, user, car, hold_receipt = false)
+    receipt_data = {
       user_id: user.id,
       invoice_id: payment_intent.id,
       amount: payment_intent.amount_received/ 100,
-      vat_amount: (car.buy_now_price * 0.2),
-      delivery_cost: car.delivery_cost,
       car_id: car.id
-    )
+    }
+    if !hold_receipt
+      receipt_data[:vat_amount] = (car.buy_now_price * 0.2)
+      receipt_data[:delivery_cost] = car.delivery_cost
+    end
+    receipt_data 
+    receipt = Receipt.new(receipt_data)
     receipt.save!
   end
 
