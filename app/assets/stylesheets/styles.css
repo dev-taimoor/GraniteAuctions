@@ -272,7 +272,16 @@ table {
   }
   .topnav {
     padding-left: 0px;
-    display: block; /* Hide the search bar on screens smaller than 600px */
+    display: contents; /* Hide the search bar on screens smaller than 600px */
+  }
+
+  .icon{
+    padding-top: 6%;
+  }
+
+  .nav-brand{
+    padding-top: 5%;
+    padding-left: 5%;
   }
 }
 

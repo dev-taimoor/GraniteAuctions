@@ -21,7 +21,7 @@
               <% else %>
                 <%= image_tag("no-image.jpg", alt: "no-image", class: "mr-2", style: "width: 50px; height: 35px; margin-right: 5px;") %>
               <% end %>
-              <%= link_to "#{car.make}, #{car.model}", car_path(car), class: "car-name" %>      
+              <%= link_to "#{car.make}, #{car.model}", edit_car_path(car), class: "car-name" %>      
             </div>
           </td>
           <td>£<%= car.reserve_auction_price%></td>
@@ -55,7 +55,7 @@
       <div class="mobile-car-inner">
         <div style="flex: 1;">
           <div style="text-align: left; color: #646d81; font-size: larger;">Make and Model</div>
-          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%= link_to "#{car.make}, #{car.model}", car_path(car), style: "text-decoration: none; color: #2B4159;" %></div>
+          <div style="text-align: left; color: #2B4159; font-size: x-large; font-weight: bold;"><%= link_to "#{car.make}, #{car.model}", edit_car_path(car), style: "text-decoration: none; color: #2B4159;" %></div>
         </div>
 
         <div style="flex: 1;">

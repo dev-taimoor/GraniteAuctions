@@ -17,9 +17,8 @@
     display: flex;
     flex-wrap: wrap;
     background: #F4F7FE;
-    padding: 4rem 5rem;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .text-headings {
@@ -28,6 +27,10 @@
     text-align: left;
     line-height: 1.3;
     color: #2B4159;
+  }
+
+  .inner-style{
+    margin: 0;
   }
 
   .card-wrapper {
@@ -41,10 +44,23 @@
 
   .header-description {
     display: flex;
-    max-width: 414px;
+    width: 40%;
     align-items: center;
     flex-direction: column;
     justify-content: center;
+  }
+
+  .description-styling{
+    width: 65%;
+  }
+
+  .heading-styling{
+    width: 50%;
+  }
+
+  .hero-image{
+    width: 100%;
+    height: auto;
   }
 
   .description-text {
@@ -74,17 +90,70 @@
     color: white;
   }
 
+  .reversing{
+    align-items: center;
+  }
+
+  .map-image{
+    width: 49%;
+  }
+
   @media screen and (max-width: 768px) { /* Adjust the breakpoint as needed */
     .inner_box {
-      width: 60%;
-      margin: 5% 0; /* Adjust the margin for smaller screens */
+      width: 100%;
+    }
+
+    .inner-style{
+      margin-top: 20%;
+    }
+
+    .reversing{
+      flex-direction: column-reverse;
+    }
+
+    .header-wrapper{
+      padding: 0;
+    }
+
+    .imagelogo{
+      display: none;
+    }
+
+    .header-description{
+      width: 100%;
+    }
+
+    .description-styling{
+      width: 100%;
+    }
+
+    .heading-styling{
+      width: 100%;
+    }
+
+    .text-headings{
+      font-size: 25px;
+      font-weight: bold;
+      text-align: left;
+      line-height: 1.3;
+      color: #2B4159;
+    }
+
+    .question{
+      display: flex;
+      flex-direction: column;
+    }
+
+    .map-image{
+      width: 100%;
+      margin-bottom: 5%;
     }
   }
 </style>
 
-<div class="header-wrapper">
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <h1 class="text-headings">Unlock the Road to<br> Your Dream Car with<br> Granite Auctions</h1>  
+<div class="header-wrapper p-5">
+  <div class="heading-styling" style="display: flex; flex-direction: column; align-items: center;">
+    <h1 class="text-headings">Unlock the Road to Your Dream Car with Granite Auctions</h1>  
   </div>
   
   <div class="header-description">
@@ -94,95 +163,125 @@
 </div>
 
 <div>
-	<%= image_tag("banner.png", alt: "Logo", class: "logo", style: "width: 100%; height: 500px") %>
+	<%= image_tag("banner.png", alt: "Logo", class: "hero-image") %>
 </div>
 
-<div class="header-wrapper">
+
+<div class="header-wrapper pe-5 mt-3">
   <div style="display: flex; flex: 1; justify-content: end;">
     <h1 class="text-headings">Seamless Journey to <br>Your Perfect Vehicle</h1>
   </div>
 </div>
 
-<div class="card-wrapper">
+<div class="card-wrapper p-5">
   <div class="inner_box">
-    <%= image_tag("profile-2user.png", alt: "Logo", class: "logo") %>
+    <%= image_tag("profile-2user.png", alt: "imagelogo", class: "") %>
     <br>
-    <h1>Rigister</h1>
+    <h1>Register</h1>
     <p>Create your MotorAuction account effortlessly.</p>
   </div> 
 
-  <div class="inner_box" >
-    <%= image_tag("search-status.png", alt: "Logo", class: "logo") %>
+  <div class="inner_box inner-style" >
+    <%= image_tag("search-status.png", alt: "imagelogo", class: "") %>
     <br>
     <h1>Browse</h1>
     <p>Create your MotorAuction account effortlessly.</p>
   </div> 
 
-  <div class="inner_box">
-    <%= image_tag("judge.png", alt: "Logo", class: "logo") %>
+  <div class="inner_box inner-style">
+    <%= image_tag("judge.png", alt: "imagelogo", class: "") %>
     <br>
     <h1>Bid</h1>
     <p>Create your MotorAuction account effortlessly.</p>
   </div> 
 
-  <div class="inner_box">
-    <%= image_tag("wallet-minus.png", alt: "Logo", class: "logo") %>
+  <div class="inner_box inner-style">
+    <%= image_tag("wallet-minus.png", alt: "imagelogo", class: "") %>
     <br>
     <h1>Pay</h1>
     <p>Create your MotorAuction account effortlessly.</p>
   </div> 
 </div>
 
-<div class="header-wrapper">
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <h1 class="text-headings">Find Your Perfect<br> Ride at Granite<br> Auctions</h1>  
+<div class="header-wrapper p-5">
+  <div class="heading-styling" style="display: flex; flex-direction: column; align-items: center;">
+    <h1 class="text-headings">Find Your Perfect Ride at Granite Auctions</h1>  
   </div>
   
   <div class="header-description">
     <h7 class="description-text">Ready to embark on a thrilling journey to your dream vehicle? Join Granite Auctions today and gain access to exclusive auctions, a diverse range of vehicles, and a seamless bidding experience. Your next adventure begins with just a click.</h7>
-    <br>
+
     <div style="display: flex; align-self: baseline; gap: 10px">
-      <a href="/users/sign_up" class="button-style"> <%= image_tag("profile.svg", alt: "Logo", class: "logo") %> Sign up </a>
-      <a href="/users/sign_up" class="button-style"> <%= image_tag("profile-tick.png", alt: "Logo", class: "logo") %> Login </a>
+      <a href="/users/sign_up" class="button-style"> <%= image_tag("profile.svg", alt: "Logo", class: "imagelogo") %> Sign up </a>
+      <a href="/users/sign_up" class="button-style"> <%= image_tag("profile-tick.png", alt: "Logo", class: "imagelogo") %> Login </a>
     </div>
   </div>
 </div>
 
 <div>
-  <%= image_tag("banner2.png", alt: "Logo", class: "logo", style: "width: 100%; height: 500px") %>
-</div>
-
-<div class="header-wrapper">
-  <div class="header-description">
-    <h7 class="description-text">Explore our curated selection of standout vehicles, each with its own unique story. From luxury sedans to rugged off-roaders, find the ride that suits your style.</h7>
-    <a class="button-style"> View All</a>
-  </div>
-
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <h1 class="text-headings">Top Picks of the<br> Week</h1>  
-  </div>
+  <%= image_tag("banner2.png", alt: "Logo", class: "hero-image") %>
 </div>
 
 
-
-<div class="header-wrapper">
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    <h1 class="text-headings">Rev Up Your<br> Business With<br> Granite Auctions</h1>  
+<div class="header-wrapper p-5">
+  <div class="heading-styling" style="display: flex; flex-direction: column; align-items: center;">
+    <h1 class="text-headings">Rev Up Your Business With Granite Auctions</h1>  
   </div>
   
   <div class="header-description">
     <h7 class="description-text">Are you a garage with a passion for automobiles? Join Granite Auctions as a partner and showcase your inventory to a global audience. Increase visibility, attract more buyers, and boost your sales. Partner with us and drive success!</h7>
-    <br>
+
     <div style="display: flex; align-self: baseline; gap: 10px">
-      <a href="/users/sign_up" class="button-style">  Sign up </a>
-      <a href="/users/sign_up" class="button-style"> Contact Us </a>
+      <a href="/users/sign_up" class="button-style">Sign up </a>
+      <a href="/about" class="button-style">Contact Us </a>
     </div>
   </div>
 </div>
 
 <div>
-  <%= image_tag("banner3.png", alt: "Logo", class: "logo", style: "width: 100%; height: 500px") %>
+  <%= image_tag("banner3.png", alt: "Logo", class: "hero-image") %>
 </div>
 
   
+<div class="reversing header-wrapper p-5">
+  <div class="header-description">
+    <h7 class="description-text description-styling">Whether you're a garage looking to partner with us or a user seeking support, our team is here to help. Reach out to us for any inquiries, feedback, or assistance. Your satisfaction is our priority.</h7>
+  </div>
 
+  <div class="heading-styling" style="display: flex; flex-direction: column; align-items: center;">
+    <h1 class="text-headings">Have Questions or Need Assistance?</h1>  
+  </div>
+</div>
+
+<div style="gap: 2%" class="question header-wrapper p-5 pt-0">
+  <div class="p-3 map-image" style="background: #DBE0EB; border-radius: 20px;">
+    <h1>Granite Auction Headquarters:</h1>
+    <p>123 Drive Lane,<br>Auto City, AC 56789</p>
+
+    <h1>Customer Support</h1>
+    <p>Email: support@graniteauction.com<br>Phone: (555) 123-4567</p>
+
+    <h1>Business Inquiries:</h1>
+    <p>Email: partnerships@graniteauction.com<br>Phone: (555) 987-6543</p>
+  </div>
+
+  <div class="map-image">
+    <div id="map" class="rounded-4" style="height: 400px;"></div>
+  </div>
+  
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var map = L.map('map').setView([54.1786, -6.3370], 13); // Set coordinates for Newry and zoom level
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: 'Granite Auctions'
+    }).addTo(map);
+
+    L.marker([54.17, -6.33]).addTo(map)
+    .bindPopup('Granite Auctions')
+    .openPopup();
+  });
+
+</script>
