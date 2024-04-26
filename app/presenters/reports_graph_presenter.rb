@@ -3,10 +3,10 @@ class ReportsGraphPresenter
     @reports_period = params[:report_period] || "last_12_months"
     create_dates(params)
     @group_by = params[:group_by] || "month"
-    @receipts = Receipt.where(created_at: @start_date..@end_date)
-    @previous_receipts = Receipt.where(created_at: @previous_start_date..@previous_end_date) if params[:start_date].blank?
-    @users = User.where(created_at: @start_date..@end_date)
-    @previous_users = User.where(created_at: @start_date..@end_date) if params[:start_date].blank?
+    @receipts = Receipt.where(created_at: @start_date...@end_date)
+    @previous_receipts = Receipt.where(created_at: @previous_start_date...@previous_end_date) if params[:start_date].blank?
+    @users = User.where(created_at: @start_date...@end_date)
+    @previous_users = User.where(created_at: @start_date...@end_date) if params[:start_date].blank?
   end
 
   def call
@@ -67,28 +67,28 @@ class ReportsGraphPresenter
   def current_payment_graph_data
     send("group_by_#{@group_by}", @receipts, @start_date, @end_date).count
   end
-
   def previous_payment_graph_data
     send("group_by_#{@group_by}", @previous_receipts, @previous_start_date, @previous_end_date).count
   end
   # successfull payments data calculation end
 
   def group_by_month(data, start_date, end_date)
-    data.group_by_month(:created_at, format: "%B", range: start_date..end_date)
+    updated_start_date = @reports_period != "last_month" ? start_date + 1.month : start_date
+    data.group_by_month(:created_at, format: "%-b ", range: updated_start_date...end_date)
   end
 
   def group_by_week(data, start_date, end_date)
-    data.group_by_week(:created_at, format: "%W", range: start_date..end_date)
+    data.group_by_week(:created_at, format: "%W", range: start_date...end_date)
   end
 
   def group_by_day(data, start_date, end_date)
-    data.group_by_day(:created_at, format: "%-d %b", range: start_date..end_date)
+    data.group_by_day(:created_at, format: "%-d %b", range: start_date...end_date)
   end
 
   def create_dates(params)
     @current_date = Time.now.beginning_of_day
     @start_date = params[:start_date].present? ? DateTime.parse(params[:start_date]) : calculate_start_date
-    @end_date = params[:end_date].present? ? DateTime.parse(params[:end_date]) : @current_date
+    @end_date = params[:end_date].present? ? DateTime.parse(params[:end_date]) : Time.now.end_of_day
     if params[:start_date].blank?
       @previous_start_date = calculate_start_date(2)
       @previous_end_date = @start_date
