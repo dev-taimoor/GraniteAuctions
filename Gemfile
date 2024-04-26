@@ -58,6 +58,7 @@ gem 'actionmailer'
 # graphs
 gem "chartkick"
 gem "groupdate"
+gem 'leaflet-rails'
 
 # Payment
 gem 'stripe'

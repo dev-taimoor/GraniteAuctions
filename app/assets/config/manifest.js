@@ -5,4 +5,5 @@
 //= link styles.css
 //= link application.bootstrap.scss
 //= link application.css
-
+//= link leaflet.js
+//= link leaflet.css
